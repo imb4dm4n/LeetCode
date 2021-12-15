@@ -21,9 +21,21 @@
     <ClCompile Include="CTwoSum.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CAddTwoNumbers.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClengthOfLongestSubstring.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTwoSum.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CAddTwoNumbers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClengthOfLongestSubstring.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

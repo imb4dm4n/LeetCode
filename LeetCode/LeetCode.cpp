@@ -3,16 +3,33 @@
 
 #include <iostream>
 #include "CTwoSum.h"
-int main()
+#include "CAddTwoNumbers.h"
+#include "ClengthOfLongestSubstring.h"
+void test_CTwoSum()
 {
-    vector<int> nums = {3,2,4};
+    vector<int> nums = { 3,2,4 };
     nums = { 3,1,4,22,2 };
     //nums = { 3,3 };
     vector<int> r = CTwoSum::twoSum(nums, 6);
     for (auto i : r) {
 
-        std::cout <<"i "<< i << "\n";
+        std::cout << "i " << i << "\n";
     }
+}
+
+void test_CAddTwoNumbers()
+{
+    //CAddTwoNumbers;
+}
+
+void test_ClengthOfLongestSubstring()
+{
+    int max = ClengthOfLongestSubstring::lengthOfLongestSubstring("abba");
+    std::cout << "max = " << max<<std::endl;
+}
+int main()
+{
+    test_ClengthOfLongestSubstring();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
