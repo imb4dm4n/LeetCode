@@ -8,6 +8,7 @@ namespace LinkList {
 	{
 
 		// Definition for singly-linked list.
+		//template<class T>
 		struct ListNode {
 			int val;
 			ListNode* next;
@@ -48,6 +49,70 @@ namespace LinkList {
 				//free(cur_node);
 			}
 			return ret;
+		}
+		static ListNode* next(ListNode* node) {
+			if (node != nullptr)
+				return node->next;
+			return nullptr;
+		}
+		static ListNode* insert(ListNode* node,int data) {
+			ListNode* ret = new ListNode(data, node);
+			if (node)
+				node->next = ret;
+			return ret;
+		}
+		/*
+		merge two sorted list into one sorted list. iterate over two list,
+		find the smaller one and insert it into the new list, change list pointers.
+		*/
+		static ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+			ListNode* head = nullptr, * cur_node = nullptr,
+				*cur_l1= list1, *cul_l2= list2;
+			while (cur_l1 || cul_l2) {
+				int cur_val_1 = 0, cur_val_2 = 0;
+				ListNode* tmp = nullptr;
+				if (cur_l1 != nullptr)
+					cur_val_1 = cur_l1->val;
+				if (cul_l2 != nullptr)
+					cur_val_2 = cul_l2->val;
+				// bost list not empty 
+				if (cur_l1 && cul_l2) {
+					if (cur_val_1 < cur_val_2) {
+						tmp = insert(cur_node, cur_val_1);
+						cur_l1 = cur_l1->next;
+					}
+					else {
+						tmp = insert(cur_node, cur_val_2);
+						cul_l2 = cul_l2->next;
+					}
+					cur_node = tmp;
+					if (head == nullptr) {
+						 head = tmp;
+					}
+					continue;
+				}
+				// list 1 not empty, concat it 
+				else if (cur_l1) {
+					if (cur_node) {
+						cur_node->next = cur_l1;
+					}
+					else {
+						head = cur_node = cur_l1;
+					}
+					break;
+				}
+				// list 1 not empty, concat it 
+				else if (cul_l2) {
+					if (cur_node) {
+						cur_node->next = cul_l2;
+					}
+					else {
+						head = cur_node = cul_l2;
+					}
+					break;
+				}
+			}
+			return head;
 		}
 	};
 };
