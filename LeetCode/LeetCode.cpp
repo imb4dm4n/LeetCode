@@ -27,9 +27,23 @@ void test_ClengthOfLongestSubstring()
     int max = ClengthOfLongestSubstring::lengthOfLongestSubstring("abba");
     std::cout << "max = " << max<<std::endl;
 }
+#include"CLinkLists.h"
+using namespace LinkedList;
+void test_swap_nodes()
+{
+    List l;
+    l.insert(1);
+    l.insert(2);
+    l.insert(3);
+    l.insert(4);
+    l.dump();
+    ListNode* r=CLinkLists::swapPairs(l.get_head());
+    l.dump(r);
+}
 int main()
 {
-    test_ClengthOfLongestSubstring();
+    //test_ClengthOfLongestSubstring();
+    test_swap_nodes();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

@@ -27,6 +27,12 @@
     <ClCompile Include="ClengthOfLongestSubstring.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ClongestPalindrome.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CLinkLists.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTwoSum.h">
@@ -36,6 +42,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ClengthOfLongestSubstring.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClongestPalindrome.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CLinkLists.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
