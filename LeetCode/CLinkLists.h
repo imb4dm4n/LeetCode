@@ -87,6 +87,25 @@ namespace LinkedList {
             }
             return ret;
         }
+        // https://leetcode.com/problems/rotate-list/
+        static ListNode* rotateRight(ListNode* head, int k) {
+            ListNode* arr_p[600]={0};   // number of node is less than 500
+            int n = 0;// number of nodes in the list
+            ListNode* tmp = head;
+            if(k==0 || head == nullptr) // nothing to rotate
+                return head;
+            while(head != nullptr) {
+                arr_p[n++] = head;  // store every nodes pointer
+                head = head->next;
+            }
+            head = tmp;
+            int pos = n - k % n; // calculate the actual rotate number;
+            if(n ==1 || pos == n)   // 1 node or roate round is equal to number of nodes
+                return tmp;
+            arr_p[pos - 1]->next = nullptr;
+            arr_p[n - 1]->next = arr_p[0];  // the last node of the tail part of list, should change it's next
+            return arr_p[pos];
+        }
 	};
 
 };
