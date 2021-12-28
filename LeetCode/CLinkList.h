@@ -6,7 +6,7 @@ namespace LinkList {
 
 	class CLinkList
 	{
-
+	public:
 		// Definition for singly-linked list.
 		//template<class T>
 		struct ListNode {
@@ -113,6 +113,82 @@ namespace LinkList {
 				}
 			}
 			return head;
+		}
+		// https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+		// remove all duplicated number from a sorted list, return it's head.
+		// my bad: it wishes to remove all node which have duplicated value. thus: [1,1,2]=> [2]
+		// we need four pointers,and one bool flag has_dup. 
+		// first is for store the original head
+		// second is for the prev node, third is for the cur node, fourth is for next node
+
+		static ListNode* deleteDuplicates(ListNode* head) {
+			ListNode* next = nullptr;
+			ListNode* top = nullptr;
+			ListNode* tmp_stack[400] = { 0 };
+			int sp = -1;						// stack pointer
+			bool has_dup = false;
+			if (head == nullptr || head->next == nullptr)
+					return head;
+			next = head->next;
+			tmp_stack[++sp] = head;	// push first node to stack 
+			while (next) {			// loop until we hit the last node
+				if (sp > -1) {
+					// the stack is not empty
+					top = tmp_stack[sp];	// get the top node from stack
+					if (top->val == next->val) {
+						// mark duplicate node found, remove next from list, update top's next 
+						has_dup = true;
+						top->next = next->next;
+						next = next->next;
+					}
+					else {
+						// we need to check if previously found a duplicate node
+						if (has_dup) {
+							// stack pop
+							ListNode* tmp = top;
+							if (sp > 0) {
+								top = tmp_stack[--sp];
+							}
+							else {
+								top = nullptr;
+								--sp;
+							}
+							// reset top's next 
+							if (top)
+								top->next = next;
+						}
+						// mark not duplicated
+						has_dup = false;
+						// not duplicate node, push the next to stack 
+						tmp_stack[++sp] = next;
+						next = next->next;
+					}
+
+				}
+				else {
+					// stack is empty, push one node 
+					tmp_stack[++sp] = next;
+					next = next->next;
+				}
+			}
+			// the last round out , 
+			if (has_dup) {
+				// stack pop
+				ListNode* tmp = top;
+				if (sp > 0) {
+					top = tmp_stack[--sp];
+				}
+				else {
+					top = nullptr;
+					--sp;
+				}
+				// set 
+				if (top)
+					top->next = next;
+			}
+			if (sp > -1)
+				return tmp_stack[0];
+			return nullptr;
 		}
 	};
 };

@@ -27,9 +27,44 @@ void test_ClengthOfLongestSubstring()
     int max = ClengthOfLongestSubstring::lengthOfLongestSubstring("abba");
     std::cout << "max = " << max<<std::endl;
 }
+
+#include"CLinkList.h"
+//using namespace 
+void test_remove_dup()
+{
+#include<vector>
+    vector<int> nums;
+    nums.push_back(2);
+    nums.push_back(3);
+    nums.push_back(4);
+    nums.pop_back();
+    for (auto i : nums)
+    {
+        std::cout << i << std::endl;
+    }
+
+    using ListNode = LinkList::CLinkList::ListNode;
+    ListNode h(1),a(2),b(2),c(3),d(3),e(4),f(5);
+    //ListNode h(1), a(2),b(2);
+        //, b(1), c(1), d(1), e(2), f(2);
+
+    h.next = &a;
+    //a.next = &b;
+   // b.next = nullptr;
+    a.next = &b;
+    b.next = &c;
+    c.next = &d;
+    d.next = &e;
+    e.next = &f;
+    f.next = nullptr;
+
+    ListNode*r = LinkList::CLinkList::deleteDuplicates(&h);
+    std::cout << r->next << std::endl;
+}
 int main()
 {
-    test_ClengthOfLongestSubstring();
+    test_remove_dup();
+    //test_ClengthOfLongestSubstring();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
