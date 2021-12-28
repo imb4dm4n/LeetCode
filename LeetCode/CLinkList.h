@@ -190,5 +190,25 @@ namespace LinkList {
 				return tmp_stack[0];
 			return nullptr;
 		}
+		// https://leetcode.com/problems/remove-duplicates-from-sorted-list/submissions/
+		// I resolved yesterday ... but codes were deleted...
+		static ListNode* deleteDuplicates2(ListNode* head) {
+			ListNode *cur = head, *next = nullptr;
+			if (head == nullptr || head->next == nullptr)
+				return head;
+			next = cur->next;
+			while (next) {
+				// loop until we hit the end 
+				if (cur->val == next->val) {
+					// update cur's next
+					cur->next = next->next;
+					next = next->next;
+					continue;
+				}
+				cur = next;
+				next = next->next;
+			}
+			return head;
+		}
 	};
 };
