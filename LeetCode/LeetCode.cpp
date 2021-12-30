@@ -61,9 +61,38 @@ void test_remove_dup()
     ListNode*r = LinkList::CLinkList::deleteDuplicates(&h);
     std::cout << r->next << std::endl;
 }
+
+void test_partition()
+{
+    using ListNode = LinkList::CLinkList::ListNode;
+    // [3,4,0,2, 2,1,2,3 ,4] 
+   /* ListNode h(3), a(4), b(0), c(2), d(2), e(1),f(2),g(3),i(4);
+    h.next = &a;
+    a.next = &b;
+    b.next = &c;
+    c.next = &d;
+    d.next = &e;
+    e.next = &f;
+    f.next = &g;
+    g.next = &i;
+    i.next = nullptr;*/
+
+    ListNode h(1), a(4), b(3), c(2), d(5), e(2);
+    h.next = &a;
+    a.next = &b;
+    b.next = &c;
+    c.next = &d;
+    d.next = &e;
+    e.next = nullptr;
+    /*h.val = 2;
+    a.val = 1;
+    a.next = nullptr;*/
+    ListNode* r = LinkList::CLinkList::partition(&h, 3);
+}
 int main()
 {
-    test_remove_dup();
+    test_partition();
+    //test_remove_dup();
     //test_ClengthOfLongestSubstring();
 }
 

@@ -210,5 +210,81 @@ namespace LinkList {
 			}
 			return head;
 		}
+		
+		// https://leetcode.com/problems/partition-list/
+		/*
+		prev =nul, cur =1, 
+		prev=1, cur=4
+		if prev > cur  and prev >= 3 and cur != 3
+			exchange prev and cur 
+		else
+			prev = cur
+			cur = cur->next
+		*/
+		static bool check_partition(ListNode* head, int x) {
+			bool small = true, great = false, has_changed = false, ret = true;
+			while (head != nullptr) {
+				if (has_changed == false && small && head->val < x) {
+					head = head->next;
+					continue;
+				}
+				else {
+					small = false;
+					has_changed = true;
+					great = true;
+				}
+				if (has_changed && great && head->val >= x) {
+					head = head->next;
+					continue;
+				}
+				else if (has_changed ){
+					return false;
+				}
+			}
+			return ret;
+		}
+		static ListNode* partition(ListNode* head, int x) {
+			/*
+			bubbling sort : push small one from the bottom to top 
+			condition: prev.val >= x and prev.val > cur.val
+			*/
+			ListNode* ret = head, * prev = nullptr, * cur = head, * end = nullptr;
+			if (head == nullptr || head->next == nullptr)
+				return head;
+			
+			ListNode* top = nullptr;
+			ListNode* tmp_stack[300] = { 0 };
+			int sp = -1;
+			// push all nodes to stack
+			while (cur != nullptr) {
+				tmp_stack[++sp] = cur;
+				cur = cur->next;
+			}
+			int saved_sp = sp;	// decrease saved_sp by 1 each time
+			//while (saved_sp > 0) {
+			while (1) {
+				// 
+				sp = saved_sp;
+				while (sp > 0) {
+					top = tmp_stack[sp];
+					if (sp > 0) {
+						// there is prev node 
+						prev = tmp_stack[sp - 1];
+ 						if (top->val < x && prev->val >=x ) {
+							// exchange the value 
+							int tmp = prev->val;
+							prev->val = top->val;
+							top->val = tmp;
+						}
+					}
+					--sp;
+				}
+				if (check_partition(head, x))
+					break;
+				//--saved_sp;
+			}
+			return head;
+
+		}
 	};
 };
