@@ -244,46 +244,63 @@ namespace LinkList {
 			return ret;
 		}
 		static ListNode* partition(ListNode* head, int x) {
-			/*
-			bubbling sort : push small one from the bottom to top 
-			condition: prev.val >= x and prev.val > cur.val
-			*/
-			ListNode* ret = head, * prev = nullptr, * cur = head, * end = nullptr;
+			ListNode* small_head = new ListNode(0);
+			ListNode* great_head = new ListNode(0);
+			ListNode* cur_small = small_head, * cur_great = great_head;
 			if (head == nullptr || head->next == nullptr)
 				return head;
-			
-			ListNode* top = nullptr;
-			ListNode* tmp_stack[300] = { 0 };
-			int sp = -1;
-			// push all nodes to stack
-			while (cur != nullptr) {
-				tmp_stack[++sp] = cur;
-				cur = cur->next;
-			}
-			int saved_sp = sp;	// decrease saved_sp by 1 each time
-			//while (saved_sp > 0) {
-			while (1) {
-				// 
-				sp = saved_sp;
-				while (sp > 0) {
-					top = tmp_stack[sp];
-					if (sp > 0) {
-						// there is prev node 
-						prev = tmp_stack[sp - 1];
- 						if (top->val < x && prev->val >=x ) {
-							// exchange the value 
-							int tmp = prev->val;
-							prev->val = top->val;
-							top->val = tmp;
-						}
-					}
-					--sp;
+			while (head != nullptr) {
+				if (head->val < x) {
+					// insert into small;
+					cur_small->next = head;
+					cur_small = head;
+					head = head->next;
 				}
-				if (check_partition(head, x))
-					break;
-				//--saved_sp;
+				else {
+					cur_great->next = head;
+					cur_great = head;
+					head = head->next;
+				}
 			}
-			return head;
+			cur_small->next = great_head->next;
+			return small_head->next;
+
+			//ListNode* ret = head, * prev = nullptr, * cur = head, * end = nullptr;
+			//if (head == nullptr || head->next == nullptr)
+			//	return head;
+			//
+			//ListNode* top = nullptr;
+			//ListNode* tmp_stack[300] = { 0 };
+			//int sp = -1;
+			//// push all nodes to stack
+			//while (cur != nullptr) {
+			//	tmp_stack[++sp] = cur;
+			//	cur = cur->next;
+			//}
+			//int saved_sp = sp;	// decrease saved_sp by 1 each time
+			////while (saved_sp > 0) {
+			//while (1) {
+			//	// 
+			//	sp = saved_sp;
+			//	while (sp > 0) {
+			//		top = tmp_stack[sp];
+			//		if (sp > 0) {
+			//			// there is prev node 
+			//			prev = tmp_stack[sp - 1];
+ 		//				if (top->val < x && prev->val >=x ) {
+			//				// exchange the value 
+			//				int tmp = prev->val;
+			//				prev->val = top->val;
+			//				top->val = tmp;
+			//			}
+			//		}
+			//		--sp;
+			//	}
+			//	if (check_partition(head, x))
+			//		break;
+			//	//--saved_sp;
+			//}
+			//return head;
 
 		}
 	};
