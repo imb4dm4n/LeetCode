@@ -16,6 +16,18 @@ namespace LinkList {
 			ListNode(int x) : val(x), next(nullptr) {}
 			ListNode(int x, ListNode* next) : val(x), next(next) {}
 		};
+		
+		static ListNode* next(ListNode* node) {
+			if (node != nullptr)
+				return node->next;
+			return nullptr;
+		}
+		static ListNode* insert(ListNode* node,int data) {
+			ListNode* ret = new ListNode(data, node);
+			if (node)
+				node->next = ret;
+			return ret;
+		}
 
 	public:
 		// remove n-th node from the end of list . return the head
@@ -48,17 +60,6 @@ namespace LinkList {
 				prev_node->next = cur_node->next;
 				//free(cur_node);
 			}
-			return ret;
-		}
-		static ListNode* next(ListNode* node) {
-			if (node != nullptr)
-				return node->next;
-			return nullptr;
-		}
-		static ListNode* insert(ListNode* node,int data) {
-			ListNode* ret = new ListNode(data, node);
-			if (node)
-				node->next = ret;
 			return ret;
 		}
 		/*
@@ -260,48 +261,79 @@ namespace LinkList {
 					cur_great->next = head;
 					cur_great = head;
 					head = head->next;
-				}
+				} 
 			}
+			cur_great->next = NULL;
 			cur_small->next = great_head->next;
-			return small_head->next;
+			if(small_head->next)
+				return small_head->next;
 
-			//ListNode* ret = head, * prev = nullptr, * cur = head, * end = nullptr;
-			//if (head == nullptr || head->next == nullptr)
-			//	return head;
-			//
-			//ListNode* top = nullptr;
-			//ListNode* tmp_stack[300] = { 0 };
-			//int sp = -1;
-			//// push all nodes to stack
-			//while (cur != nullptr) {
-			//	tmp_stack[++sp] = cur;
-			//	cur = cur->next;
-			//}
-			//int saved_sp = sp;	// decrease saved_sp by 1 each time
-			////while (saved_sp > 0) {
-			//while (1) {
-			//	// 
-			//	sp = saved_sp;
-			//	while (sp > 0) {
-			//		top = tmp_stack[sp];
-			//		if (sp > 0) {
-			//			// there is prev node 
-			//			prev = tmp_stack[sp - 1];
- 		//				if (top->val < x && prev->val >=x ) {
-			//				// exchange the value 
-			//				int tmp = prev->val;
-			//				prev->val = top->val;
-			//				top->val = tmp;
-			//			}
-			//		}
-			//		--sp;
-			//	}
-			//	if (check_partition(head, x))
-			//		break;
-			//	//--saved_sp;
-			//}
-			//return head;
+			return great_head->next;
+		}
 
+		static ListNode* reverseList(ListNode* head) {
+			// given a list , reverse it.
+			// we need 3 nodes: prev, cur, tmp . let tmp = cur->next, cur->next= prev, prev = cur, cur = tmp
+			if (head == nullptr || head->next == nullptr)
+				return head;
+			ListNode* prev=nullptr, *cur=head, *tmp;
+			while(cur != nullptr) {
+				tmp = cur->next;
+				cur->next = prev;
+				prev = cur;
+				cur = tmp;
+			}
+			return prev;
+		}
+
+		// https://leetcode.com/problems/reverse-linked-list-ii/
+
+		static ListNode* reverseBetween(ListNode* head, int left, int right) {
+			// like reverse a link list, we need to find where the break nodes are. break_1, break_2
+			// between break_1 and break_2, reverse the list, and then, hook it back to where it was break.
+			if (head == nullptr || head->next == nullptr || left >= right)
+				return head;
+			int i = 1;
+			ListNode * cur = head, *break_1 ,*break_2 = nullptr ;
+			ListNode* prev=nullptr,  *tmp;
+			while(cur != nullptr) {
+				if(i > right)
+				{
+					break;
+				}
+				if (i < left) {
+					// before reverse start
+					++i;
+					prev = cur;
+					cur = cur->next;
+					continue;
+				}
+				// i >= left , begin reverse procedure
+				if (i == left) {
+					// save the break point 1 , 2
+					break_1 = prev;
+					break_2 = cur;
+				}
+				++i;
+				tmp = cur->next;
+				cur->next = prev;
+				prev = cur;
+				cur = tmp;
+			}
+			// need to fix two nodes: 
+			if (break_1) {
+				break_1->next = prev;
+			}
+			if (break_2) {
+				break_2->next = cur;
+			}
+			if (left == 1) {
+				// reverse from first position
+				return prev;
+			}
+			else {
+				return head;
+			}
 		}
 	};
 };
