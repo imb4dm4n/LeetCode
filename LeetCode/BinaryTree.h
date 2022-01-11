@@ -22,6 +22,17 @@ namespace letcoode{
 	 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 	 	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 	 };
+	 template<class T>
+	 class ABSTreeNode;
+	 
+	 class ABSTreeNode {
+	 	T val;	// abstracted tree node's value
+	 	ABSTreeNode *left;
+	 	ABSTreeNode *right;
+	 	ABSTreeNode(): val(0), left(nullptr), right(nullptr) {}
+	 	ABSTreeNode(T x) : val(x), left(nullptr), right(nullptr) {}
+	 	ABSTreeNode(T x, ABSTreeNode *left, ABSTreeNode *right) : val(x), left(left), right(right) {}
+	 };
 	 
 	void recursive_inorderTraversal(TreeNode* node, vector<int>& r) {
 		//
