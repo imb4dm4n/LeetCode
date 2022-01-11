@@ -37,4 +37,34 @@ namespace letcoode{
         recursive_inorderTraversal(root, ret);
         return ret;
     }
+	
+	// https://leetcode.com/problems/same-tree/
+	// return true if the given binary tree has same value and same structure
+	// recursively traverse two trees, compare their nodes
+	void cmpTreeNode(TreeNode* p, TreeNode* q,bool& same)
+	{
+		if(same == false || (p == nullptr && q == nullptr)) {
+			// same was false or we hit the bottom of the tree, return 
+			return;
+		}
+		if ( (p == nullptr && q != nullptr) ||
+			 (p != nullptr && q == nullptr)) {
+				same = false;
+				return;
+		}
+		if( p->val != q->val) {
+			same = false;
+			return;
+		}
+		cmpTreeNode(p->left, q->left, same);
+		if(same == false)
+			return;
+		cmpTreeNode(p->right, q->right, same);
+		
+	}
+	bool isSameTree(TreeNode* p, TreeNode* q) {
+        bool ret = true;
+		cmpTreeNode(p, q, ret);
+		return ret;
+    }
 };
