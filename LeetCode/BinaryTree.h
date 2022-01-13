@@ -22,9 +22,10 @@ namespace letcoode{
 	 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 	 	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 	 };
-	 template<class T>
-	 class ABSTreeNode;
+	//  template<class T>
+	//  class ABSTreeNode;
 	 
+	 template<class T>
 	 class ABSTreeNode {
 	 	T val;	// abstracted tree node's value
 	 	ABSTreeNode *left;
@@ -68,14 +69,29 @@ namespace letcoode{
 			return;
 		}
 		cmpTreeNode(p->left, q->left, same);
+		// cmpTreeNode(p->right, q->left, same); // for symmetric-tree/
 		if(same == false)
 			return;
 		cmpTreeNode(p->right, q->right, same);
+		// cmpTreeNode(p->left, q->right, same); // for symmetric-tree/
 		
 	}
 	bool isSameTree(TreeNode* p, TreeNode* q) {
         bool ret = true;
 		cmpTreeNode(p, q, ret);
 		return ret;
+    }
+
+	// https://leetcode.com/problems/symmetric-tree/
+	// solution: check the root's sub-tree, using isSameTree but exchange the node's 
+	bool isSymmetric(TreeNode* root) {
+		if (root == nullptr)
+			return true;
+        if (root->left == nullptr && root->right == nullptr)
+			return true;
+		if ( (root->left == nullptr && root->right != nullptr) || 
+			  (root->left != nullptr && root->right == nullptr))
+			return false;
+		return isSameTree(root->left, root->right);
     }
 };
