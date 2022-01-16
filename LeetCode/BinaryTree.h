@@ -1,6 +1,7 @@
 #include <iostream>
 #include<string>
 #include<vector>
+#include<list>
 using namespace std;
 namespace letcoode{
 	/**
@@ -34,6 +35,18 @@ namespace letcoode{
 	 	ABSTreeNode(T x) : val(x), left(nullptr), right(nullptr) {}
 	 	ABSTreeNode(T x, ABSTreeNode *left, ABSTreeNode *right) : val(x), left(left), right(right) {}
 	 };
+
+	TreeNode* createTree(list<int*>& inputs) {
+		if(inputs.empty()) {
+			return nullptr;
+		}
+		int* data = inputs.front();
+		inputs.pop_front();
+		TreeNode* ret = new TreeNode(*data);
+		ret->left = createTree(inputs);
+		ret->right = createTree(inputs);
+		return ret;
+	}
 	 
 	void recursive_inorderTraversal(TreeNode* node, vector<int>& r) {
 		//
@@ -93,5 +106,33 @@ namespace letcoode{
 			  (root->left != nullptr && root->right == nullptr))
 			return false;
 		return isSameTree(root->left, root->right);
+    }
+	void test_bt() {
+		list<int*> datas;
+		datas.push_back(new int(1));
+		datas.push_back(new int(2));
+		datas.push_back(new int(3));
+		datas.push_back(new int(1));
+		datas.push_back(new int(1));
+		
+	}
+
+	void DFS(TreeNode* root, int& depth, int& max_dep) {
+		// deep first search a given tree, return it's maximum depth
+		if(root == nullptr)
+			return;
+		depth++;
+		if (depth >= max_dep)
+			max_dep = depth;
+		DFS(root->left, depth, max_dep);
+		depth--;
+		DFS(root->right, depth, max_dep);
+		depth--;
+	}
+	// https://leetcode.com/problems/maximum-depth-of-binary-tree/
+	int maxDepth(TreeNode* root) {
+        int dep = 0, max_dep = 0;
+		DFS(root, dep, max_dep);
+		return max_dep;
     }
 };

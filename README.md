@@ -193,3 +193,30 @@
 
 - 注意最后一个 当前大节点的 next要设置为null， 否则可能产生无限循环链表。 比如x=3， 输入【1，5，2】
 
+### 反转链表
+
+- https://leetcode.com/problems/reverse-linked-list-ii/
+- reverse nodes from  m-th to n-th (m,n). 
+- thought：
+  - set  `(m-1)->next = n` , set `m->next = n->next` , set` n->next = m`
+  - edge condition: m >= n , do nothing
+- solution:
+  - easy: store all nodes in an array， exchange  `tmp = (left-1)->next` with right, right->next = left->next
+
+## 树
+
+### 唯一搜索树
+
+- https://leetcode.com/problems/unique-binary-search-trees-ii/
+
+- given an integer n， return all the structurally unique BST，which has exactly n nodes of unique values from 1 to n。
+- 
+
+
+
+### 树的深度
+
+- https://leetcode.com/problems/maximum-depth-of-binary-tree/
+- calculate the depth of the tree。
+- deep first traverse the tree。
+- 搜索到达所有叶子节点的值， 获取最大的那个。 
