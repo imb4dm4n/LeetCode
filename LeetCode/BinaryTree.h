@@ -2,6 +2,7 @@
 #include<string>
 #include<vector>
 #include<list>
+#include<queue>
 using namespace std;
 namespace letcoode{
 	/**
@@ -135,4 +136,45 @@ namespace letcoode{
 		DFS(root, dep, max_dep);
 		return max_dep;
     }
+	// https://leetcode.com/problems/binary-tree-level-order-traversal/
+	// traverse binary tree by level order from left to right
+	// 
+	vector<vector<int>> levelOrder(TreeNode* root) {
+		vector<vector<int>> ret;
+		if (root == nullptr)
+			return ret;
+		// 1. push the root's value 
+		vector<int> tmp;
+		tmp.push_back(root->val);
+		ret.push_back(tmp);
+		// 2. use a queue to store all nodes in the same level
+		queue<TreeNode*> tasks;
+		// 3. push the first round
+		tasks.push(root->left);
+		tasks.push(root->right);
+		// 4. used to store how many nodes in the same level
+		int nodes_cout = 2;
+		while (!tasks.empty()) {
+			// 5. to store all values in the same level
+			vector<int> tmp_level;
+			// 6. loop until nodes in the same level was popped 
+			while (nodes_cout > 0) {
+				--nodes_cout;
+				TreeNode* tmp_node = tasks.front();
+				tasks.pop();
+
+				if (tmp_node) {
+					tmp_level.push_back(tmp_node->val);
+					tasks.push(tmp_node->left);
+					tasks.push(tmp_node->right);
+				}
+			}
+			// in case we push an empty [] to the vector
+			if(tmp_level.size() > 0)
+				ret.push_back(tmp_level);
+			nodes_cout = tasks.size();
+		}
+		return ret;
+
+	}
 };

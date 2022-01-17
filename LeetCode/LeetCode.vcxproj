@@ -147,8 +147,10 @@
     <ClCompile Include="LeetCode.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="CAddTwoNumbers.h" />
     <ClInclude Include="ClengthOfLongestSubstring.h" />
+    <ClInclude Include="CLinkList.h" />
     <ClInclude Include="CLinkLists.h" />
     <ClInclude Include="ClongestPalindrome.h" />
     <ClInclude Include="CTwoSum.h" />
