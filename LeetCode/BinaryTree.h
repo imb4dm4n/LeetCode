@@ -177,4 +177,22 @@ namespace letcoode{
 		return ret;
 
 	}
+	// https://leetcode.com/problems/unique-binary-search-trees-ii/
+	// Given an integer n, return all the structurally unique BST's (binary search trees), which has exactly n nodes of unique values from 1 to n. Return the answer in any order.
+	// every new tree can be created by it's predecessor or so called ancient.
+	// so we need to deliever a list of unique BST ancients to create a list of new unique BST.
+	// find all posible positions to insert new value, and append it to the vector
+	// to detective every node's left and right, find a place to insert the new value.
+	// traverse every node in a tree, detective whether we can insert a new value to it's left or right.
+
+	vector<TreeNode*> breedBST(vector<TreeNode*> ancients, int level, int target) {
+
+	}
+	vector<TreeNode*> generateTrees(int n) {
+		vector<TreeNode*>  ret;
+        if (n == 0) {
+			return ret;
+		}
+
+    }
 };
