@@ -185,14 +185,53 @@ namespace letcoode{
 	// to detective every node's left and right, find a place to insert the new value.
 	// traverse every node in a tree, detective whether we can insert a new value to it's left or right.
 
-	vector<TreeNode*> breedBST(vector<TreeNode*> ancients, int level, int target) {
+	/*
+	* 根据输入的 TreeNodes 修复每个节点的关系，构造二叉树
+	*/
+	TreeNode* createBst(list<TreeNode*> inputs) {
+		if(inputs.size() == 0)
+			return nullptr;
+			
+		TreeNode* ret = inputs.front();
+		inputs.pop_front();
+		if(ret) {
+			ret->left = createBst(inputs);
+			ret->right= createBst(inputs);
+		}
+		return ret;
+	}
 
+	// 克隆一个二叉树
+	TreeNode* cloneBST(TreeNode* root) {
+		if (root == nullptr)
+			return nullptr;
+		TreeNode* node = new TreeNode(root->val);
+		node->left = cloneBST(root->left);
+		node->right = cloneBST(root->right);
+		return node;
+	}
+
+	void DFS_insert(TreeNode* node, vector<TreeNode*>& ret, int val) {
+		if(node) {
+			if(node->left == nullptr) {
+				TreeNode* tmp = new TreeNode(val);
+				node->left = tmp;
+				ret.push_back(tmp);
+			}
+		}
+	}
+
+	vector<TreeNode*> breedBST(vector<TreeNode*>& ancients, int level, int target) {
+		vector<TreeNode*> tmp;
+		int old_len = ancients.size();
+		for(int i=0; i < old_len; ++i) {
+			// DFS search tree, find possible 
+			TreeNode* root = ancients[i];
+			
+		}
 	}
 	vector<TreeNode*> generateTrees(int n) {
 		vector<TreeNode*>  ret;
-        if (n == 0) {
-			return ret;
-		}
-
+		return ret;
     }
 };

@@ -141,8 +141,6 @@
   <ItemGroup>
     <ClCompile Include="CAddTwoNumbers.cpp" />
     <ClCompile Include="ClengthOfLongestSubstring.cpp" />
-    <ClCompile Include="CLinkLists.cpp" />
-    <ClCompile Include="ClongestPalindrome.cpp" />
     <ClCompile Include="CTwoSum.cpp" />
     <ClCompile Include="LeetCode.cpp" />
   </ItemGroup>

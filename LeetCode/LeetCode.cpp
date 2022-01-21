@@ -88,21 +88,28 @@ void test_partition()
     a.next = nullptr;*/
     ListNode* r = LinkList::CLinkList::partition(&h, 3);
 }
-using namespace LinkedList;
-void test_swap_nodes()
+//using namespace LinkedList;
+//void test_swap_nodes()
+//{
+//    List l;
+//    l.insert(1);
+//    l.insert(2);
+//    l.insert(3);
+//    l.insert(4);
+//    l.dump();
+//    ListNode* r=CLinkLists::swapPairs(l.get_head());
+//    l.dump(r);
+//}
+void test_vec()
 {
-    List l;
-    l.insert(1);
-    l.insert(2);
-    l.insert(3);
-    l.insert(4);
-    l.dump();
-    ListNode* r=CLinkLists::swapPairs(l.get_head());
-    l.dump(r);
+    vector<int> a = { 1,2 };
+    vector<int> b = { 3,4 };
+    
+
 }
 int main()
 {
-    test_partition();
+    //test_partition();
     //test_remove_dup();
     //test_ClengthOfLongestSubstring();
 	//test_swap_nodes();
