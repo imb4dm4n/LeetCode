@@ -177,6 +177,19 @@ namespace letcoode{
 		return ret;
 
 	}
+	// https://leetcode.com/problems/unique-binary-search-trees
+	// 
+	int dynamic_program[21]; 
+    int numTrees(int n) {
+        if(n<=1)
+            return 1;
+        if(dynamic_program[n]!=0)
+			return dynamic_program[n]; 
+        for(int i=1;i<=n;++i) {
+			dynamic_program[n] += numTrees(i-1)*numTrees(n-i); 
+        }
+		return dynamic_program[n];
+    }
 	// https://leetcode.com/problems/unique-binary-search-trees-ii/
 	// Given an integer n, return all the structurally unique BST's (binary search trees), which has exactly n nodes of unique values from 1 to n. Return the answer in any order.
 	// every new tree can be created by it's predecessor or so called ancient.
