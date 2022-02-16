@@ -220,3 +220,26 @@
 - calculate the depth of the tree。
 - deep first traverse the tree。
 - 搜索到达所有叶子节点的值， 获取最大的那个。 
+
+
+
+### easy
+
+#### 有序数组转二叉查找树
+
+- https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+- 需要是平衡的二叉查找树。
+- 核心思想：分治。 因为是有序的数组，因此中间索引` mid_id=（begin+end）/2 `就是root节点的索引。 按照分治的思想，继续从 新的两个子数组构建二叉树：` [begin, mid_id -1] , [mid_id + 1, end]` 。
+
+~~~
+假设输入 6 个数字 [0,5]:
+	0+5 / 2 = 2 => [0, 2-1]  [2+1,5] => [0,1] [3,5]
+	[0,1] 2 [,3,4,5]
+
+	[0,1]:
+	0+1 / 2 = 0 => [0, 0-1] [0+1,1]
+
+	root_id = (begin + end)/2;
+	[begin, root_id-1]  , [root_id+1, end]
+~~~
+

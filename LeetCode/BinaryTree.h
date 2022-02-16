@@ -247,4 +247,39 @@ namespace letcoode{
 		vector<TreeNode*>  ret;
 		return ret;
     }
+
+	/*
+	begin 构建子二叉树起始索引
+	end 构建子二叉树结束索引
+	*/
+	TreeNode* generate_sub_trees(vector<int>& nums, int begin, int end) {
+		
+		if(begin > end)
+			return nullptr;
+		// 取出中间索引作为 root 节点值
+		int root_id = (begin + end) / 2;
+		TreeNode * n = new TreeNode(nums[root_id]);
+		n->left = generate_sub_trees(nums, begin, root_id - 1);
+		n->right = generate_sub_trees(nums, root_id + 1, end);
+		return n;
+	}
+	// https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+	// Runtime: 8 ms, faster than 97.14% of C++ online submissions 一次就完成哈哈
+	// 从有序的数组构建一颗平衡的二叉查找树。
+	// 思路： 分治思想， 把数组中心作为 root 节点， 划分为左数组（子树） 和 右数组（子树）， 对他们分别继续分治构造二叉树。
+	/* 假设输入 6 个数字 [0,5]:
+	0+5 / 2 = 2 => [0, 2-1]  [2+1,5] => [0,1] [3,5]
+	[0,1] 2 [,3,4,5]
+
+	[0,1]:
+	0+1 / 2 = 0 => [0, 0-1] [0+1,1]
+
+	root_id = (begin + end)/2;
+	[begin, root_id-1]  , [root_id+1, end]
+	*/
+	TreeNode* sortedArrayToBST(vector<int>& nums) {
+		// 分治思想， 直到数组个数为1.
+		TreeNode* ret = generate_sub_trees(nums, 0, nums.size()-1);
+		return ret;
+    }
 };
