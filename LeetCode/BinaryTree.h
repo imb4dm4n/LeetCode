@@ -282,4 +282,45 @@ namespace letcoode{
 		TreeNode* ret = generate_sub_trees(nums, 0, nums.size()-1);
 		return ret;
     }
+
+	// https://leetcode.com/problems/balanced-binary-tree/
+	// give a binary tree, determine if it is heigh balanced.
+	// a high balanced tree is in which the left and right subtree of every node differ in heigh by no more than 1
+	 
+	int max(int a, int b) {
+		if(a>b)
+			return a;
+		return b;
+	}
+	int dfs_heigh(TreeNode* root) {
+		if (root == nullptr)
+			return 0;
+		int left = dfs_heigh(root->left);
+		int right = dfs_heigh(root->right);
+		return max(left, right) + 1;
+	}
+	int abs(int num) {
+		if (num<0)
+			num = 0 - num;
+		return num;
+	}
+	bool isBalanced(TreeNode* root) {
+        // 每个节点自身高度为1， 加上左子树 、右子树最高的那个，  就是节点的高度了
+		// 在递归返回的时候，对比两个节点的高度差
+		// 计算每个节点的左子树高度和右子树的高度差， 若大于1则直接判定为非平衡的
+		if (root == nullptr)
+			return true;
+		int left = dfs_heigh(root->left);
+		int right = dfs_heigh(root->right);
+		return (abs(left - right) < 2) && isBalanced(root->left) && isBalanced(root->right); 
+    }
+
+	/* https://leetcode.com/problems/minimum-depth-of-binary-tree/
+	Given a binary tree, find its minimum depth.
+	The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+	Note: A leaf is a node with no children.*/
+	// 从叶节点网上回溯到根节点， 计算所有根节点到所有叶子节点的高度，取最小值。
+	int minDepth(TreeNode* root) {
+        
+    }
 };
