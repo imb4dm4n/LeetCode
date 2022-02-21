@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CAddTwoNumbers.cpp" />
+    <ClCompile Include="CLeetCodeTests.cpp" />
     <ClCompile Include="ClengthOfLongestSubstring.cpp" />
     <ClCompile Include="CTwoSum.cpp" />
     <ClCompile Include="LeetCode.cpp" />
@@ -147,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="CAddTwoNumbers.h" />
+    <ClInclude Include="CLeetCodeTests.h" />
     <ClInclude Include="ClengthOfLongestSubstring.h" />
     <ClInclude Include="CLinkList.h" />
     <ClInclude Include="CLinkLists.h" />

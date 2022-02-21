@@ -245,6 +245,7 @@ namespace letcoode{
 	}
 	vector<TreeNode*> generateTrees(int n) {
 		vector<TreeNode*>  ret;
+		
 		return ret;
     }
 
@@ -320,7 +321,29 @@ namespace letcoode{
 	The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
 	Note: A leaf is a node with no children.*/
 	// 从叶节点网上回溯到根节点， 计算所有根节点到所有叶子节点的高度，取最小值。
+	void DFS_small(TreeNode* node, int& smallest, int& cur_dep) {
+		if(node == nullptr)
+			return;
+		cur_dep += 1;
+		if(node->left == nullptr && node->right == nullptr) {
+			// this is the leaf node
+			if(smallest != 0 && cur_dep < smallest)
+				smallest = cur_dep;
+			else if (smallest == 0)
+				smallest = cur_dep;
+			cur_dep -= 1;
+			return;
+		}
+		DFS_small(node->left, smallest, cur_dep);
+		DFS_small(node->right, smallest, cur_dep);
+		cur_dep -= 1;
+	}
 	int minDepth(TreeNode* root) {
-        
+        if(root == nullptr)
+			return 0;
+		int dep = 0;
+		int smallest = 0;
+		DFS_small(root, smallest, dep);
+		return smallest;
     }
 };
