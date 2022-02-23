@@ -346,4 +346,92 @@ namespace letcoode{
 		DFS_small(root, smallest, dep);
 		return smallest;
     }
+	// https://leetcode.com/problems/path-sum/
+	// given a binary tree and a target sum, return true if find a path to leaf which add all nodes along the path to target sum.
+	/*Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.*/
+	// use a queue to store path to leaf,each time we enter a node, add it's value, when we hit leaf, compare the sum,
+	// if sum != targetSum, we pop the node
+	void has_path(TreeNode* root, int& sum, int target, bool& t) {
+		if(root == nullptr)
+			return;
+		sum += root->val;
+		if(root->left == nullptr && root->right == nullptr && sum == target)
+		{
+			t=true;
+		}
+		has_path(root->left, sum, target, t);
+		has_path(root->right, sum, target, t);
+		sum -= root->val;
+	}
+	bool hasPathSum(TreeNode* root, int targetSum) {
+        if (root == nullptr)
+			return false;
+		bool t = false;
+		int sum = 0;
+		has_path(root, sum, targetSum, t);
+		return t;
+    }
+	// https://leetcode.com/problems/binary-tree-preorder-traversal/
+	#include<deque>
+	using std::deque;
+	void dfs_preorder(vector<int>& data, TreeNode* root) {
+		if(root == nullptr)
+			return;
+		data.push_back(root->val);
+		dfs_preorder(data, root->left);
+		dfs_preorder(data, root->right);
+	}
+	vector<int> preorderTraversal(TreeNode* root) {
+        // 前序遍历
+		// recursion: 0 ms
+		// vector<int> r;
+		// dfs_preorder(r, root);
+		// return r;
+
+		// stack apporch 8 ms
+		deque<TreeNode*> q;
+		vector<int> r;
+		q.push_back(root);
+		while(!q.empty()) {
+			TreeNode* top = q.back();
+			q.pop_back();
+			if(top) {
+				q.push_back(top->right);
+				q.push_back(top->left);
+				r.push_back(top->val);
+			}
+		}
+		return r;
+    }
+	// https://leetcode.com/problems/binary-tree-postorder-traversal/
+	void dfs_postorder(vector<int>& data, TreeNode* root) {
+		if(root == nullptr)
+			return;
+		dfs_postorder(data, root->left);
+		dfs_postorder(data, root->right);
+		data.push_back(root->val);
+	}
+	vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> r;
+		// dfs_postorder(r, root);
+
+		deque<TreeNode*> q;
+		vector<int> r;
+		q.push_back(root);
+		q.push_back(root->right);
+		q.push_back(root->left);
+		while(!q.empty()) {
+			TreeNode* top = q.back();
+			// q.pop_back();
+			if(top) {
+				q.push_back(top->right);
+				q.push_back(top->left);
+				r.push_back(top->val);
+			}
+			else {
+				q.pop_back();
+			}
+		}
+		return r;
+    }
 };
