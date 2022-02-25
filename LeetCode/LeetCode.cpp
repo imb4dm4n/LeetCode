@@ -5,6 +5,7 @@
 #include "CTwoSum.h"
 #include "CAddTwoNumbers.h"
 #include "ClengthOfLongestSubstring.h"
+#include "BinaryTree.h"
 void test_CTwoSum()
 {
     vector<int> nums = { 3,2,4 };
@@ -104,11 +105,23 @@ void test_vec()
 {
     vector<int> a = { 1,2 };
     vector<int> b = { 3,4 };
-    
-
+}
+using namespace letcoode;
+void test_bst()
+{
+    vector<int> x = { 2,4,6,8,10,12 };
+    TreeNode* t = sortedArrayToBST(x);
+    TreeNode* left = t->left;
+    TreeNode* right = t->right;
+    TreeNode* c = lowestCommonAncestor(t, left, right);
+    if (c != nullptr)
+        printf("common ancestor is %d", c->val);
+    else
+        printf("it's null\n");
 }
 int main()
 {
+    test_bst();
     //test_partition();
     //test_remove_dup();
     //test_ClengthOfLongestSubstring();

@@ -242,6 +242,7 @@ namespace letcoode{
 			TreeNode* root = ancients[i];
 			
 		}
+		return tmp;
 	}
 	vector<TreeNode*> generateTrees(int n) {
 		vector<TreeNode*>  ret;
@@ -412,7 +413,7 @@ namespace letcoode{
 		data.push_back(root->val);
 	}
 	vector<int> postorderTraversal(TreeNode* root) {
-        vector<int> r;
+        //vector<int> r;
 		// dfs_postorder(r, root);
 
 		deque<TreeNode*> q;
@@ -434,4 +435,86 @@ namespace letcoode{
 		}
 		return r;
     }
+	// https://leetcode.com/problems/invert-binary-tree/
+	TreeNode* invertTree(TreeNode* root) {
+        // 把一个节点的左右孩子做交换，一直交换直到叶节点
+		// 方法1：费时间，但是空间是 O（1），13ms 
+		if(root) {
+			TreeNode * tmp = root->left;
+			root->left = root->right;
+			root->right = tmp;
+			invertTree(root->left);
+			invertTree(root->right);
+		}
+
+		// 方法2，用栈来保存节点， 3ms 
+		deque<TreeNode*> q;
+		q.push_back(root);
+		while(!q.empty()) {
+			TreeNode* top = q.back();
+			q.pop_back();
+			if(top) {
+				std::swap(top->left, top->right);
+				// TreeNode* tmp = top->left;
+				// top->left = top->right;
+				// top->right = tmp;
+				if(top->left)
+					q.push_back(top->left);
+				if(top->right)
+					q.push_back(top->right);
+			}
+
+		}
+		return root;
+
+    }
+	// https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+	// 寻找最低公共祖先节点。 可以是节点自身
+	// 思路： 深入优先，生成到达这两个节点的路径，然后找出第一个不同的祖先，前一个就是最低相同祖先
+	// 41ms, 51% defeated
+	/*
+	生成从 根节点 到 target 的路径到 stack 参数
+	*/
+	void dfs_generate_path_to_node(deque<TreeNode*>& stack, TreeNode* root, TreeNode* target, bool& found) {
+		if(root == nullptr || target == nullptr || found)
+			return;
+		if(root == target) {
+			stack.push_back(root);
+			found = true;
+			return;
+		}
+		stack.push_back(root);
+		dfs_generate_path_to_node(stack, root->left, target, found);
+		dfs_generate_path_to_node(stack, root->right, target, found);
+		if(!found)
+			stack.pop_back();
+	}
+	TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+		if(root == nullptr || p == nullptr || q == nullptr)
+			return nullptr;
+        
+		deque<TreeNode*> stack1,stack2;
+		bool found1=false, found2=false;
+
+		dfs_generate_path_to_node(stack1, root, p, found1);
+		dfs_generate_path_to_node(stack2, root, q, found2);
+
+		if(!found1 || !found2)
+			return nullptr;
+		TreeNode * common_ancestor = nullptr;
+		while(!stack1.empty() && !stack2.empty()) {
+			TreeNode* top1 = stack1.front();
+			TreeNode* top2 = stack2.front();
+			if(top1 == top2) {
+				common_ancestor = top1;
+			}
+			if(top1 != top2) {
+				break;
+			}
+			stack1.pop_front();
+			stack2.pop_front();
+		}
+		return common_ancestor;
+    }
+	
 };

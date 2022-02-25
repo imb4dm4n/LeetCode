@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CAddTwoNumbers.cpp" />
-    <ClCompile Include="CLeetCodeTests.cpp" />
     <ClCompile Include="ClengthOfLongestSubstring.cpp" />
     <ClCompile Include="CTwoSum.cpp" />
     <ClCompile Include="LeetCode.cpp" />
