@@ -516,5 +516,49 @@ namespace letcoode{
 		}
 		return common_ancestor;
     }
-	
+	//https://leetcode.com/problems/binary-tree-paths/
+	// given a tree, return all root-to-leaf paths in any order
+	#include<deque>
+	#include<vector>
+	#include<string>
+	using namespace std;
+	void dfs_generate_path_to_leaf(TreeNode* root, deque<TreeNode*>& stack, vector<string>& paths) {
+		if(root == nullptr)
+			return;
+		
+		stack.push_back(root);
+		if(root->left == nullptr && root->right == nullptr) {
+			// it's a leaf node
+			string s="";
+			for(auto it=stack.begin(),ie = stack.end();it!=ie;++it){
+				s = s + std::to_string((*it)->val) + "->";
+			}
+			s=s.substr(0, s.length()-2);
+			paths.push_back(s);
+			stack.pop_back();
+			return;
+		}
+		dfs_generate_path_to_leaf(root->left, stack, paths);
+		dfs_generate_path_to_leaf(root->right, stack, paths);
+        stack.pop_back();
+	}
+    vector<string> binaryTreePaths(TreeNode* root) {
+        
+        vector<string> r;
+		deque<TreeNode*> t;
+		dfs_generate_path_to_leaf(root, t, r);
+		return r;
+    }
+
+	// https://leetcode.com/problems/sum-of-left-leaves/
+	int sumOfLeftLeaves(TreeNode* root) {
+         if(root == nullptr) {
+             return 0;
+        } 
+        if(root->left && root->left->left == nullptr && root->left->right == nullptr)
+		    return root->left->val +sumOfLeftLeaves(root->right) ;
+        else
+            return sumOfLeftLeaves(root->right)+sumOfLeftLeaves(root->left);
+		 
+    }
 };
