@@ -561,4 +561,88 @@ namespace letcoode{
             return sumOfLeftLeaves(root->right)+sumOfLeftLeaves(root->left);
 		 
     }
+	// https://leetcode.com/problems/find-mode-in-binary-search-tree/
+	/*Given the root of a binary search tree (BST) with duplicates, return all the mode(s) (i.e., the most frequently occurred element) in it.*/
+	void find_mode(vector<int>& results, int cur_count, int cur_max, int prev_val, TreeNode* node) {
+		if(node == nullptr)
+			return;
+		if(node->val == prev_val) {
+			cur_count += 1;
+			if(cur_count >= cur_max) {
+				cur_max = cur_count;
+				results.push_back(node->val);
+			}
+		}
+		else {
+			prev_val = node->val;
+			cur_count = 1;
+			if(cur_count >= cur_max) {
+				cur_max = cur_count;
+			}
+		}
+		find_mode(results, cur_count, cur_max, prev_val, node->left);
+		find_mode(results, cur_count, cur_max, prev_val, node->right);
+	}
+	// 应该需要两趟遍历二叉树： 第一次找到最大的重复节点个数。 第二次才能根据这个最大节点个数，把最大值写入到 向量中
+	/*
+	寻找出现最多次的节点的个数
+	@param node 树根节点
+	@param max 最多出现的节点个数
+	@param cur_count 当前节点出现的个数
+	@param prev_val 前一个节点的值
+	*/
+	void find_most_occurred(TreeNode* node, int& max, int cur_count, int prev_val) {
+		if(node == nullptr) {
+			return;
+		}
+
+		if(node->val == prev_val) {
+			// 出现重复的节点
+			cur_count += 1;
+		}
+		else {
+			cur_count = 1;
+		}
+		if(cur_count >= max) {
+			max = cur_count;
+		}
+		find_most_occurred(node->left, max, cur_count, node->val);
+		find_most_occurred(node->right, max, cur_count, node->val);
+	}
+	int count_val(TreeNode* node, int max,  int prev, vector<int>& results) {
+		if(node == nullptr)
+			return 0;
+		
+		if(node->val == prev) {
+			return 1 + count_val(node->left, max, node->val, results) +  count_val(node->right, max, node->val, results);
+		}
+		else {
+			return count_val(node->left, max, node->val, results) +  count_val(node->right, max, node->val, results);
+		}
+	}
+	void save_most_occurred(TreeNode* node, int max, int cur_count, int prev, vector<int>& results) {
+		if(node == nullptr)
+			return;
+		
+		if(node->val == prev) {
+			cur_count += 1;
+		}
+		else
+			cur_count = 1;
+		if(cur_count == max)
+			results.push_back(node->val);
+		save_most_occurred(node->left, max, cur_count, node->val, results);
+		save_most_occurred(node->right, max, cur_count, node->val, results);
+		cur_count-=1;
+	}
+	vector<int> findMode(TreeNode* root) {
+        int cur_count = 0;
+		int cur_max = 0;
+		vector<int> results;
+		if(root == nullptr)
+			return results;
+		find_most_occurred(root, cur_max, cur_count, root->val);
+		save_most_occurred(root, cur_max, cur_count, root->val, results);
+		return results; 
+    }
 };
