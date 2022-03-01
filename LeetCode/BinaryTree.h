@@ -585,64 +585,62 @@ namespace letcoode{
 	}
 	// 应该需要两趟遍历二叉树： 第一次找到最大的重复节点个数。 第二次才能根据这个最大节点个数，把最大值写入到 向量中
 	/*
-	寻找出现最多次的节点的个数
+	寻找出现最多次的节点的个数: 中序遍历 BST 可以得到 按顺序的节点值
 	@param node 树根节点
-	@param max 最多出现的节点个数
-	@param cur_count 当前节点出现的个数
-	@param prev_val 前一个节点的值
+	@param cnt 当前节点出现的个数
+	@param maxFreq 最多出现的节点个数
+	@param prev 前一个节点的值
 	*/
-	void find_most_occurred(TreeNode* node, int& max, int cur_count, int prev_val) {
-		if(node == nullptr) {
-			return;
-		}
-
-		if(node->val == prev_val) {
-			// 出现重复的节点
-			cur_count += 1;
-		}
-		else {
-			cur_count = 1;
-		}
-		if(cur_count >= max) {
-			max = cur_count;
-		}
-		find_most_occurred(node->left, max, cur_count, node->val);
-		find_most_occurred(node->right, max, cur_count, node->val);
-	}
-	int count_val(TreeNode* node, int max,  int prev, vector<int>& results) {
-		if(node == nullptr)
-			return 0;
-		
-		if(node->val == prev) {
-			return 1 + count_val(node->left, max, node->val, results) +  count_val(node->right, max, node->val, results);
-		}
-		else {
-			return count_val(node->left, max, node->val, results) +  count_val(node->right, max, node->val, results);
-		}
-	}
-	void save_most_occurred(TreeNode* node, int max, int cur_count, int prev, vector<int>& results) {
-		if(node == nullptr)
-			return;
-		
-		if(node->val == prev) {
-			cur_count += 1;
-		}
-		else
-			cur_count = 1;
-		if(cur_count == max)
-			results.push_back(node->val);
-		save_most_occurred(node->left, max, cur_count, node->val, results);
-		save_most_occurred(node->right, max, cur_count, node->val, results);
-		cur_count-=1;
-	}
-	vector<int> findMode(TreeNode* root) {
-        int cur_count = 0;
-		int cur_max = 0;
-		vector<int> results;
-		if(root == nullptr)
-			return results;
-		find_most_occurred(root, cur_max, cur_count, root->val);
-		save_most_occurred(root, cur_max, cur_count, root->val, results);
-		return results; 
+	void findMaxFreq(TreeNode* root, int &cnt, int &maxFreq, TreeNode* &prev){
+        if(!root)return;
+        
+        // inorder traversal
+        findMaxFreq(root->left, cnt, maxFreq, prev);
+        if(prev != nullptr){
+            cnt = (prev->val == root->val) ? cnt+1 : 1;
+        }else{
+            cnt = 1;
+        }
+        maxFreq = max(maxFreq, cnt);
+        prev = root;
+        
+        findMaxFreq(root->right, cnt, maxFreq, prev);
+    }
+    
+    void findMaxModes(TreeNode* root, int &maxFreq, int &cnt, TreeNode* &prev, vector<int>&result){
+        if(!root)return;
+            
+        // inorder traversal
+        findMaxModes(root->left, maxFreq, cnt, prev, result);
+        
+        if(prev != nullptr){
+            cnt = (prev->val == root->val) ? cnt+1 : 1;
+        }else{
+            cnt = 1;
+        }
+        
+        if( cnt == maxFreq ){
+            result.push_back(root->val);
+        }
+        prev = root;
+        
+        findMaxModes(root->right, maxFreq, cnt, prev, result);
+        
+    }
+    
+    vector<int> findMode(TreeNode* root) {
+        int maxFreq = 0;
+        int cnt = 0;
+        TreeNode* prev = nullptr;
+        
+        findMaxFreq(root, cnt, maxFreq, prev);
+        
+        vector<int> result{};
+        prev = nullptr;
+        cnt = 0;
+        
+        findMaxModes(root, maxFreq, cnt, prev, result);
+        
+        return result;
     }
 };

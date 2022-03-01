@@ -110,7 +110,9 @@ using namespace letcoode;
 void test_bst()
 {
     vector<int> x = { 2,4,6,8,10,12 };
+    x = { 2,1 };
     TreeNode* t = sortedArrayToBST(x);
+    findMode(t);
     TreeNode* left = t->left;
     TreeNode* right = t->right;
     TreeNode* c = lowestCommonAncestor(t, left, right);
