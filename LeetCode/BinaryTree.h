@@ -643,4 +643,63 @@ namespace letcoode{
         
         return result;
     }
+	// https://leetcode.com/problems/minimum-absolute-difference-in-bst/
+	// given a binary search tree, return the minimum absolute difference in any two node
+	//Given the root of a Binary Search Tree (BST), return the minimum absolute difference between the values of any two different nodes in the tree.
+	void inorder_bst_to_vector(vector<int>&result, TreeNode* root) {
+		if(root == nullptr)
+			return;
+		
+		inorder_bst_to_vector(result, root->left);
+		result.push_back(root->val);
+		inorder_bst_to_vector(result, root->right);
+	}
+	int getMinimumDifference(TreeNode* root) {
+        vector<int> result;
+		inorder_bst_to_vector(result, root);
+		int m=0xffffff;
+		for(int i=0; i < result.size() - 1 ; ++i) {
+			int diff = result[i+1] - result[i];
+			if(diff < m)
+				m = diff;
+		}
+		return m;
+    }
+	// https://leetcode.com/problems/diameter-of-binary-tree/
+	// given a tree, find the diameter of the tree. a diameter is the longest length of path between any two nodes in a tree.
+	// The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+	// the length of a path is the number of edges between two nodes
+	int high_of_tree(TreeNode* node, int& max_dep) {
+		if(node == nullptr)
+			return 0 ;
+		int max_left = high_of_tree(node->left, max_dep);
+		int max_right = high_of_tree(node->right, max_dep);
+		max_dep = max(max_dep, max_left + max_right);
+		return max(max_left, max_right)+1;
+	}
+	int diameterOfBinaryTree(TreeNode* root) {
+        // calculate the maximum depth of any node's left tree and right tree. add them up. it's the answer 
+		int m = 0;
+		high_of_tree(root, m);
+		return m;
+    }
+	
+	// https://leetcode.com/problems/binary-tree-tilt/
+	// 计算每个节点的左子树 - 右子树的绝对值的和
+	// 深度优先计算每个节点的左子树-右子树的绝对值， 累加到 sums
+	int tile_of_node(TreeNode* node, int& sums) {
+		// 计算一个节点的 左子树 - 右子树 的绝对值
+		if(node == nullptr || (node->left == nullptr && node->right == nullptr))
+			return 0;
+
+		int sum_left = tile_of_node(node->left, sums) + (node->left? node->left->val : 0); // 左子树的节点总和 + 左子树的值
+		int sum_right= tile_of_node(node->right, sums) + (node->right? node->right->val : 0); // 右子树的节点总和 + 右子树的值
+		sums +=abs(sum_left - sum_right);
+		return sum_left + sum_right; // 前一层调用会加上 当前节点的值，因此不用在这里加 node->val
+	}
+	int findTilt(TreeNode* node) {
+        int sums=0;
+		tile_of_node(node, sums);
+		return sums;
+    }
 };
