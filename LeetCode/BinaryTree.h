@@ -702,4 +702,74 @@ namespace letcoode{
 		tile_of_node(node, sums);
 		return sums;
     }
+
+	// 572. Subtree of Another Tree
+	// https://leetcode.com/problems/subtree-of-another-tree/
+	// given two trees, judge whether it's a sub tree of another .
+	// 类似寻找 字符串的 子串？ 需要完全匹配，意思是从叶节点到根节点都匹配
+	// 只能是 后序遍历，从底部向上对比。 
+	// 为 src 树的每个节点生产后序遍历的结果， 为 target 树生成后序遍历的结果
+	// 对比是否存在完全相同的结果
+	/*
+	后序遍历一个节点， 返回后序遍历该节点的结果。 把每个节点的子树都加入到 subtrees 中
+	@param node 一个节点
+	@param subtrees 保存所有非叶节点
+	@nodes 当前节点的后序遍历结果
+	*/
+	vector<int> post_order_traverse(TreeNode* node, vector< vector<int>>& subtrees, vector<int>& nodes) {
+		vector<int> r;
+		if(node == nullptr){
+			r.push_back(0xffffff);
+			return r;
+		}
+		
+		r = post_order_traverse(node->left, subtrees, nodes);
+		vector<int> right_nodes = post_order_traverse(node->right, subtrees, nodes);
+		r.insert(r.end(), right_nodes.begin(), right_nodes.end());
+		r.push_back(node->val);
+		subtrees.push_back(r);
+		return r;
+	}
+	bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+		// 单节点树判断
+		if(root->left == nullptr && root->right == nullptr 
+			&& subRoot->left == nullptr && subRoot->right == nullptr) {
+				return root->val == subRoot->val;
+		}
+        vector<vector<int>> subtrees_of_src, subtrees_of_dst;
+		vector<int> post_traverse_of_src, post_traverse_of_dst;
+		post_order_traverse(root, subtrees_of_src, post_traverse_of_src);
+		post_order_traverse(subRoot, subtrees_of_dst, post_traverse_of_dst);
+
+		// 需要对节点个数进行判断，若 size =0 , -1 会得到负数索引
+		if(subtrees_of_src.size() == 0) {
+			subtrees_of_src.push_back({root->val});
+		}
+		if(subtrees_of_dst.size() == 0) {
+			subtrees_of_dst.push_back({subRoot->val});
+		}
+		vector<int> target = subtrees_of_dst[subtrees_of_dst.size() - 1];
+		bool found = false;
+
+		for(auto it=subtrees_of_src.begin(),ie = subtrees_of_src.end(); 
+			it != ie; ++it) {
+			vector<int> src_sub_tree = *it;
+			// 子树的节点个数必须匹配
+			if(src_sub_tree.size() != target.size())
+				continue;
+			
+			bool is_same = true;
+			for(int i=0; i < target.size(); ++i) {
+				if(target[i] != src_sub_tree[i]) {
+					is_same = false;
+					break;
+				}
+			}
+			if(is_same) {
+				found = is_same;
+				break;
+			}
+		}
+		return found;
+    }
 };
