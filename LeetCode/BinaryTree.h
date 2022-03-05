@@ -772,4 +772,32 @@ namespace letcoode{
 		}
 		return found;
     }
+	
+	// https://leetcode.com/problems/construct-string-from-binary-tree/
+	// given a binary tree, construct a string with parenthesis of every node's value in pre-order.
+	// root=[1,2,3,4]  "1  (2  (4)  ())   ( 3()  ())"  omit empty parenthesis and it will be 
+	//  "1(2(4))(3)"   root, (left-tree), (right-tree)  left-tree=(left-val, (left-sub-tree), (right-sub-tree))
+	// be caution about the one-to-one relation	map constraint. Which means that each input has exactly one output
+	// there might be cases when two input has same output
+	// Runtime: 20 ms, faster than 83.74% of C++ online submissions for Construct String from Binary Tree.
+	string tree2str(TreeNode* root) {
+		if(root != nullptr) {
+			// in order to produce unique outputs, I make a parenthesis for empty left node.
+			if(root->left == nullptr && root->right != nullptr) {
+				return std::to_string(root->val) + string("()(") + tree2str(root->right) + string(")");
+			}
+			// while empty string for empty right node
+			else if(root->left != nullptr && root->right == nullptr) {
+				return std::to_string(root->val) + string("(") + tree2str(root->left) + string(")");
+			}
+			// if both left and right is empty, return current node's value, which will be parenthesis by caller.
+			else if (root->left == nullptr && root->right == nullptr)
+				return std::to_string(root->val);
+			// if both left and right is not empty, recursive until the end
+			return std::to_string(root->val) +
+				string("(") + tree2str(root->left)+ string(")") + 
+				string("(") + tree2str(root->right) + string(")");
+		}
+		return string("");
+    }
 };
