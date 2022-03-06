@@ -3,6 +3,7 @@
 #include<vector>
 #include<list>
 #include<queue>
+#include<deque>
 using namespace std;
 namespace letcoode{
 	/**
@@ -24,6 +25,51 @@ namespace letcoode{
 	 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 	 	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 	 };
+	
+	/*
+		create a binary tree from a set of node's value. such as {1,2,4, null, 7}
+		return the root of the tree
+		:attension : if a node's value is zero, how do you differ from null pointer?
+	*/
+	TreeNode* create_from_vector(vector<int*> values) {
+		if(values.size() == 0)
+			return nullptr;
+		
+		queue<TreeNode*> q;
+		int val = static_cast<int> (values[0]);
+		// in case the root is a null pointer
+		if(val == 0)
+			return nullptr;
+		
+		TreeNode* root = new TreeNode(val);
+		q.push(root);
+		int index = 1;
+		while(!q.empty() && index < values.size()) {
+			TreeNode* front = q.front();
+			q.pop();
+			// get the root's left and right node
+			int val_left = static_cast<int>(values[index]);
+			if(val_left == 0)
+				front->left = nullptr;
+			else{
+				front->left = new TreeNode(val_left);
+				q.push(front->left);
+			}
+			++index;
+			if(index < value.size()) {
+				int val_right = static_cast<int>(values[index]);
+				if(val_right == 0)
+					front->right = nullptr;
+				else{
+					front->right = new TreeNode(val_right);
+					q.push(front->right);
+				}
+				++index;
+			}
+		}
+
+		return root;
+	}
 	//  template<class T>
 	//  class ABSTreeNode;
 	 
@@ -799,5 +845,32 @@ namespace letcoode{
 				string("(") + tree2str(root->right) + string(")");
 		}
 		return string("");
+    }
+
+	// https://leetcode.com/problems/merge-two-binary-trees/
+	// 617. Merge Two Binary Trees
+	// given roots of two binary tree, merge every node of these two trees. if nodes are in same position of a tree
+	// sum their value as the new node's value
+	// solution: use two queues to level-traverse these trees. and merge each node of queues
+	// be attention to: if root1->left is null and root2->left is not null, we only need to concat the root2->left.
+	// Runtime: 28 ms, faster than 98.57% of C++ online submissions for Merge Two Binary Trees.
+	TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+		if(root1 == nullptr && root2 == nullptr)
+			return nullptr;
+
+		TreeNode* tmp=new TreeNode();
+		tmp->val += (root1? root1->val : 0);
+		tmp->val += (root2? root2->val : 0);
+		if(root1 == nullptr && root2 != nullptr)
+			return root2;
+		else if(root1 != nullptr && root2 == nullptr)
+			return root1;
+		else
+		{
+			tmp->left = mergeTrees(root1->left , root2->left);
+			tmp->right = mergeTrees(root1->right , root2->right);
+		}
+		return tmp;
+		 
     }
 };
