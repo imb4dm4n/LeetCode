@@ -873,4 +873,37 @@ namespace letcoode{
 		return tmp;
 		 
     }
+
+	// https://leetcode.com/problems/average-of-levels-in-binary-tree/
+	// 637. Average of Levels in Binary Tree
+	// given a root of a binary tree. return the average value of nodes on each level in the form of an array.
+	// solution : traverse by level, calculate average of each level.
+	// Runtime: 31 ms, faster than 22.42% of C++ online submissions for Average of Levels in Binary Tree.
+	#include<queue>
+	vector<double> averageOfLevels(TreeNode* root) {
+        queue<TreeNode*> nodes;
+		vector<double> results;
+		if(root == nullptr)
+			return results;
+
+		nodes.push(root);
+		int level_node_count;	// save nodes count in each level 
+		while(!nodes.empty()) {
+			double level_sum = 0, tmp_node_count = nodes.size();
+			level_node_count = nodes.size();
+			while(level_node_count > 0) {
+				TreeNode* n = nodes.front();
+				nodes.pop();
+				level_sum += n->val;	// adds up all level node's value
+				if(n->left)
+					nodes.push(n->left);
+				if(n->right)
+					nodes.push(n->right);
+				level_node_count -= 1;	// decrease level node count by 1
+			}
+			results.push_back(level_sum / tmp_node_count);
+
+		}
+		return results;
+    }
 };
