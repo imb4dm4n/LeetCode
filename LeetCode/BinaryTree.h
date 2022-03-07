@@ -906,4 +906,60 @@ namespace letcoode{
 		}
 		return results;
     }
+
+	// https://leetcode.com/problems/two-sum-iv-input-is-a-bst/
+	// 653. Two Sum IV - Input is a BST
+	// given a root of a binary SEARCH tree and a target K, return true if 
+	// there exists two elements in the BST 
+	// such that their sum is equal to the given target.
+	// 和在一个数组中找两个值加起来能得到 目标值的问题类似。
+	// solution: traverse all nodes for given tree, use every nodes value to sub target and put the results in an array.
+	// judge whether results are in the tree. // BAD idea: for if we encounter the value of itself.
+	/*
+	判断一颗 BST 上是否存在目标值 target 且它的节点地址不为 node
+	@param root BST的树根
+	@param node 被排除的节点指针
+	@param target 寻找的目标值
+	*/
+	bool exist_value(TreeNode* root,TreeNode* node, int target) {
+		if (node && root) {
+			if(root->val == target && root != node)
+				return true;
+			if(root->val > target) {
+				// search the left sub-tree
+				return exist_value(root->left, node, target);
+			}
+			else {
+				return exist_value(root->right, node, target);
+			}
+		}
+		return false;
+	}
+	/*
+	target - 每个节点的值保存到 subs
+	T = O(N)
+	*/
+	void dfs_sub_node(TreeNode* node, vector<int>& subs, vector<TreeNode*>& nodes, int target) {
+		if(node == nullptr)
+			return;
+		dfs_sub_node(node->left, subs, nodes, target);
+		dfs_sub_node(node->right, subs, nodes, target);
+		subs.push_back(target - node->val);
+		nodes.push_back(node);
+	}
+	bool findTarget(TreeNode* root, int k) {
+		// --------------- solution 1 : ---------------
+		// Runtime: 72 ms, faster than 32.25% of C++ online submissions for Two Sum IV - Input is a BST.
+		// Time = O(N * log N)
+		vector<int> subs;
+		vector<TreeNode*>nodes;
+		dfs_sub_node(root, subs, nodes, k);
+		for(int i=0; i < subs.size(); ++i) {
+			if(exist_value(root, nodes[i], subs[i]))
+				return true;
+		}
+		return false;
+		// --------------- solution 1 : ---------------
+
+    }
 };
