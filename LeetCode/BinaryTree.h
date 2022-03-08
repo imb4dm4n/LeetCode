@@ -962,4 +962,43 @@ namespace letcoode{
 		// --------------- solution 1 : ---------------
 
     }
+
+	// https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/
+	// 671. Second Minimum Node In a Binary Tree
+	// given a non-empty special binary tree consisting of nodes with non-negative value,
+	// output the second minimum value in the set made of all the nodes' value in the whole tree.
+	/*The number of nodes in the tree is in the range [1, 25].
+	1 <= Node.val <= 231 - 1
+	root.val == min(root.left.val, root.right.val) for each internal node of the tree.*/
+	// if no such second minimum value exists, output -1 instead.
+	// solution: DFS 前序遍历，若没有初始化，则设定树根为最小值，寻找大于最小值的节点
+	// 若不存在，则 sec_small = 0，返回 -1 。 若存在，则返回
+	// Runtime: 0 ms, faster than 100.00% of C++ online submissions for Second
+	// Memory Usage: 6.9 MB, less than 99.89% of C++ online submissions for
+	void dfs_find_second_small(TreeNode* node, int& smallest, int& sec_small) {
+		if(node == nullptr)
+			return;
+
+		// init smallest
+		if(smallest == 0){
+			smallest = node->val;
+		}
+		// init sec small
+		else if(node->val > smallest && sec_small == 0 ){
+			sec_small = node->val;
+		}
+		else if (node->val > smallest && node->val < sec_small){
+			sec_small = node->val;
+		}
+
+		dfs_find_second_small(node->left, smallest, sec_small);
+		dfs_find_second_small(node->right, smallest, sec_small);
+	}
+	int findSecondMinimumValue(TreeNode* root) {
+        int smallest=0, sec_small=0;
+		dfs_find_second_small(root, smallest, sec_small);
+		if(0 == sec_small)
+			return -1;
+		return sec_small;
+    }
 };
