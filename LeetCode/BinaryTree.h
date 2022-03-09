@@ -1001,4 +1001,79 @@ namespace letcoode{
 			return -1;
 		return sec_small;
     }
+
+	namespace N_ary_tree {
+		class Node {
+			public:
+				int val;
+				vector<Node*> children;
+
+				Node() {}
+
+				Node(int _val) {
+					val = _val;
+				}
+
+				Node(int _val, vector<Node*> _children) {
+					val = _val;
+					children = _children;
+				}
+		};
+
+		// https://leetcode.com/problems/maximum-depth-of-n-ary-tree/
+		// 559. Maximum Depth of N-ary Tree
+		// given a N-ary tree, return it's maximum depth.
+		// the maximum depth is the number of nodes along the longest path from the root node 
+		// to the farthest leaf node.
+		// solution1 :计算每个子树的树高度，求出最大值 + 自身高度1 即可得到最长的
+		// 计算node的每个子节点的高度
+		// Runtime: 22 ms, faster than 51.18% of C++ online submissions for Maximum Depth of N-ary Tree.
+		// solution2 :BFS 遍历，用队列保存当前一层的节点，保存当前层节点个数 n，同时出队列n次，并把每个出的节点的 child 节点加入队列
+		int maxDepth(Node* node) {
+			if(node == nullptr)
+				return 0;
+			
+			int tmp_max = 0;
+			for(auto it=node->children.begin(),ie = node->children.end(); it != ie; ++it) {
+				int h = maxDepth(*it);
+				if(tmp_max == 0)
+					tmp_max = h;
+				if(h > tmp_max)
+					tmp_max = h;
+			}
+			return tmp_max + 1;
+		}
+		// https://leetcode.com/problems/n-ary-tree-preorder-traversal/
+		// 589. N-ary Tree Preorder Traversal
+		// given a n-ary tree, return it's preorder traverse result
+		// Runtime: 57 ms, faster than 9.43% of C++ online submissions for N-ary Tree Preorder Traversal.
+		// Runtime: 23 ms, faster than 77.45% of C++ online submissions for N-ary Tree Preorder Traversal.
+		void preorder_(Node* root, vector<int>& result) {
+			// solution 2
+			if(root == nullptr)
+				return;
+			result.push_back(root->val);
+			for(auto it : root->children) {
+				preorder_(it, result);
+			}
+		}
+		vector<int> preorder(Node* root) {
+			vector<int> result;
+			preorder_(root, result);
+			return result;
+			// solution 1
+			// vector<int> result;
+			// if(root == nullptr)
+			// 	return result;
+			
+			// // preorder
+			// result.push_back(root->val);
+			// for(auto it : root->children) {
+			// 	vector<int> tmp = preorder(it);
+			// 	result.insert(result.end(), tmp.begin(), tmp.end());
+			// }
+			// return result;
+		}
+	};
+	
 };
