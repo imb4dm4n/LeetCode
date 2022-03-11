@@ -1074,6 +1074,103 @@ namespace letcoode{
 			// }
 			// return result;
 		}
-	};
+
+		// https://leetcode.com/problems/n-ary-tree-postorder-traversal/
+		// 590. N-ary Tree Postorder Traversal
+		// Runtime: 23 ms, faster than 78.46% of C++ online submissions for N-ary Tree
+		void postorder_(Node* node, vector<int>& result) {
+			if(node == nullptr)
+				return;
+			
+			for(auto it: node->children) {
+				postorder_(it, result);
+			}
+			result.push_back(node->val);
+
+		}
+		vector<int> postorder(Node* root) {
+			vector<int> result;
+			postorder_(root, result);
+			return result;
+    	}
+		
+	};// end of namespace n-ary tree
+
+	// https://leetcode.com/problems/search-in-a-binary-search-tree/
+	// 700. Search in a Binary Search Tree
+	// given a binary search tree, find the target value and return a sub-tree based on target as root.
+	// solution 1: search left tree if target is smaller than root's value.
+	// Runtime: 73 ms, faster than 24.44% of C++ online submissions for Search in a Binary Search Tree.
+	// solution 2: loop change root pointer
+	// Runtime: 45 ms, faster than 74.60% of C++ online submissions for Search in a Binary Search Tree.
+	TreeNode* searchBST(TreeNode* root, int val) {
+		// -------- // solution 1 
+        // if(root == nullptr)
+		// 	return nullptr;
+		// if(root->val == val)
+		// 	return root;
+		// else if(root->val > val)
+		// 	return searchBST(root->left, val);
+		// else 
+		// 	return searchBST(root->right, val);
+		// -------- // solution 1 
+		while(root != nullptr && root->val != val) {
+			root =  (root->val > val) ?  root->left: root->right;
+		}
+		return root;
+    }
 	
+	// https://leetcode.com/problems/kth-largest-element-in-a-stream/
+	// 703. Kth Largest Element in a Stream
+	// implement a binary search tree, and a dump method which output bst in in-order
+	// traversal. change the condition, left sub-tree is bigger and right sub-tree is smaller
+	// implementation of a binary search tree
+	class BST {
+	private:
+		TreeNode* root;
+	public:
+		BST();
+		// inorder traverse binary search tree and return vector result
+		void inorder_traverse(vector<int>& result, TreeNode* node) {
+			if(node == nullptr)
+				return;
+			inorder_traverse(result, node->left);
+			result.push_back(node->val);
+			inorder_traverse(result, node->right);
+		}
+		// 向 BST 添加一个值
+		void push(int val) {
+			if(root == nullptr)
+			{
+				root = new TreeNode(val);
+				return;
+			}
+			if(root->val == val) {
+				auto node = new TreeNode(val);
+				TreeNode* tmp = root->right;
+				root->right = node;
+				node->right = tmp;
+				return;
+			}
+			if (val > root->val) {
+				// push to the right 
+			}
+		}
+	};
+	class KthLargest {
+	public:
+		KthLargest(int k, vector<int>& nums) {
+			
+		}
+		
+		int add(int val) {
+			
+		}
+	};
+
+	/**
+	 * Your KthLargest object will be instantiated and called as such:
+	 * KthLargest* obj = new KthLargest(k, nums);
+	 * int param_1 = obj->add(val);
+	 */
 };
