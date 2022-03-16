@@ -36,7 +36,7 @@ namespace letcoode{
 			return nullptr;
 		
 		queue<TreeNode*> q;
-		int val = static_cast<int> (values[0]);
+		int val = reinterpret_cast<int> (values[0]);
 		// in case the root is a null pointer
 		if(val == 0)
 			return nullptr;
@@ -48,7 +48,7 @@ namespace letcoode{
 			TreeNode* front = q.front();
 			q.pop();
 			// get the root's left and right node
-			int val_left = static_cast<int>(values[index]);
+			int val_left = reinterpret_cast<int>(values[index]);
 			if(val_left == 0)
 				front->left = nullptr;
 			else{
@@ -56,8 +56,8 @@ namespace letcoode{
 				q.push(front->left);
 			}
 			++index;
-			if(index < value.size()) {
-				int val_right = static_cast<int>(values[index]);
+			if(index < values.size()) {
+				int val_right = reinterpret_cast<int>(values[index]);
 				if(val_right == 0)
 					front->right = nullptr;
 				else{
@@ -1129,7 +1129,12 @@ namespace letcoode{
 	private:
 		TreeNode* root;
 	public:
-		BST();
+		BST(){
+			root = nullptr;
+		}
+		TreeNode* get_root() {
+			return root;
+		}
 		// inorder traverse binary search tree and return vector result
 		void inorder_traverse(vector<int>& result, TreeNode* node) {
 			if(node == nullptr)
@@ -1139,32 +1144,48 @@ namespace letcoode{
 			inorder_traverse(result, node->right);
 		}
 		// 向 BST 添加一个值
-		void push(int val) {
+		void push(TreeNode* node, int val) {
 			if(root == nullptr)
 			{
 				root = new TreeNode(val);
 				return;
 			}
-			if(root->val == val) {
-				auto node = new TreeNode(val);
-				TreeNode* tmp = root->right;
-				root->right = node;
-				node->right = tmp;
+			if(node == nullptr)
+				return;
+			// value bigger than current node, add it to the left side
+			if(node->left && node->val <= val) {
+				push(node->left, val);
 				return;
 			}
-			if (val > root->val) {
-				// push to the right 
+			else if (node->right && node->val > val) {
+				push(node->right, val);
+				return;
+			}
+			if(node->val <= val) {
+				node->left = new TreeNode(val);
+			}
+			else {
+				node->right = new TreeNode(val);
 			}
 		}
 	};
 	class KthLargest {
+	private:
+		BST m_bst;
+		int m_k;
 	public:
 		KthLargest(int k, vector<int>& nums) {
-			
+			m_k = k;
+			for(auto i : nums) {
+				m_bst.push(m_bst.get_root(), i);
+			}
 		}
 		
 		int add(int val) {
-			
+			m_bst.push(m_bst.get_root(), val);
+			vector<int> result;
+			m_bst.inorder_traverse(result, m_bst.get_root());
+			return result[m_k-1];
 		}
 	};
 
@@ -1173,4 +1194,41 @@ namespace letcoode{
 	 * KthLargest* obj = new KthLargest(k, nums);
 	 * int param_1 = obj->add(val);
 	 */
+
+	// https://leetcode.com/problems/leaf-similar-trees/
+	// 872. Leaf-Similar Trees
+	// Consider all the leaves of a binary tree, from left to right order, the values of those leaves form a leaf value sequence.
+	/*Two binary trees are considered leaf-similar if their leaf value sequence is the same.
+
+Return true if and only if the two given trees with head nodes root1 and root2 are leaf-similar.*/
+	// wrong solution： if node has no left and right child, it's leaf node.
+	// ~~traverse by level, find out root1's all leaves. save it to a vector~~
+	// traverse by level and compare it with root2's leaves
+	// solution: traverse by level will fail. dfs traverse will do.
+	// Runtime: 0 ms, faster than 100.00% of C++ online submissions for Leaf-Similar Trees.
+	void dfs_find_leaves(TreeNode* node, vector<int>& result) {
+		if(node == nullptr)
+			return;
+		
+		dfs_find_leaves(node->left, result);
+		if(!node->left && !node->right) {
+			result.push_back(node->val);
+		}
+		dfs_find_leaves(node->right, result);
+	}
+	bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+		if(!root1 && !root2)
+			return false;
+		
+		vector<int> root1_leaves, root2_leaves;
+		dfs_find_leaves(root1, root1_leaves);
+		dfs_find_leaves(root2, root2_leaves);
+		if(root1_leaves.size() != root2_leaves.size())
+			return false;
+		for(int i=0; i < root1_leaves.size(); ++i){
+			if (root2_leaves[i] != root1_leaves[i])
+				return false;
+		}
+		return true;
+    }
 };

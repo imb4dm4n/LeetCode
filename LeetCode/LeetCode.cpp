@@ -111,9 +111,12 @@ void test_bst()
 {
     vector<int> x = { 2,4,6,8,10,12 };
     x = { 2,1 };
-    x = {4,2,5,1,3};
+    x = {1,2,3};
+    vector<int> y = { 3,2,1 };
     TreeNode* t = sortedArrayToBST(x);
-    diameterOfBinaryTree(t);
+    TreeNode* u = sortedArrayToBST(y);
+    leafSimilar(t, u);
+    /*diameterOfBinaryTree(t);
     findMode(t);
     TreeNode* left = t->left;
     TreeNode* right = t->right;
@@ -121,7 +124,7 @@ void test_bst()
     if (c != nullptr)
         printf("common ancestor is %d", c->val);
     else
-        printf("it's null\n");
+        printf("it's null\n");*/
 }
 int main()
 {
