@@ -1231,4 +1231,27 @@ Return true if and only if the two given trees with head nodes root1 and root2 a
 		}
 		return true;
     }
+
+	// https://leetcode.com/problems/increasing-order-search-tree/
+	// 897. Increasing Order Search Tree
+	// given a binary search tree, in-order travese it and make a new bst without 
+	// left tree.
+	/*
+	Given the root of a binary search tree, rearrange the tree in in-order so that the leftmost node in the tree is now the root of the tree, and every node has no left child and only one right child.
+	*/
+	// Runtime: 0 ms, faster than 100.00% of C++ online submissions for Increasing Order Search Tree.
+	TreeNode* create_bst_without_left_sub_tree(vector<int>& values, int index) {
+		if(values.size() == index)
+			return nullptr;
+		TreeNode* node = new TreeNode(values[index]);
+		node->right = create_bst_without_left_sub_tree(values, index+1);
+		return node;
+	}
+	TreeNode* increasingBST(TreeNode* root) {
+		if(!root)
+			return nullptr;
+        vector<int> values ;
+		recursive_inorderTraversal(root, values);
+		return create_bst_without_left_sub_tree(values, 0);
+    }
 };
