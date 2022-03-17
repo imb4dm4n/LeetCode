@@ -1240,6 +1240,11 @@ Return true if and only if the two given trees with head nodes root1 and root2 a
 	Given the root of a binary search tree, rearrange the tree in in-order so that the leftmost node in the tree is now the root of the tree, and every node has no left child and only one right child.
 	*/
 	// Runtime: 0 ms, faster than 100.00% of C++ online submissions for Increasing Order Search Tree.
+	// solution 2 : according to the problem, we should not create new nodes. instead, we need to change the pointer of every node.
+	// inorder traverse, change node's left to null, and set node's right to it's parent if it's a left node.
+	// if it's a right node, then change it's right node to it's grand-parent.
+	/*Runtime: 3 ms, faster than 68.13% of C++ online submissions for Increasing Order Search Tree.
+Memory Usage: 7.7 MB, less than 78.53% of C++ online submissions for Increasing Order Search Tree.*/
 	TreeNode* create_bst_without_left_sub_tree(vector<int>& values, int index) {
 		if(values.size() == index)
 			return nullptr;
@@ -1247,11 +1252,47 @@ Return true if and only if the two given trees with head nodes root1 and root2 a
 		node->right = create_bst_without_left_sub_tree(values, index+1);
 		return node;
 	}
-	TreeNode* increasingBST(TreeNode* root) {
-		if(!root)
-			return nullptr;
-        vector<int> values ;
-		recursive_inorderTraversal(root, values);
-		return create_bst_without_left_sub_tree(values, 0);
+	TreeNode* increasingBST(TreeNode* root, TreeNode* parent_node=nullptr) {
+		// solution 2: 
+		if(root == nullptr)
+			return parent_node;
+		TreeNode* head = increasingBST(root->left, root);	// 对于 根节点， 需要返回最左下角的节点作为新的树根
+		root->left = nullptr;									// 左节点全部为 null
+		root->right = increasingBST(root->right, parent_node); // 右节点则把当前节点的父节点，即右节点的 祖父节点 传递给他， 当右节点继续递归遇到 null 时，返回祖父节点作为它的右节点
+		return head;	// 对于 根节点， 需要返回最左下角的节点作为新的树根
+
+		// solution 1
+		// if(!root)
+		// 	return nullptr;
+        // vector<int> values ;
+		// recursive_inorderTraversal(root, values);
+		// return create_bst_without_left_sub_tree(values, 0);
+    }
+
+	// https://leetcode.com/problems/range-sum-of-bst/
+	// 938. Range Sum of BST
+	/*Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high].
+	The number of nodes in the tree is in the range [1, 2 * 104].
+	1 <= Node.val <= 105
+	1 <= low <= high <= 105
+	All Node.val are unique.
+	solution: Runtime: 157 ms, faster than 64.80% of C++ online submissions for Range Sum of BST.
+
+	*/
+	int rangeSumBST(TreeNode* root, int low, int high) {
+        if (root == nullptr)
+			return 0;
+		if (root->val >= low && root->val <= high) {
+			return root->val + rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high);
+		}
+		else if(root->val < low) {//	if current node is less than low, find it's right sub tree
+			return rangeSumBST(root->right, low, high);
+		}
+		else if(root->val > high) { // otherwise find it's left sub tree
+			return rangeSumBST(root->left, low, high);
+		}
+		else {
+			return 0;
+		}
     }
 };
