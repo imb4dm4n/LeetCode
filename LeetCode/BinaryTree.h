@@ -1330,6 +1330,9 @@ Two nodes of a binary tree are cousins if they have the **** same depth **** ***
 Note that in a binary tree, the root node is at the depth 0, and children of each depth k node are at the depth k + 1.
 	solution: judge whether x and y are in the same level. Also they have different parent.
 	dfs find the node and record depth of node and it's parent pointer.
+	solution2: cousin node, by which means that they are in the same level. so we can do a level traverse.
+	when both x,y was found in the same level, and they have diffrent parent. return true.
+	Runtime: 4 ms, faster than 66.28% of C++ online submissions for Cousins in Binary Tree.
 */
 	/*
 		Runtime: 8 ms, faster than 25.80% of C++ online submissions for Cousins in Binary Tree.
@@ -1358,11 +1361,51 @@ Note that in a binary tree, the root node is at the depth 0, and children of eac
 		}
 	}
 	bool isCousins(TreeNode* root, int x, int y) {
+		queue<TreeNode*> q;
+		bool found_x = false, found_y = false;
+		if(!root) {
+			return false;
+		}
+		q.push(root);
+		while(!q.empty()) {
+			found_x = found_y = false;
+			int n = q.size();			// save queue size， otherwise in the loop, the queue size will change
+			for(int i=0; i < n; ++i) {	// traverse this level
+				TreeNode * head = q.front();
+				q.pop();
+				if(head->val == x)
+					found_x = true;
+				if(head->val == y)
+					found_y = true;
+				
+				// x and y has same parent
+				if(head->left && head->right ) {
+					if((head->left->val ==x && head->right->val ==y ) || 
+						(head->left->val ==y && head->right->val ==x ))
+						return false;
+				}
+				if(head->left)
+					q.push(head->left);
+				if(head->right)
+					q.push(head->right);
+			}
+			// traverse by level and found both x and y 
+			if(found_x && found_y)
+				return true;
+			// only one node was found , so that they are not in the same level
+			if(found_x || found_y)
+				return false;
+			
+		}
+		return false;
+
+		/* solution 1 
         TreeNode* p_x = nullptr;
         TreeNode* p_y = nullptr;
 		int dep_x=0, dep_y=0;
 		dfs_get_node_depth(root, root, x, dep_x, p_x, 0);
 		dfs_get_node_depth(root, root, y, dep_y, p_y, 0);
 		return dep_x == dep_y && p_x != p_y;
+		*/
     }
 };
