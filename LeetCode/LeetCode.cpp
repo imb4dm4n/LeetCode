@@ -110,12 +110,14 @@ using namespace letcoode;
 void test_bst()
 {
     vector<int> x = { 2,4,6,8,10,12 };
-    x = { 2,1 };
+    TreeNode* t = sortedArrayToBST(x);
+    isCousins(t, 8, 12);
+    /*x = { 2,1 };
     x = {1,2,3};
     vector<int> y = { 3,2,1 };
     TreeNode* t = sortedArrayToBST(x);
     TreeNode* u = sortedArrayToBST(y);
-    leafSimilar(t, u);
+    leafSimilar(t, u);*/
     /*diameterOfBinaryTree(t);
     findMode(t);
     TreeNode* left = t->left;

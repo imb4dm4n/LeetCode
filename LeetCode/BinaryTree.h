@@ -1295,4 +1295,74 @@ Memory Usage: 7.7 MB, less than 78.53% of C++ online submissions for Increasing 
 			return 0;
 		}
     }
+
+	// https://leetcode.com/problems/univalued-binary-tree/
+	// 65. Univalued Binary Tree
+	/*A binary tree is uni-valued if every node in the tree has the same value.
+
+Given the root of a binary tree, return true if the given tree is uni-valued, or false otherwise.
+The number of nodes in the tree is in the range [1, 100].
+0 <= Node.val < 100
+Runtime: 0 ms, faster than 100.00% of C++ online submissions for Univalued Binary Tree.
+	solution: according to node value constraint , set a prev value as -1. so that we could know when we hit root of  tree.
+	and dfs traverse the tree. 
+*/
+	bool isUnivalTree(TreeNode* root, int prev = -1) {
+        if(root == nullptr)
+			return true;
+		if(root && prev != -1) {
+			// 非根节点
+			if(root->val != prev)
+				return false;
+			return isUnivalTree(root->left, prev) && isUnivalTree(root->right, prev) ;
+		}
+		else {
+			return isUnivalTree(root->left, root->val) && isUnivalTree(root->right, root->val) ;
+		}
+    }
+
+	// https://leetcode.com/problems/cousins-in-binary-tree/
+	// 993. Cousins in Binary Tree
+	/*Given the root of a binary tree with unique values and the values of two different nodes of the tree x and y, return true if the nodes corresponding to the values x and y in the tree are cousins, or false otherwise.
+
+Two nodes of a binary tree are cousins if they have the **** same depth **** ****with different parents****.
+
+Note that in a binary tree, the root node is at the depth 0, and children of each depth k node are at the depth k + 1.
+	solution: judge whether x and y are in the same level. Also they have different parent.
+	dfs find the node and record depth of node and it's parent pointer.
+*/
+	/*
+		Runtime: 8 ms, faster than 25.80% of C++ online submissions for Cousins in Binary Tree.
+		@node current node
+		@parent  parent node
+		@target_val  target value to search
+		@depth store target node's depth
+		@node_parent store target node's parent pointer
+		@cur_dep cur_dep
+	*/
+	void dfs_get_node_depth(TreeNode* node, TreeNode* parent, int target_val, int& depth, TreeNode*& node_parent, int cur_dep) {
+		if(node == nullptr || node_parent != nullptr)
+			return ;
+		cur_dep += 1;
+		if(node->val != target_val) {
+			dfs_get_node_depth(node->left, node, target_val, depth, node_parent, cur_dep);
+			if(node_parent != nullptr)
+				return;
+			// cur_dep -= 1;
+			dfs_get_node_depth(node->right, node, target_val, depth, node_parent, cur_dep);
+		}
+		else if(node->val == target_val && node_parent == nullptr){
+			// find target 
+			node_parent = parent;
+			depth = cur_dep;
+		}
+	}
+	bool isCousins(TreeNode* root, int x, int y) {
+        TreeNode* p_x = nullptr;
+        TreeNode* p_y = nullptr;
+		int dep_x=0, dep_y=0;
+		dfs_get_node_depth(root, root, x, dep_x, p_x, 0);
+		dfs_get_node_depth(root, root, y, dep_y, p_y, 0);
+		return dep_x == dep_y && p_x != p_y;
+    }
 };
