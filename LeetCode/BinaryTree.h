@@ -1408,4 +1408,42 @@ Note that in a binary tree, the root node is at the depth 0, and children of eac
 		return dep_x == dep_y && p_x != p_y;
 		*/
     }
+	
+	// https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/
+	// 1022. Sum of Root To Leaf Binary Numbers
+	/*You are given the root of a binary tree where each node has a value 0 or 1. Each root-to-leaf path represents a binary number starting with the most significant bit.
+
+For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 01101 in binary, which is 13.
+For all leaves in the tree, consider the numbers represented by the path from the root to that leaf. Return the sum of these numbers.
+
+The test cases are generated so that the answer fits in a 32-bits integer.
+	solution: use a vector to record the node's value when we dfs traverse to
+	leaf node. when hit leaf node, calculate the binary number, and add it to sum
+*/
+	void dfs_sum_bin_num(TreeNode* node, vector<int>& values, int& sum) {
+		if(node == nullptr)
+			return;
+		
+		if(node->left == nullptr &&
+			node->right == nullptr) {
+				// hit leaf node
+				int n = 2;
+				for(int i=values.size()-1;i>=0; --i){
+					sum += (i*n);
+					n<<=1;
+				}
+				sum += node->val;
+				return;
+		}
+		values.push_back(node->val);
+		dfs_sum_bin_num(node->left, values, sum);
+		dfs_sum_bin_num(node->right, values, sum);
+		values.pop_back();
+	}
+	int sumRootToLeaf(TreeNode* root) {
+        vector<int> paths;
+		int sum=0;
+		dfs_sum_bin_num(root, paths, sum);
+		return sum;
+    }
 };
