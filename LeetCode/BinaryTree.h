@@ -1417,8 +1417,10 @@ For example, if the path is 0 -> 1 -> 1 -> 0 -> 1, then this could represent 011
 For all leaves in the tree, consider the numbers represented by the path from the root to that leaf. Return the sum of these numbers.
 
 The test cases are generated so that the answer fits in a 32-bits integer.
-	solution: use a vector to record the node's value when we dfs traverse to
-	leaf node. when hit leaf node, calculate the binary number, and add it to sum
+	solution: 1 . use a vector to record the node's value when we dfs traverse to
+	leaf node. when hit leaf node, calculate the binary number, and add it to sum.
+	Runtime: deque 23 ms, faster than 6.53% of C++ online submissions for Sum of Root To Leaf Binary Numbers.
+Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Root To Leaf Binary Numbers.
 */
 	void dfs_sum_bin_num(TreeNode* node, vector<int>& values, int& sum) {
 		if(node == nullptr)
@@ -1429,8 +1431,8 @@ The test cases are generated so that the answer fits in a 32-bits integer.
 				// hit leaf node
 				int n = 2;
 				for(int i=values.size()-1;i>=0; --i){
-					sum += (i*n);
-					n<<=1;
+					sum += (values[i]*n);	// add up the path's node 
+					n*=2;
 				}
 				sum += node->val;
 				return;
