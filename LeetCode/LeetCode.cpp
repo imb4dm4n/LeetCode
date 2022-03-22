@@ -108,10 +108,16 @@ void test_vec()
 }
 using namespace letcoode;
 void test_bst()
-{
-    vector<int> x = { 2,4,6,8,10,12 };
-    TreeNode* t = sortedArrayToBST(x);
-    isCousins(t, 8, 12);
+{/*
+    vector<int> x = { 3, 1, 2 };
+    TreeNode* t = sortedArrayToBST(x);*/
+    TreeNode a(1);
+    TreeNode b(3);
+    TreeNode c(2);
+    a.left = &b;
+    b.right = &c;
+    recoverTree(&a);
+    //isCousins(t, 8, 12);
     /*x = { 2,1 };
     x = {1,2,3};
     vector<int> y = { 3,2,1 };

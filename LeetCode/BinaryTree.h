@@ -1448,4 +1448,47 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		dfs_sum_bin_num(root, paths, sum);
 		return sum;
     }
+
+	// https://leetcode.com/problems/recover-binary-search-tree/
+	// 99. Recover Binary Search Tree
+	/*
+		given the root of a binary search tree, where the values of exactly two nodes
+		of the tree where swapped by mistake. Recover the bst without change its structure.
+		solution: (be careful, that only two nodes were swapped by mistake.)
+		if you traverse by inorder, you will get a ascending order of values.
+		and record every node's address. sort the values so that they are ascending.
+		and set values back. 
+		Time = bst O(N) + sort O(N^2) + reset O(N)
+		Runtime: 60 ms, faster than 29.65% of C++ online submissions for Recover Binary Search Tree.
+		solution2 :
+	*/
+	void recursive_inorderTraversal(TreeNode* node, vector< TreeNode* >& pointers, vector< int>& values) {
+		//
+		if (node) {
+			recursive_inorderTraversal(node->left, pointers, values);
+			pointers.push_back(node);
+			values.push_back(node->val);
+			recursive_inorderTraversal(node->right, pointers, values);
+		}
+	}
+	void bubble_sort(vector<int>& values) {
+		for(int i=0; i<values.size();++i) {
+			for(int j=0; j<values.size()-i-1;++j) {
+				if(values[j]>values[j+1]) {
+					swap(values[j], values[j+1]);
+				}
+			}
+		}
+	}
+	void recoverTree(TreeNode* root) {
+        vector< TreeNode* > pointers;
+        vector< int> values;
+        recursive_inorderTraversal(root, pointers, values);	// O(N)
+		bubble_sort(values);
+		int i = 0;
+		for(auto it:pointers) {
+			it->val = values[i++];
+		}
+    }
+
 };
