@@ -1491,4 +1491,41 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		}
     }
 
+	// https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
+	// 103. Binary Tree Zigzag Level Order Traversal
+	/*
+		given a binary tree, return Zigzag Level Order Traversal of it. traverse in level from left to right, and in the next level right to left.
+		->
+		<-
+		solution:  level 1 ->, level 2 <- ...  it's a deque traverse. change the start of traverse from begin to end , and end to begin.
+		Runtime: 3 ms, faster than 77.73% of C++ online submissions for Binary Tree Zigzag Level Order Traversal.
+	*/
+	vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        deque<TreeNode*> dq;
+		vector<vector<int>> ret;
+		if(!root)
+			return ret;
+		dq.push_back(root);
+		bool left_to_right_direction = true;
+		while(!dq.empty()) {
+			int n =dq.size();
+			vector<int> values;
+			for(int i=0; i<n; ++i) {
+				TreeNode* node = dq.front();
+				dq.pop_front();
+				if(!left_to_right_direction)
+					values.push_back(node->val);
+				else
+					values.insert(values.begin(), node->val);	// use insert to append new value
+				if(node->right)
+					dq.push_back(node->right);
+				if(node->left)
+					dq.push_back(node->left);
+			}
+			ret.push_back(values);
+			// change direction at the end of this level
+			left_to_right_direction = !left_to_right_direction;
+		}
+		return ret;
+    }
 };
