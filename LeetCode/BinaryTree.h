@@ -1528,4 +1528,35 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		}
 		return ret;
     }
+
+	// https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+	// 105. Construct Binary Tree from Preorder and Inorder Traversal
+	/*
+		given two integer arrays preorder and inorder where preorders is the preorder traverse of binary tree and likewise. construct the binary tree.
+		preorder and inorder consist of unique values.
+		solution: the values are unique, so we can use a map to save it's pointers. like {1 : addr, 3 : addr, 9:addr }
+		从 preorder 按顺序取节点，就是 任意一个子树的根节点。
+		从 inorder 找到这个节点， 那么这个节点的左边便包含 它的左子树，右边包含它的右子树
+
+	*/
+	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int rootIndex=0;
+		TreeNode* root = build_tree(preorder, inorder, rootIndex, 0, preorder.size()-1);
+		return root;
+    }
+
+	TreeNode* build_tree(vector<int>& preorder, vector<int>& inorder, int& rootIndex,
+		int left, int right) {
+			if(left > right)
+				return nullptr;
+			int pivot = left;	// 从inorder中找到当前 rootIndex 的节点偏移量
+			while(preorder[rootIndex] != inorder[pivot]) pivot ++;
+			rootIndex++;
+			TreeNode* node = new TreeNode(preorder[rootIndex]);	// 构造当前子树的根节点
+			
+			node->left = build_tree(preorder, inorder, rootIndex, pivot, pivot-1);
+			node->right = build_tree(preorder, inorder, rootIndex, pivot+1, right);
+			return node;
+	}
+
 };
