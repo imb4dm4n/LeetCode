@@ -25,6 +25,19 @@ namespace letcoode{
 	 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 	 	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 	 };
+	// vector 转 二叉树
+	TreeNode* create_bt(vector<int> array, int index)
+	{
+		TreeNode* root = nullptr;
+
+		if (index < array.size() && array[index] != NULL)
+		{
+			root = new TreeNode(array[index]);
+			root->left = create_bt(array, 2*index + 1);
+			root->right = create_bt(array, 2*index + 2);
+		}
+		return root;
+	}
 	
 	/*
 		create a binary tree from a set of node's value. such as {1,2,4, null, 7}
@@ -1539,11 +1552,6 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		从 inorder 找到这个节点， 那么这个节点的左边便包含 它的左子树，右边包含它的右子树
 
 	*/
-	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int rootIndex=0;
-		TreeNode* root = build_tree(preorder, inorder, rootIndex, 0, preorder.size()-1);
-		return root;
-    }
 
 	TreeNode* build_tree(vector<int>& preorder, vector<int>& inorder, int& rootIndex,
 		int left, int right) {
@@ -1558,5 +1566,109 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 			node->right = build_tree(preorder, inorder, rootIndex, pivot+1, right);
 			return node;
 	}
+	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+		int rootIndex = 0;
+		TreeNode* root = build_tree(preorder, inorder, rootIndex, 0, preorder.size() - 1);
+		return root;
+	}
 
+	// https://leetcode.com/problems/binary-tree-level-order-traversal-ii/
+	// 107. Binary Tree Level Order Traversal II
+	/*Given the root of a binary tree, return the bottom-up level order traversal of its nodes' values. (i.e., from left to right, level by level from leaf to root).
+		solution1 ： insert result in front of the vector , so you can get a bottom up traverse
+		Runtime: 37 ms, faster than 5.15% of C++ online submissions for Binary Tree Level Order Traversal II.
+		solution2 ： reverse the result will decrease the cost of time
+
+		*/
+	vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        queue<TreeNode*> q;
+		vector<vector<int>> r;
+		if(!root)
+			return r;
+		
+		q.push(root);
+		while(!q.empty()) {
+			int n = q.size();
+			vector<int> values;
+			for(int i=0; i < n; ++i){
+				TreeNode* front = q.front();
+				q.pop();
+				values.push_back(front->val);
+				if(front->left)
+					q.push(front->left);
+				if(front->right)
+					q.push(front->right);
+			}
+			// r.insert(r.begin(), values);
+			r.push_back(values);
+		}
+		reverse(r.begin(), r.end());
+		return r;
+    }
+
+	// https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+	// 106. Construct Binary Tree from Inorder and Postorder Traversal
+	/*Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+	*/
+	/*TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        
+    }*/
+
+	// https://leetcode.com/problems/validate-binary-search-tree/
+	// 98. Validate Binary Search Tree
+	/*Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+
+	A valid BST is defined as follows:
+
+	The left subtree of a node contains only nodes with keys less than the node's key.
+	The right subtree of a node contains only nodes with keys greater than the node's key.
+	Both the left and right subtrees must also be binary search trees.
+	Constraints:
+
+	The number of nodes in the tree is in the range [1, 104].
+	-231 <= Node.val <= 231 - 1
+	solution1: 从底向上生成节点的值，每个子根对比左子树值列表和右子树值列表，校验大小
+	注意： vector 的 insert 方法会调整容器大小，导致插入的数据会出现错乱，只能通过索引赋值。
+	Runtime: 27 ms, faster than 13.72% of C++ online submissions for Validate Binary Search Tree.
+	*/
+	vector<int> inorder_bst(TreeNode* node,  bool& valid) {
+		vector<int> r;
+		if(!node || !valid)
+			return r;
+		vector<int> l_nodes = inorder_bst(node->left,  valid);
+		vector<int> r_nodes = inorder_bst(node->right,  valid);
+		for(auto i : l_nodes) {
+			if(i>=node->val)
+			{
+				valid = false;
+				return r;
+			}
+		}
+		for(auto i : r_nodes) {
+			if(i<=node->val)
+			{
+				valid = false;
+				return r;
+			}
+		}
+		r.resize(l_nodes.size() + r_nodes.size() + 1);
+		int i = 0;
+		if (l_nodes.size() > 0) {
+			for (int i = 0; i < l_nodes.size(); ++i)
+				r[i] = l_nodes[i];
+		}
+		// i 最后的取值是指向 l_nodes 的最后一个, 需要先加1
+		if (r_nodes.size() > 0) {
+			i = l_nodes.size();
+			for (int j = 0; j < r_nodes.size(); ++j)
+				r[i++] = r_nodes[j];
+		}
+		r[r.size()-1] = node->val;
+		return r;
+	}
+	bool isValidBST(TreeNode* root) {
+		bool valid = true;
+		inorder_bst(root, valid);
+		return valid;
+    }
 };

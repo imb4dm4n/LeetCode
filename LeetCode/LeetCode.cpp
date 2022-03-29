@@ -111,12 +111,11 @@ void test_bst()
 {/*
     vector<int> x = { 3, 1, 2 };
     TreeNode* t = sortedArrayToBST(x);*/
-    TreeNode a(1);
-    TreeNode b(3);
-    TreeNode c(2);
-    a.left = &b;
-    b.right = &c;
-    recoverTree(&a);
+    vector<int> r = { 3,1,5,-1,2,4,6 };
+    r = { -85,0,59,0,0,0,71,0,0,0,0,0,0,0,85 };
+    TreeNode* root = create_bt(r, 0);
+    isValidBST(root);
+    recoverTree(root);
     //isCousins(t, 8, 12);
     /*x = { 2,1 };
     x = {1,2,3};
