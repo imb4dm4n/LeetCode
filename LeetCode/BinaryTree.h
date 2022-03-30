@@ -1629,10 +1629,33 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 	// https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
 	// 106. Construct Binary Tree from Inorder and Postorder Traversal
 	/*Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+	Runtime: 88 ms, faster than 8.39% of C++ online submissions for Construct Binary Tree from Inorder and Postorder Traversal.
+		postorder 从右往左遍历，得到每颗子树的根节点
+		从 inorder 获取根节点的左子树节点列表和右子树节点列表，递归构建树
 	*/
-	/*TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        
-    }*/
+	// @param root_index postorder 中的根节点索引
+	// @param left   inorder 分区的起始索引
+	// @param right  inorder 分区的结束索引
+	TreeNode* create_tree_from_inorder_postorder(vector<int>& inorder, vector<int>& postorder, int& root_index, int left, int right) {
+		if(left > right || root_index < 0)
+			return nullptr;
+		int pivot = left;	// 从 inorder 的左边往右边搜索
+		while(inorder[pivot] != postorder[root_index]) ++pivot;
+		
+		root_index--;	//	postorder 往左边移动
+		TreeNode* node = new TreeNode(inorder[pivot]); // 生成当前节点
+		
+		// 子树的构建顺序必须从右往左： 因为后续遍历的顺序Wie left,right,root. root 左边就是右节点, 因此在 root_index 左移的时候, 先取到的是右节点
+		node->right = create_tree_from_inorder_postorder(inorder, postorder, root_index,
+			pivot+1, right);
+		node->left = create_tree_from_inorder_postorder(inorder, postorder, root_index,
+			left, pivot-1);
+		return node;
+	}
+	TreeNode* buildTree_(vector<int>& inorder, vector<int>& postorder) {
+        int root_index = inorder.size() - 1;
+		return create_tree_from_inorder_postorder(inorder, postorder, root_index, 0, inorder.size() -1 );// 注意索引不要溢出
+    }
 
 	// https://leetcode.com/problems/validate-binary-search-tree/
 	// 98. Validate Binary Search Tree
