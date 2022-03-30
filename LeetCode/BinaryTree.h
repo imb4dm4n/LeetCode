@@ -122,6 +122,26 @@ namespace letcoode{
         recursive_inorderTraversal(root, ret);
         return ret;
     }
+
+	// 不通过递归中序遍历二叉树
+	vector<int> inorderTraversalByQueue(TreeNode* root){
+		vector<TreeNode*> stack;
+		vector<int> values;
+		while(root || !stack.empty()) {
+			// 先插入所有左节点
+			while(root) {
+				stack.push_back(root);
+				root = root->left;
+			}
+			// 取出栈顶节点
+			TreeNode* node = stack.back();
+			stack.pop_back();
+			values.push_back(node->val);
+			// 遍历栈顶节点的右子树
+			root = node->right;
+		}
+		return values;
+	}
 	
 	// https://leetcode.com/problems/same-tree/
 	// return true if the given binary tree has same value and same structure
@@ -1666,9 +1686,36 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		r[r.size()-1] = node->val;
 		return r;
 	}
+	bool validate(TreeNode* node, TreeNode* &prev) {
+		
+	}
 	bool isValidBST(TreeNode* root) {
-		bool valid = true;
-		inorder_bst(root, valid);
-		return valid;
+		// solution 3 : 7 ms	21.7 MB
+        TreeNode* prev = NULL;
+        return validate(root, prev);
+		
+
+		// solution 2 : traverse by queue. 29 ms	21.7 MB
+		// vector<TreeNode*> stack;
+		// TreeNode* prev = nullptr;
+		// while(root || !stack.empty()) {
+		// 	// inorder traverse: previous node must less than current node, otherwise
+		// 	// it's not a sorted bst.
+		// 	while(root) {
+		// 		stack.push_back(root);
+		// 		root = root->left;
+		// 	}
+		// 	TreeNode* top = stack.back();
+		// 	stack.pop_back();
+		// 	if(prev && prev->val >= top->val)
+		// 		return false;
+		// 	prev = top;
+		// 	root = top->right;
+		// }
+		// return true;
+		// solution 1 : 27 ms	27.7 MB
+		// bool valid = true;
+		// inorder_bst(root, valid);
+		// return valid;
     }
 };
