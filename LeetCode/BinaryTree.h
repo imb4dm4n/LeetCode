@@ -5,6 +5,8 @@
 #include<queue>
 #include<deque>
 using namespace std;
+#include "CAddTwoNumbers.h"
+using leetcode::ListNode;
 namespace letcoode{
 	/**
 	 * Definition for a binary tree node.
@@ -1740,5 +1742,38 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		// bool valid = true;
 		// inorder_bst(root, valid);
 		// return valid;
+    }
+
+	// https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+	// 109. Convert Sorted List to Binary Search Tree
+	/*
+		given the head of a linked list where elements are sorted in ascending order.
+		convert it to a height balanced BST.
+		solution1: list 转 vector， 通过二分法， 找到中间节点 pivot，用 0,pivot-1 构造左子树
+		pivot + 1, size-1 构造右子树。  因为只要是从中间去拆分，那么左右节点的个数差距不会超过1
+		Runtime: 20 ms, faster than 97.00% of C++ online submissions for Convert Sorted List to Binary Search Tree.
+	*/
+	// 
+	TreeNode* create_bst_from_sorted_list(vector<int>& values, int left, int right) {
+		if(left > right) {
+			return nullptr;
+		}
+		// 找到根节点
+		int pivot = ( right+ left +1) / 2 ;	// +1 是为了取出值较大的节点的索引
+		TreeNode* sub_root = new TreeNode(values[pivot]);
+		sub_root->left = create_bst_from_sorted_list(values, left, pivot-1);
+		sub_root->right = create_bst_from_sorted_list(values, pivot+1, right);
+		return sub_root;
+	}
+
+	TreeNode* sortedListToBST(ListNode* head) {
+        vector<int> values;
+		if(!head)
+			return nullptr;
+		while(head) {
+			values.push_back(head->val);
+			head = head->next;
+		}
+		return create_bst_from_sorted_list(values, 0, values.size()-1);
     }
 };
