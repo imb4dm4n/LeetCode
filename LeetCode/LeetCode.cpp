@@ -113,7 +113,9 @@ void test_bst()
     TreeNode* t = sortedArrayToBST(x);*/
     vector<int> r = { 3,1,5,-1,2,4,6 };
     r = { -85,0,59,0,0,0,71,0,0,0,0,0,0,0,85 };
+    r = { 5, 4, 8, 11, 0, 13, 4, 7, 2, 0, 0, 5, 1 };
     TreeNode* root = create_bt(r, 0);
+    pathSum(root, 22);
     isValidBST(root);
     recoverTree(root);
     //isCousins(t, 8, 12);

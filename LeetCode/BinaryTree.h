@@ -1712,7 +1712,7 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		return r;
 	}
 	bool validate(TreeNode* node, TreeNode* &prev) {
-		
+		return true;
 	}
 	bool isValidBST(TreeNode* root) {
 		// solution 3 : 7 ms	21.7 MB
@@ -1775,5 +1775,46 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 			head = head->next;
 		}
 		return create_bst_from_sorted_list(values, 0, values.size()-1);
+    }
+
+	// https://leetcode.com/problems/path-sum-ii/
+	// 113. Path Sum II
+	/*given a root of binary tree and an integer target sum， return all root-to-leaf
+	paths where the sum of the node values in the path equal target sum. Each path
+	should be returned as a list of node values.
+	solution： 和之前的一个 sum 类似，之前是只要找到一个就可以，现在是全部
+	深度优先遍历, 进入一个节点 push 一个值, 同时加到 sum, 返回的时候出对应的值, 同时 sum 减去当前节点
+	Runtime: 20 ms, faster than 46.53% of C++ online submissions for Path Sum II.
+
+	*/
+	void path_sum(TreeNode* node, int& sum, vector<int>& path_nodes, 
+		vector<vector<int>>& result, int targetSum) {
+		if(node == nullptr)
+			return;
+		sum += node->val;
+		path_nodes.push_back(node->val);
+		if(node->left == nullptr && node->right == nullptr) {
+			// leaf node: check sum
+			if(sum ==targetSum) {
+				vector<int> tmp = path_nodes;
+				result.push_back(tmp);
+			}
+			sum -= node->val;
+			path_nodes.pop_back();
+			return;
+		}
+		path_sum(node->left, sum, path_nodes, result, targetSum);
+		path_sum(node->right, sum, path_nodes, result, targetSum);
+		sum -= node->val;
+		path_nodes.pop_back();
+	}
+	vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> result;
+		if(!root)
+			return result;
+		int sum = 0;
+		vector<int> path_nodes;
+		path_sum(root, sum, path_nodes, result, targetSum);
+		return result;
     }
 };
