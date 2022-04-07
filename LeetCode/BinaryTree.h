@@ -1817,4 +1817,20 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		path_sum(root, sum, path_nodes, result, targetSum);
 		return result;
     }
+
+	// https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+	// 114. Flatten Binary Tree to Linked List
+	/*
+		given a root of binary tree, flatten the tree into a 'linked list'.
+		it should be in the same order as a pre-order traversal of the binary tree.
+	*/
+	// set current node to the prev's right
+	void flat_to_right(TreeNode* node, TreeNode*& prev) {
+		// 
+	}
+    void flatten(TreeNode* root) {
+		if(!root)
+			return;
+			
+    }
 };

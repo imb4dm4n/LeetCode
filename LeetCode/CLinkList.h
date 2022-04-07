@@ -335,5 +335,60 @@ namespace LinkList {
 				return head;
 			}
 		}
+
+		// https://leetcode.com/problems/linked-list-cycle/
+		// 141. Linked List Cycle
+		/*Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+	There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+	Return true if there is a cycle in the linked list. Otherwise, return false.
+		solution1 ： 用两个循环来找是否有环. 类似冒泡排序算法 // 超时
+		solution2 ： 用map： 34 ms, faster than 5.29% of C++ online submissions for Linked List Cycle.
+		solution3 ： 赛跑。 在一个环里，a跑得比b快一倍，那么一定时间后，a会再次遇到b。 Runtime: 12 ms, faster than 74.89% of C++ online submissions for Linked List Cycle.
+	*/
+		bool hasCycle(ListNode *head) {
+			if(!head || head->next == nullptr)	
+				return false;
+			ListNode * fast=head, *slow=head;
+			while(fast && fast->next) {
+				fast = fast->next->next;
+				slow = slow->next;
+				if(fast == slow)
+					return true;
+			}
+			return false;
+
+			
+			// if(!head || head->next == nullptr)	
+			// 	return false;
+			// map<ListNode*, int> m;
+			// while(head) {
+			// 	auto r = m.find(head);
+			// 	if(r != m.end()) 
+			// 		return true;
+			// 	m[head] = head->val;
+			// 	head = head->next;
+			// }
+			// return false;
+
+
+			// bool has_cycle = false;
+			// ListNode* cur=head, *iter = nullptr;
+			// while (cur && !has_cycle)
+			// {
+			// 	iter = cur->next;
+			// 	while(iter) {
+			// 		if(iter->next == cur) {
+			// 			has_cycle = true;
+			// 			break;
+			// 		}
+			// 		iter = iter->next;
+			// 	}
+			// 	cur = cur->next;
+			// }
+			// return has_cycle;
+			
+		}
 	};
 };
