@@ -397,6 +397,10 @@ namespace LinkList {
 
 		Initially, all next pointers are set to NULL.
 		solution1: use queue. 直接超时。
+		solution2：先测量树的深度h，然后从1到h深度遍历二叉树，记录prev节点和cur节点，
+		若prev节点不为空，则prev->next=cur，迭代到结束。 一次通过
+		Runtime: 24 ms, faster than 63.47% of C++ online submissions for Populating Next Right Pointers in Each Node.
+	Memory Usage: 16.7 MB, less than 85.79% of C++ online submissions for Populating Next Right Pointers in Each Node.
 		*/
 		class Node {
 		public:
@@ -414,26 +418,78 @@ namespace LinkList {
 		};
 		#include<queue>
 		using std::queue;
+		// 计算树的最大高度
+		void tree_get_height(Node* root,int cur_dep, int& max_dep) {
+			if(!root)
+				return;
+			cur_dep++;
+			if(cur_dep > max_dep)
+				max_dep = cur_dep;
+			tree_get_height(root->left, cur_dep, max_dep);
+			tree_get_height(root->right, cur_dep, max_dep);
+		}
+		// 连接树的每一层节点
+		/*
+			@prev			前一个节点
+			@cur			当前节点
+			@target_level	目标层
+			@cur_level		当前所在层
+		*/
+		void tree_connect(Node*& prev, Node* cur, int target_level, int cur_level) {
+			if(!cur || cur_level > target_level)
+				return;
+			cur_level++;
+			// 递归达到目标层，修改节点
+			if(prev && cur_level == target_level) {
+				prev->next = cur;
+				prev = cur;
+			}
+			// 初始化
+			else if(prev == nullptr && cur_level == target_level) {
+				prev = cur;
+			}
+			tree_connect(prev, cur->left, target_level, cur_level);
+			tree_connect(prev, cur->right, target_level, cur_level);
+		}
 		Node* connect(Node* root) {
 			if(!root)
 				return root;
-			queue<Node*> q;
-			q.push(root);
-			while(!q.empty()) {
-				int size = q.size();
-				Node* prev = nullptr;
-				while(size > 0) {
-					Node* head = q.front();
-					if(prev != nullptr)
-						prev->next = head;
-					prev = head;
-					size -= 1;
-					q.push(head->left);
-					q.push(head->right);
-				}
+			int tree_height = 0, cur_dep = 0;
+			tree_get_height(root, cur_dep, tree_height);
+			for(int i=1; i <= tree_height; ++i) {
+				Node* prev=nullptr;
+				cur_dep = 0;
+				tree_connect(prev, root, i, cur_dep);
 			}
 			return root;
+			// if(!root)
+			// 	return root;
+			// queue<Node*> q;
+			// q.push(root);
+			// while(!q.empty()) {
+			// 	int size = q.size();
+			// 	Node* prev = nullptr;
+			// 	while(size > 0) {
+			// 		Node* head = q.front();
+			// 		if(prev != nullptr)
+			// 			prev->next = head;
+			// 		prev = head;
+			// 		size -= 1;
+			// 		q.push(head->left);
+			// 		q.push(head->right);
+			// 	}
+			// }
+			// return root;
 		}
+
+		// https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/submissions/
+		// 117. Populating Next Right Pointers in Each Node II
+		/*
+			和前一题一样，不同的是这颗不是完全二叉树。 某些层节点不全。
+			直接提交前一题即可。
+			Runtime: 36 ms, faster than 5.46% of C++ online submissions for Populating Next Right Pointers in Each Node II.
+			Memory Usage: 17.4 MB, less than 81.34% of C++ online submissions for Populating Next Right Pointers in Each Node II.
+		*/
 
 	};
 };
