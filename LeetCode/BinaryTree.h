@@ -1823,14 +1823,23 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 	/*
 		given a root of binary tree, flatten the tree into a 'linked list'.
 		it should be in the same order as a pre-order traversal of the binary tree.
+		solution1 ： 学来的。 通过 right/left/root 遍历二叉树，在回溯的过程中，保存遍历过的前一个节点
+		Runtime: 8 ms, faster than 59.99% of C++ online submissions for Flatten Binary Tree to Linked List.
 	*/
-	// set current node to the prev's right
-	void flat_to_right(TreeNode* node, TreeNode*& prev) {
-		// 
+	// 把当前节点的右节点设置为 next，左节点设置为 null
+	void flat_to_right(TreeNode* node, TreeNode*& next) {
+		if(!node)
+			return;
+		flat_to_right(node->right, next);
+		flat_to_right(node->left, next);
+		node->right = next;
+		node->left = nullptr;
+		next = node;
 	}
     void flatten(TreeNode* root) {
 		if(!root)
 			return;
-			
+		TreeNode* tmp = nullptr;
+		flat_to_right(root, tmp);
     }
 };
