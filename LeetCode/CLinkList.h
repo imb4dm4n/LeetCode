@@ -491,5 +491,71 @@ namespace LinkList {
 			Memory Usage: 17.4 MB, less than 81.34% of C++ online submissions for Populating Next Right Pointers in Each Node II.
 		*/
 
+		// https://leetcode.com/problems/copy-list-with-random-pointer/
+		// 138. Copy List with Random Pointer
+		/*
+			给定一个链表，每个节点还有一个random指针指向任意一个节点， 深拷贝这个链表，且新的链表不能指向旧的链表。
+			solution1： 用一个无序字典存储 它的地址和节点索引； 用一个vector存储新分配的链表节点的地址。
+			Runtime: 12 ms, faster than 54.98% of C++ online submissions for Copy List with Random Pointer.
+			Memory Usage: 11.5 MB, less than 9.74% of C++ online submissions for Copy List with Random Pointer.
+			Runtime: 8 ms, faster than 82.66% of C++ online submissions for Copy List with Random Pointer.
+			Memory Usage: 11.3 MB, less than 63.36% of C++ online submissions for Copy List with Random Pointer.
+		*/
+	namespace randNode {
+		class Node {
+		public:
+			int val;
+			Node* next;
+			Node* random;
+			
+			Node(int _val) {
+				val = _val;
+				next = NULL;
+				random = NULL;
+			}
+		};
+		#include<unordered_map>
+		using std::unordered_map;
+		Node* copyRandomList(Node* head) {
+			if(!head)
+				return nullptr;
+			unordered_map<Node*, int> map_addr_id;	// 节点的地址和索引 map
+			vector<Node*> addrs;
+			Node* ret_head = nullptr, *tmp = nullptr, *prev = nullptr, *org_head=head;
+			int i = 0;
+			while(head) {
+				map_addr_id[head] = i;
+				tmp = new Node(head->val);
+				if(!ret_head)
+					ret_head = tmp;
+				if(prev)
+					prev->next = tmp;
+				prev = tmp;
+				addrs.push_back(tmp);
+				++i;
+				head = head->next;
+			}
+			// 修复random节点
+			int n = 0;
+			head = org_head;
+			while(head) {
+				// 
+				if(head->random == nullptr) {
+					// next
+					head = head->next;
+					++n;
+					continue;
+				}
+				Node* cur = addrs[n];
+				// 取出 head->random的索引，链接当前节点cur的random到对应索引
+				int index = map_addr_id[head->random];
+				cur->random = addrs[index];
+				++n;
+				head = head->next;
+			}
+			return ret_head;
+		}
+	}
+
 	};
 };
