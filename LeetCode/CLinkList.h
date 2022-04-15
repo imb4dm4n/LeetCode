@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<iostream>
+using std::vector;
 namespace LinkList {
 
 
@@ -501,6 +502,103 @@ namespace LinkList {
 			Runtime: 8 ms, faster than 82.66% of C++ online submissions for Copy List with Random Pointer.
 			Memory Usage: 11.3 MB, less than 63.36% of C++ online submissions for Copy List with Random Pointer.
 		*/
+		// https://leetcode.com/problems/linked-list-cycle-ii/
+		// 142. Linked List Cycle II
+		// Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+		ListNode *detectCycle(ListNode *head) {
+			ListNode* fast=head,*slow=head;
+			while(fast && fast->next) {
+				fast = fast->next->next;
+				slow = slow->next;
+				if(fast && fast->next == slow) {
+					return slow;
+				}
+				if(fast == slow)
+					return slow;
+			}
+			return nullptr;
+		}
+
+		// https://leetcode.com/problems/reorder-list/
+		//143. Reorder List
+		/*You are given the head of a singly linked-list. The list can be represented as:
+
+		L0 → L1 → … → Ln - 1 → Ln
+		Reorder the list to be on the following form:
+
+		L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+		You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+		solution1： iterate over the list and save each node in a vector. 推导过程：
+		奇数和偶数个的节点，最终都把left节点的next设置为null
+		Input: head = [1,2,3,4,5]
+		Output: [1,5,2,4,3]
+		while l < r:
+			l = 0
+			r = 4
+			v[r]->next = v[l]->next
+			v[l]->next = v[r]
+			1->5
+			5->2
+			++l;
+			--r;
+			
+			// [1,5,2,3,4]
+			l = 1
+			r = 3
+			4->3 
+			2->4
+			3->4	--->>> fix this 
+			l=2
+			r=2
+
+		if l == r
+				v[l]->next = null;
+
+		1,5,2,4,3
+
+		[1,2,3,4]
+		[1,4,2,3]
+		l=0
+		r=3
+		1->4
+		4->2
+
+		l=1
+		r=2
+		3->3
+		2->3
+
+		l=2
+		r=1
+		if l>r:
+			l->next=null 
+		1->4->2->3->3
+
+		[1,5,2,4,3]
+		Runtime: 44 ms, faster than 77.60% of C++ online submissions for Reorder List.
+		Memory Usage: 19 MB, less than 12.71% of C++ online submissions for Reorder List.
+		*/
+		void reorderList(ListNode* head) {
+			vector<ListNode*> nodes;
+			int left=0,right=0;
+			while(head) {
+				nodes.push_back(head);
+				head = head->next;
+			}
+			right = nodes.size() - 1;
+			while(left < right) {
+				nodes[right]->next = nodes[left]->next;
+				nodes[left]->next = nodes[right];
+				++left;
+				--right;
+			}
+			// if(left == right)
+			nodes[left]->next = nullptr;
+		}
+
+
+	};
+	
 	namespace randNode {
 		class Node {
 		public:
@@ -555,7 +653,5 @@ namespace LinkList {
 			}
 			return ret_head;
 		}
-	}
-
 	};
 };
