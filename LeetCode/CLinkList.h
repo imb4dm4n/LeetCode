@@ -596,6 +596,55 @@ namespace LinkList {
 			nodes[left]->next = nullptr;
 		}
 
+		// https://leetcode.com/problems/insertion-sort-list/
+		// 147. Insertion Sort List
+		/*给定一个单链表，完成插入排序。 流程：
+		1.Insertion sort iterates, consuming one input element each repetition and growing a sorted output list.
+		2.At each iteration, insertion sort removes one element from the input data, finds the location it belongs within the  sorted list and inserts it there.
+		3.It repeats until no input elements remain.
+		插入排序思想： 两个数组，一个是已经排序的，另一个是无序的，从无序的开始迭代，逐个插入到有序的数组中。
+		每次迭代从输入数据取出一个元素，在有序链表中找到一个合适的位置插入，直到输入数据为空。
+		从小到大排序。
+		Runtime: 41 ms, faster than 65.92% of C++ online submissions for Insertion Sort List.
+		Memory Usage: 9.4 MB, less than 96.07% of C++ online submissions for Insertion Sort List.
+		*/
+		ListNode* insertionSortList(ListNode* head) {
+			if(!head || head->next == nullptr)
+				return head;
+			ListNode* ret_head = nullptr,* unsorted_head;// 一个保存有序链表头指针，一个保存 无序链表头指针
+			while(head) {
+				// 初始化
+				if(!ret_head){
+					ret_head = head;
+					head = head->next;
+					ret_head->next = nullptr;	// 关键点：有序链表的末尾先置空
+					continue;
+				}
+				// 开始插入排序
+				ListNode* tmp_head = ret_head, * prev=nullptr;
+				// 找到一个大于当前值的节点
+				while (tmp_head && tmp_head->val < head->val)
+				{
+					prev = tmp_head;
+					tmp_head = tmp_head->next;
+				}
+				unsorted_head = head->next;	// 保存下一个遍历无序链表的地址
+				if(prev) {
+					prev->next = head;
+					head->next = tmp_head;
+					head = unsorted_head;
+					continue;
+				}
+				else {
+					// 需要修改返回的头
+					ret_head = head;
+					head->next = tmp_head;
+					head = unsorted_head;
+					continue;
+				}
+			}
+			return ret_head;
+		}
 
 	};
 	
