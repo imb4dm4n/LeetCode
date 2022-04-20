@@ -6,6 +6,7 @@
 #include "CAddTwoNumbers.h"
 #include "ClengthOfLongestSubstring.h"
 #include "BinaryTree.h"
+#include "CConcurrency.h"
 void test_CTwoSum()
 {
     vector<int> nums = { 3,2,4 };

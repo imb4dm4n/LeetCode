@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="CAddTwoNumbers.h" />
+    <ClInclude Include="CConcurrency.h" />
     <ClInclude Include="CLeetCodeTests.h" />
     <ClInclude Include="ClengthOfLongestSubstring.h" />
     <ClInclude Include="CLinkList.h" />

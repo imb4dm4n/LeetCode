@@ -418,7 +418,7 @@ namespace LinkList {
 				: val(_val), left(_left), right(_right), next(_next) {}
 		};
 		#include<queue>
-		using std::queue;
+		//using std::queue;
 		// 计算树的最大高度
 		void tree_get_height(Node* root,int cur_dep, int& max_dep) {
 			if(!root)
@@ -646,6 +646,31 @@ namespace LinkList {
 			return ret_head;
 		}
 
+		// https://leetcode.com/problems/sort-list/
+		// 148. Sort List
+		/* given a head of sorted list, return the list after sorting it in ascending order. 
+		soulution1 : 参考147题，直接插入排序。 
+		*/
+		ListNode* sortList(ListNode* head) {
+			if(!head || head->next == nullptr)
+				return head;
+			ListNode tmp_head, *cur=head, *order_node=head;
+			tmp_head.next = head;
+			while(cur) { 
+				// 当前节点的值大于下一个节点的值. 把小的值 插入到有序链表里
+				if(cur->next && cur->next->val < cur->val) {
+					// 把下一个节点插入到有序链表
+					// 退出条件是 当前节点
+					while(order_node && (order_node->next && order_node->next->val < cur->next->val)) {
+						order_node = order_node->next;
+					}
+				}
+				else {
+					cur = cur->next;
+				}
+			}
+		}
+
 	};
 	
 	namespace randNode {
@@ -661,12 +686,12 @@ namespace LinkList {
 				random = NULL;
 			}
 		};
-		#include<unordered_map>
-		using std::unordered_map;
+		#include<map>
+		using std::map;
 		Node* copyRandomList(Node* head) {
 			if(!head)
 				return nullptr;
-			unordered_map<Node*, int> map_addr_id;	// 节点的地址和索引 map
+			map<Node*, int> map_addr_id;	// 节点的地址和索引 map
 			vector<Node*> addrs;
 			Node* ret_head = nullptr, *tmp = nullptr, *prev = nullptr, *org_head=head;
 			int i = 0;
