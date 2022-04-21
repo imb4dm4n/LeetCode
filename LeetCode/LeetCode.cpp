@@ -7,6 +7,33 @@
 #include "ClengthOfLongestSubstring.h"
 #include "BinaryTree.h"
 #include "CConcurrency.h"
+void test_concurrency()
+{
+    using namespace CConcurrency;
+    ZeroEvenOdd obj(10);
+    auto print = [](int num) {
+        std::cout<< num;
+    };
+    auto worker0 = [&]() {
+        obj.zero(print);
+        //std::cout<<" worker0 exit"<<std::endl;
+    };
+    auto worker1 = [&]() {
+        obj.even(print);
+        //std::cout<<" worker1 exit"<<std::endl;
+    };
+    auto worker2 = [&]() {
+        obj.odd(print);
+        //std::cout<<" worker2 exit"<<std::endl;
+    };
+    std::thread p(worker0);
+    std::thread p1(worker1);
+    std::thread p2(worker2);
+    p.join();
+    p1.join();
+    p2.join();
+
+}
 void test_CTwoSum()
 {
     vector<int> nums = { 3,2,4 };
@@ -138,7 +165,8 @@ void test_bst()
 }
 int main()
 {
-    test_bst();
+    test_concurrency();
+    // test_bst();
     //test_partition();
     //test_remove_dup();
     //test_ClengthOfLongestSubstring();

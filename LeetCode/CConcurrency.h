@@ -8,10 +8,92 @@
 #include <iostream>
 #include <condition_variable>
 #include <functional>
+#include <thread>
+#include <iostream>
 using std::function;
 using std::unique_lock;
 namespace CConcurrency
 {
+    // https://leetcode.com/problems/print-zero-even-odd/
+    // 1116. Print Zero Even Odd
+    /* 有一个可以在控制台输出数字的函数，启动3个线程，分别输出0，奇数、偶数。
+        实现一个类，给定数字n，输出偶数个结果： 0102..0n
+    solution: 这是一个线程同步问题. 线程zero等待一个信号,允许它输出0; 这个信号由两个
+    线程 even 和 odd 去修改; 输出完0后根据当前值切换信号，执行 even 或 odd 。
+    这个切换需要枚举, 到底是哪个线程 zero or even 去工作。
+    Runtime: 33 ms, faster than 52.04% of C++ online submissions for Print Zero Even Odd.
+    Memory Usage: 6.9 MB, less than 82.16% of C++ online submissions for Print Zero Even Odd.
+     */
+    enum thread_to_go
+    {
+        zero = 0,
+        odd = 1,
+        even = 2
+    };
+    class ZeroEvenOdd
+    {
+    private:
+        int n, current;
+        bool output_zero;
+        thread_to_go go;
+        std::mutex mtx;
+        std::condition_variable cv;
+
+    public:
+        ZeroEvenOdd(int n)
+        {
+            this->n = n;
+            this->current = 0;
+            go = thread_to_go::zero; // 先输出0
+        }
+
+        // printNumber(x) outputs "x", where x is an integer.
+        void zero(function<void(int)> printNumber)
+        {
+            for (int i=0;i<n;++i)
+            {
+                std::unique_lock<std::mutex> lck(mtx);
+                while (go != thread_to_go::zero)
+                    cv.wait(lck); // 等待允许输出0
+                printNumber(0);
+                if (i % 2 != 0)
+                {
+                    go = thread_to_go::even;
+                }
+                else
+                {
+                    go = thread_to_go::odd;
+                }
+                cv.notify_all();
+            }
+        }
+
+        void even(function<void(int)> printNumber)
+        {
+            for (int i=2;i<=n;i+=2)
+            {
+                std::unique_lock<std::mutex> lck(mtx);
+                while (go != thread_to_go::even)
+                    cv.wait(lck); // 等待允
+                printNumber(i);
+                go = thread_to_go::zero;
+                cv.notify_all();
+            }
+        }
+
+        void odd(function<void(int)> printNumber)
+        {
+            for (int i=1;i<=n;i+=2)
+            {
+                std::unique_lock<std::mutex> lck(mtx);
+                while (go != thread_to_go::odd)
+                    cv.wait(lck); // 等待允
+                printNumber(i);
+                go = thread_to_go::zero;
+                cv.notify_all();
+            }
+        }
+    };
     // https://leetcode.com/problems/print-foobar-alternately/
     // 1115. Print FooBar Alternately
     /*
