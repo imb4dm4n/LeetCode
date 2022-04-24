@@ -671,6 +671,40 @@ namespace LinkList {
 			}
 		}
 
+		// https://leetcode.com/problems/remove-linked-list-elements/
+		// 203. Remove Linked List Elements
+		/*
+			given a linked list and a integer val. remove nodes of the linked list that node.val == val. 
+			solution: use a dumy head to store the original head of the linked list. 
+			Runtime: 31 ms, faster than 49.70% of C++ online submissions for Remove Linked List Elements.
+			Memory Usage: 15.3 MB, less than 18.85% of C++ online submissions for Remove Linked List Elements.
+		*/
+		ListNode* removeElements(ListNode* head, int val) {
+			ListNode dumy, *prev;
+			dumy.next = head;
+			prev = &dumy;
+			for(;head;head=head->next)
+				if(head->val != val)
+					prev=head;
+				else
+					prev->next = head->next;
+
+			// solution 1:					
+			// while(head) {
+			// 	if(head->val == val) {
+			// 		prev->next = head->next;
+			// 		delete head;
+			// 		head = prev->next;
+			// 		continue;
+			// 	}
+			// 	// not equal, move forward to next
+			// 	prev = head;
+			// 	head = head->next;
+			// }
+			return dumy.next;
+
+		}
+
 	};
 	
 	namespace randNode {
