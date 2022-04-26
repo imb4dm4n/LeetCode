@@ -704,6 +704,43 @@ namespace LinkList {
 			return dumy.next;
 
 		}
+		// https://leetcode.com/problems/odd-even-linked-list/
+		// 328. Odd Even Linked List
+		/*
+		given the head of singly linked list, group all the nodes with odd indices together followed by the nodes with even indices. must O(1) space and O(N) time complexity.
+		solution: 给一个计数器，当前指针，两个头指针，两个临时指针， 遍历原始链表，
+		计数器为奇数时加入到 odd，为偶数时加入到 even 链表，最后拼接两个链表。
+		Runtime: 8 ms, faster than 95.44% of C++ online submissions for Odd Even Linked List.
+		Memory Usage: 10.4 MB, less than 75.98% of C++ online submissions for Odd Even Linked List.
+		*/
+		ListNode* oddEvenList(ListNode* head) {
+			if(!head || !head->next)
+				return head;
+			ListNode head_odd , head_even ,
+			*tmp_odd, *tmp_eve=nullptr;
+			int i =1;
+			tmp_odd = &head_odd;
+			tmp_eve = &head_even;
+			while (head)
+			{
+				if(i % 2 != 0) {
+					// odd
+					tmp_odd->next = head;
+					tmp_odd = head;
+				}
+				else {
+					// even
+					tmp_eve->next = head;
+					tmp_eve = head;
+				}
+				++i;
+				head = head->next;
+			}
+			tmp_odd->next = head_even.next;
+			tmp_eve->next = nullptr;
+			return head_odd.next;
+			
+		}
 
 	};
 	
