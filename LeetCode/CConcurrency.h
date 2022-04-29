@@ -14,6 +14,41 @@ using std::function;
 using std::unique_lock;
 namespace CConcurrency
 {
+    // https://leetcode.com/problems/building-h2o/
+    // 1117. Building H2O
+    /*
+        有两类线程，氧气和氢气线程，编码实现控制这两个线程生成一个水分子。 限制：输出一个氧气必须等待两个氢气，同理以此类推……
+        solution： 这又是一个线程同步问题。 通过一个信号量同步两个线程重新生成H和O。 两个变量记录生成的H、O个数。 达到一个水分子个数
+        时，等待
+    */
+    class H2O
+    {
+    private:
+        int count_h, count_o;
+        std::mutex mtx;
+        std::condition_variable cv;
+
+    public:
+        H2O()
+        {
+            count_h = count_o = 0;
+        }
+
+        void hydrogen(function<void()> releaseHydrogen)
+        {
+            while(true) {
+                
+            }
+            releaseHydrogen();
+        }
+
+        void oxygen(function<void()> releaseOxygen)
+        {
+
+            // releaseOxygen() outputs "O". Do not change or remove this line.
+            releaseOxygen();
+        }
+    };
     // https://leetcode.com/problems/print-zero-even-odd/
     // 1116. Print Zero Even Odd
     /* 有一个可以在控制台输出数字的函数，启动3个线程，分别输出0，奇数、偶数。
@@ -50,7 +85,7 @@ namespace CConcurrency
         // printNumber(x) outputs "x", where x is an integer.
         void zero(function<void(int)> printNumber)
         {
-            for (int i=0;i<n;++i)
+            for (int i = 0; i < n; ++i)
             {
                 std::unique_lock<std::mutex> lck(mtx);
                 while (go != thread_to_go::zero)
@@ -70,7 +105,7 @@ namespace CConcurrency
 
         void even(function<void(int)> printNumber)
         {
-            for (int i=2;i<=n;i+=2)
+            for (int i = 2; i <= n; i += 2)
             {
                 std::unique_lock<std::mutex> lck(mtx);
                 while (go != thread_to_go::even)
@@ -83,7 +118,7 @@ namespace CConcurrency
 
         void odd(function<void(int)> printNumber)
         {
-            for (int i=1;i<=n;i+=2)
+            for (int i = 1; i <= n; i += 2)
             {
                 std::unique_lock<std::mutex> lck(mtx);
                 while (go != thread_to_go::odd)
