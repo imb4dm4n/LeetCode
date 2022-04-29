@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<iostream>
+#include<random>
 using std::vector;
 namespace LinkList {
 
@@ -742,6 +743,48 @@ namespace LinkList {
 			
 		}
 
+		// https://leetcode.com/problems/linked-list-random-node/
+		// 382. Linked List Random Node
+		/*
+			given a singly linked list, return a random node's value from it. Each node should have same probability of being chosen. Implement ths class.
+			input : ["Solution", "getRandom", "getRandom", "getRandom", "getRandom", "getRandom"]
+			[[[1, 2, 3]]
+			output: [null, 1, 3, 2, 2, 3]
+			follow up: the list is extremely large and length is unknown. use O(1) space.
+			solution: 
+		*/
+		class Solution {
+		private:
+			ListNode* m_head;
+			long long m_index;
+		public:
+			Solution(ListNode* head) {
+				// srand(reinterpret_cast<unsigned int>(head));
+				srand(1);
+				m_index = rand();
+			}
+			
+			int getRandom() {
+				if(!m_head)
+					return 0;
+				ListNode* tmp = m_head;
+				int len = 0, cur = 0;
+				while(tmp && cur != m_index) {
+					tmp = tmp->next;
+					if(!tmp && cur < m_index) {
+						// overflow
+						m_index = m_index % cur;
+						tmp = m_head;
+						cur = 0;
+					}
+				}
+				m_index = rand();
+				return tmp->val;
+				
+			}
+		};
+
+
 	};
 	
 	namespace randNode {
@@ -798,5 +841,70 @@ namespace LinkList {
 			}
 			return ret_head;
 		}
+	};
+		// https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
+		// 430. Flatten a Multilevel Doubly Linked List
+		/*
+		扁平化一个多层次的双向链表。 使得所有层都在同一层。 返回的链表的每个节点 child 都为 null
+		solution: 循环扫描链表， 保存当前指针，下一个指针，遇到有child时，递归进入，遍历完毕一个没有
+		child的链表，返回它的尾部指针.
+		Input:
+		[1,null,2,null,3,null]
+		Output:
+		[1,2]
+		Expected:
+		[1,2,3]
+		Runtime: 3 ms, faster than 86.78% of C++ online submissions for Flatten a Multilevel Doubly Linked List.
+		Memory Usage: 7.3 MB, less than 92.56% of C++ online submissions for Flatten a Multilevel Doubly Linked List.
+		Runtime: 0 ms, faster than 100.00% of C++ online submissions for Flatten a Multilevel Doubly Linked List.
+		Memory Usage: 7.5 MB, less than 20.34% of C++ online submissions for Flatten a Multilevel Doubly Linked List.
+		*/
+	namespace Node2{
+		class Solution {
+		public:
+			class Node {
+			public:
+				int val;
+				Node* prev;
+				Node* next;
+				Node* child;
+			};
+			// 递归的扁平化链表
+			Node* recursive_flatten(Node* cur) {
+				if(!cur)
+					return nullptr;
+				Node* cur_next, * tail = cur;
+				while(cur) {
+					cur_next = cur->next;
+					if(cur->child) {
+						// has next level
+						tail = recursive_flatten(cur->child);
+						cur->next = cur->child;	// 当前节点下一个节点改为 child
+						cur->child->prev = cur; // child 节点的 prev 为当前节点
+						tail->next = cur_next;	// 从 2 返回到 1 的时候， tail 指针不是指向3，而是 2，导致回到1，把节点3删除了
+						if(cur_next)
+							cur_next->prev = tail;
+						cur->child = nullptr;
+						// ----------------- > 关键点 < -----------------
+						if(!cur_next)
+							return tail;
+					}
+					// 如何找到正确的 tail 指针返回
+					if(!cur_next)
+						tail = cur;
+					cur = cur_next;
+				}
+				return tail;
+			}
+			Node* flatten(Node* head) {
+				// 0 ms 
+				recursive_flatten(head);
+				return head;
+				// 3 ms
+				// Node* tmp_head = head;
+				// recursive_flatten(head);
+				// return tmp_head;
+			}
+		};
 	};
 };

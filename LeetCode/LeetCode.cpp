@@ -134,6 +134,13 @@ void test_vec()
     vector<int> a = { 1,2 };
     vector<int> b = { 3,4 };
 }
+
+void test_random_list()
+{
+    //LinkList::CLinkList l;
+    LinkList::CLinkList::Solution s(nullptr);
+    s.getRandom();
+}
 using namespace letcoode;
 void test_bst()
 {/*
@@ -165,7 +172,8 @@ void test_bst()
 }
 int main()
 {
-    test_concurrency();
+    test_random_list();
+    //test_concurrency();
     // test_bst();
     //test_partition();
     //test_remove_dup();
