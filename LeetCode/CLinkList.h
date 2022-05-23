@@ -32,6 +32,68 @@ namespace LinkList {
 		}
 
 	public:
+		// https://leetcode.com/problems/split-linked-list-in-parts/
+		// 725. Split Linked List in Parts
+		/*
+			把一个链表平均分为 k 个子链表, 要求顺序不变, 且每个子链表长度相差不超过1个节点, 前面的链表长度更长
+			solution: 1. 计算链表长度 s, 除以k得到每个子链表长度 s/k = l , 若 l == 0 , 则每个链表长度为1 , 不足的用 null 填充,
+			若 l > 0 , 每个链表长度为 l, 多余的 s%k = left, 前面的子链表, 每个长度都 + 1 直到 left = 0. 
+			先插入链表到结果, 然后找到 断链的地方. 
+			Runtime: 7 ms, faster than 79.43% of C++ online submissions for Split Linked List in Parts.
+			Memory Usage: 8.8 MB, less than 60.80% of C++ online submissions for Split Linked List in Parts.
+		*/
+		vector<ListNode*> splitListToParts(ListNode* head, int k) {
+			int length = 0;
+			ListNode* tmp = head;
+			vector<ListNode*> ret;
+			// if(!head)	// 可以传入空的链表
+			// 	return ret;
+			// 计算长度
+			while(tmp) {
+				++length;
+				tmp = tmp->next;
+			}
+			int l = length / k;
+			int left = length % k;
+			// k 大于节点个数
+			if(l == 0) {
+				while (k > 0)
+				{
+					if(head) {
+						ret.push_back(head);
+						tmp = head->next;
+						head->next = nullptr;
+						head = tmp;
+					}
+					else {
+						ret.push_back(nullptr);
+					}
+					--k;
+				}
+				return ret;
+			}
+			// k 小于节点个数
+			while (head)
+			{
+				// 每个子链长度为 l + 1
+				int tmp_len = 1;
+				ret.push_back(head);
+				while(tmp_len < l) {
+					head = head->next;
+					++tmp_len;
+				}
+				// 多余的 1个节点
+				if(left) {
+					head = head->next;
+					--left;
+				}
+				tmp = head->next;
+				head->next = nullptr;
+				head = tmp;
+			}
+			return ret;
+		}
+
 		// remove n-th node from the end of list . return the head
 		// find the node and it's previous node , change prev node.next = cur.next
 		// edge situation : the removed node is the head .
