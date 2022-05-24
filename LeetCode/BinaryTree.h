@@ -1128,6 +1128,59 @@ namespace letcoode{
 			postorder_(root, result);
 			return result;
     	}
+		// https://leetcode.com/problems/n-ary-tree-level-order-traversal/
+		// 429. N-ary Tree Level Order Traversal
+		/*
+			given an n-ary tree, return the level order traversal of its node's values.
+			solution1: use a queue to store nodes to be traversed next time. traverse until the queue is empty.
+			Runtime: 39 ms, faster than 24.66% of C++ online submissions for N-ary Tree Level Order Traversal.
+			Memory Usage: 11.8 MB, less than 34.21% of C++ online submissions for N-ary Tree Level Order Traversal.
+
+			solution2: 大神的思路, DFS 保存层级关系, 预分配结果, 直接根据层级索引找到需要写入结果的索引.
+			Runtime: 23 ms, faster than 86.26% of C++ online submissions for N-ary Tree Level Order Traversal.
+			Memory Usage: 11.8 MB, less than 63.14% of C++ online submissions for N-ary Tree Level Order Traversal.
+		*/
+		void dfs_levelOrder_(Node* node, int level, vector<vector<int>>& ret) {
+			// dfs insert
+			if(!node)
+				return;
+			if(ret.size() == level)
+				ret.emplace_back();
+			// ret[level].push_back(node->val); // 在这里会很慢
+			for(auto it: node->children)
+				dfs_levelOrder_(it, level + 1, ret);
+			// 这一句放前面会变很慢
+			ret[level].push_back(node->val);
+		}
+		vector<vector<int>> levelOrder(Node* root) {
+			// solution2:
+			vector<vector<int>> ret ;
+			dfs_levelOrder_(root, 0, ret);
+			return ret;
+			// solution1:
+			// queue<Node*> level_nodes;
+			// vector<vector<int>> ret ;
+			// if(!root)
+			// 	return ret;
+			// level_nodes.push(root);
+			// // loop until queue is empty
+			// while(!level_nodes.empty()) {
+			// 	// 获取当前队列大小, 因为在遍历的时候, 会往队列加新的节点
+			// 	int size = level_nodes.size();
+			// 	vector<int> tmp;
+			// 	while(size > 0) {
+			// 		-- size;
+			// 		Node* head = level_nodes.front();
+			// 		level_nodes.pop();
+			// 		tmp.push_back(head->val);
+			// 		// 当前节点的所有子节点入队列
+			// 		for(auto it:head->children)
+			// 			level_nodes.push(it);
+			// 	}
+			// 	ret.push_back(tmp);
+			// }
+			// return ret;
+		}
 		
 	};// end of namespace n-ary tree
 
