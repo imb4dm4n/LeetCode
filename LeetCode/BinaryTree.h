@@ -1895,4 +1895,37 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		TreeNode* tmp = nullptr;
 		flat_to_right(root, tmp);
     }
+
+	// https://leetcode.com/problems/sum-root-to-leaf-numbers/
+	// 129. Sum Root to Leaf Numbers
+	/*
+		You are given the root of a binary tree containing digits from 0 to 9 only.
+		Each root-to-leaf path in the tree represents a number.
+		For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
+		Return the total sum of all root-to-leaf numbers. Test cases are generated so that the answer will fit in a 32-bit integer.
+		solution: 
+			dfs: 一个变量保存到当前节点构成的数字  cur_val , 一个变量保存最终的 和 sum, 
+			每进入一层计算一次 cur_val = val + cur_val * 10
+			遇到 null 节点时, 把 cur_val
+			Runtime: 4 ms, faster than 43.19% of C++ online submissions for Sum Root to Leaf Numbers.
+			Memory Usage: 9.3 MB, less than 49.14% of C++ online submissions for Sum Root to Leaf Numbers.
+	*/
+	void dfs_sumNumbers(TreeNode* root, int cur_val, int& sum) {
+        if(!root)
+			return ;
+		if(root->left == nullptr && root->right == nullptr) {
+			// the leaf
+			sum += cur_val*10 + root->val;
+			return ;
+		}
+		dfs_sumNumbers(root->left, cur_val*10 + root->val, sum);
+		dfs_sumNumbers(root->right, cur_val*10 + root->val, sum);
+    }
+	int sumNumbers(TreeNode* root) {
+        if(!root)
+			return 0;
+		int sum =0, cur_val = 0;
+		dfs_sumNumbers(root, cur_val, sum);
+		return sum;
+    }
 };
