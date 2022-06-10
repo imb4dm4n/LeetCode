@@ -172,7 +172,10 @@ void test_bst()
 }
 int main()
 {
-    test_random_list();
+    string s = "hlelo";
+    string* l = new string("asdjdaos qwoejqiwoe2109093z zxjczoasjiod2");
+    std::cout << l->c_str() << s.c_str();
+    //test_random_list();
     //test_concurrency();
     // test_bst();
     //test_partition();

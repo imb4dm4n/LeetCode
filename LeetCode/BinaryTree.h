@@ -1928,4 +1928,128 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		dfs_sumNumbers(root, cur_val, sum);
 		return sum;
     }
+	// https://leetcode.com/problems/serialize-and-deserialize-bst/
+	// 449. Serialize and Deserialize BST
+	/*
+		design a class which can serialize a bst to a string , and convert it back to bst.
+		solution: 中序遍历得到顺序的结果; 然后用中序遍历构造 bst ... 直接代码复用啊..
+	*/
+	// https://leetcode.com/problems/delete-node-in-a-bst/
+	// 450. Delete Node in a BST
+	/*
+		given a root node reference of a BST and a key. delete the node with the given key in the BST. return the root node of the BST.
+		hint: 1.search the key to remove. 2.if the node if found, delete it.
+		constraints: each node has unique value.
+		solution1: 判断删除的节点类型: 叶子节点(直接删除父节点对它的引用); 
+		非叶子非根节点(最多影响两个节点, 它的父节点和一个子节点);
+		根节点(找到右子树的最左节点,)
+		solution2: 中序遍历, 找到目标节点后, 把后面的节点的值往前面修改, 最后只要删除最后一个节点的引用即可.
+		类似从 [1,2,3,4,5,] 删除4 , 得到 [1,2,3,5,] 把5的值修改到4上, 最后再删除对原始5的引用.
+		solution3: 注意这是BST, 搜索应该是 logN 时间复杂度. 前一个算法是 N 的时间复杂.
+		solution4: 别人的. 删除节点主要3种情况: 
+		a.叶子节点 : 直接删除父节点对它的引用
+		b.目标有一个子节点: 让目标的父节点引用它的子节点
+		c:目标有两个子节点: 替换目标节点为 左子树最大的值 或 右子树最小的值, 同时删除
+		选择的子树中 被替换值的节点
+	*/
+	// void inorder_search_delete_bst(TreeNode* cur, TreeNode*& prev, TreeNode*& prev_2, int key, bool& found) {
+	// 	if(!cur)
+	// 		return;
+	// 	inorder_search_delete_bst(cur->left, cur,prev_2, key, found);
+	// 	if(found && prev) {
+	// 		// 找到目标, 开始覆盖
+	// 		prev->val = cur->val;
+	// 	}
+	// 	prev_2 = prev;
+	// 	prev = cur;	//	记录当前节点
+	// 	if(cur->val == key) {
+	// 		found = true;	// 可以进行替换
+	// 	}
+	// 	inorder_search_delete_bst(cur->right, cur,prev_2, key, found);
+	// }
+	/*
+		二分查找目标, 找到设置它的父节点
+		@param	node	节点指针
+		@param	key		目标数字
+		@param	parent	保存目标数字的父节点指针
+	*/
+	// void bst_search(TreeNode* node, int key, TreeNode*& parent) {
+	// 	if(!node)
+	// 		return;
+	// 	if(node->val == key)
+	// 		return;
+	// 	// search the right sub tree
+	// 	if(key > node->val) {
+	// 		// if found target, set its parent
+	// 		if(node->right && node->right->val == key){
+	// 			parent = node;
+	// 			return;
+	// 		}
+	// 		bst_search(node->right, key, parent);
+	// 	}
+	// 	// search the left sub tree 
+	// 	else {
+	// 		if(node->left && node->left->val == key){
+	// 			parent = node;
+	// 			return;
+	// 		}
+	// 		bst_search(node->left, key, parent);
+	// 	}
+	// }
+	TreeNode* deleteNode(TreeNode* root, int key) {
+		if(root)
+			if(root->val < key)			// root 小于 target 搜索 右子树
+				root->right = deleteNode(root->right, key);
+			else if(root->val > key)	// root 大于 target 搜索 左子树
+				root->left = deleteNode(root->left, key);
+			else {
+				// found target key with 3 conditions
+				// a. target has no child
+				if(!root->left && !root->right)
+					return nullptr;
+				// b. target has one child, return it
+				if(!root->left || !root->right)
+					return root->left ? root->left : root->right;
+				// c. target has two children. search for the greatest node in the left sub-tree or smallest node in the right sub-tree.
+				TreeNode* tmp = root->left;	// I search for the left sub-tree
+				while(tmp->right)	tmp = tmp->right;
+				// replace current node's value with the greatest node in the left sub-tree
+				root->val = tmp->val;
+				// delete the duplicated node
+				root->left = deleteNode(root->left, root->val);
+			}
+		return root;
+		// if(!root)
+		// 	return nullptr;
+
+		// TreeNode* parent=nullptr;
+		// bst_search(root, key, parent);
+		// // 判断是否为根节点
+		// if(root->val == key) {
+		// 	// 把左子树最右的节点作为根
+		// 	// 或者把右子树最左的节点作为根
+		// }
+		// // 找到节点的父节点了
+		// if(parent) {
+		// 	// 确认节点
+		// 	TreeNode* target = nullptr;
+		// 	if(parent->left && parent->left->val == key)
+		// 		target = parent->left;
+		// 	else
+		// 		target = parent->right;
+			
+		// }
+		// // 没找到节点直接返回
+		// else {
+		// 	return root;
+		// }
+        // if(!root)
+		// 	return nullptr;
+		// bool found = false;
+		// TreeNode* prev = nullptr, *prev_2;
+		// inorder_search_delete_bst(root, prev, prev_2, key, found);
+		// if(found) {
+		// 	// 
+		// }
+    }
 };
