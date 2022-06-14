@@ -5,6 +5,43 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+    // 153. Find Minimum in Rotated Sorted Array
+    /*给定一个升序排序的数组 [0,1,2,4,5,6,7] , 它可能被旋转了:
+    4次 [4,5,6,7,0,1,2] 也可能是 7次 [0,1,2,4,5,6,7] .
+    所有元素不重复, 找出最小的元素. 要求时间复杂度 O(log n)
+    solution: 注意到, 1.旋转后把数组分成两个 升序排序的子数组. [4,5,6,7] [0,1,2].
+    2.并且左边的数组所有元素, 一定都大于右边的数组. 如果不符合这个条件, 则说明 没旋转.
+    3.通过二分查找, 从左边的数组逼近最大值, 从右边的数组逼近最小值. 直到两个 索引
+    相差为1
+    Runtime: 3 ms, faster than 84.25% of C++ online submissions for Find Minimum in Rotated Sorted Array.
+    Memory Usage: 10.1 MB, less than 72.48% of C++ online submissions for Find Minimum in Rotated Sorted Array.
+    */
+    int findMin(vector<int> &nums)
+    {
+        int left = 0, right = nums.size() - 1;
+        int mid = 0;
+        // 1.没有被旋转 或者 只有一个元素
+        if (nums[left] < nums[right] || nums.size() == 1)
+            return nums[0];
+        // 不断逼近 left 和 right, 直到他们的索引相差为 1
+        while (left != right - 1)
+        {
+            mid = (left + right + 1) / 2;
+            if (nums[mid] > nums[left])
+            {
+                // 说明 mid 在左边的升序数组, 最小值在右边, 逼近左边最大值
+                left = mid;
+                continue;
+            }
+            else
+            {
+                // 说明 mid 在右边的升序数组, 最小值在左边, 逼近右边最小值
+                right = mid;
+            }
+        }
+        return nums[right];
+    }
     int fib(int n);
     // https://leetcode.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
     // 1414. Find the Minimum Number of Fibonacci Numbers Whose Sum Is K
