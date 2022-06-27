@@ -17,10 +17,12 @@ namespace letcoode
     Explanation: [4,-1,2,1] has the largest sum = 6.
     1 <= nums.length <= 105
     -10^4 <= nums[i] <= 10^4
-    思路: 
+    思路:
     对于每一个数字, 我们可以选择 加入 或 不加入
-        加入  :  则后序所有的数字都加入
-        不加入:  
+        加入  :  则后序所有的数字都加入, 否则选择的数组就不是连续的了
+        不加入:  则从后面的数字开始选择
+    Runtime: 171 ms, faster than 40.40% of C++ online submissions for Maximum Subarray.
+    Memory Usage: 83.5 MB, less than 5.90% of C++ online submissions for Maximum Subarray.
     // 类似求最长回文, 只不过这里是累加出最大的值而已.
     // 初始化矩阵, 把对角线的值填上去. 然后从下往上, 从左往右计算和,找出最大值. (超时)
     Input:
@@ -30,29 +32,54 @@ namespace letcoode
     Expected:
     23
     */
+    /*
+     @param  nums        输入数据
+     @param  index       当前选择的数字
+     @param  sums        保存每个数字是否被选中时, 得到的最大和
+     @param  pick_cur    是否选择当前数字
+     @returns  int       最大的和
+    */
+    const int boundary = -0xffffff;
+    int dp_find_max_sub_array(const vector<int> &nums, int index, vector<vector<int>> &sums, bool pick_cur)
+    {
+        if (index >= nums.size())
+            return pick_cur ? 0 : boundary; // 边界, 若选择边界, 则返回0, 因为边界是不存在的值,返回0 不改变和的结果; 不选择边界, 则边界被作为 单一值返回 来比较. ie 输入[-2, -1]
+        // 读取重叠的子问题解
+        if (sums[pick_cur][index] != boundary)
+            return sums[pick_cur][index];
+        // 需要当前节点, 则返回 当前节点 + 后序能找到的最大值, 并保存子问题的结果
+        if (pick_cur)
+            return sums[pick_cur][index] = max(0, nums[index] + dp_find_max_sub_array(nums, index + 1, sums, true));
+        // 不一定需要当前节点, 返回 当前节点 + 后序节点能找到的最大值;  或 不需要当前节点
+        return sums[pick_cur][index] = max(
+                   nums[index] + dp_find_max_sub_array(nums, index + 1, sums, true),
+                   dp_find_max_sub_array(nums, index + 1, sums, false));
+    }
     int maxSubArray(vector<int> &nums)
     {
         if (nums.size() == 1)
             return nums[0];
+        vector<vector<int>> sums(2, vector<int>(nums.size(), boundary));
+        return dp_find_max_sub_array(nums, 0, sums, false);
         // ----------------------- 超时1 -----------------------
-        int size_in = nums.size();
-        int max_sum = nums[0];
-        vector<vector<int>> matrix_sum(nums.size(), vector<int>(nums.size(), 0));
-        for (int i = 0; i < size_in; ++i)
-        {
-            matrix_sum[i][i] = nums[i];
-            max_sum = nums[i] > max_sum ? nums[i] : max_sum;
-        }
-        // 从下往上
-        for (int y = size_in - 2; y >= 0; --y)
-            // 从左往右, x 最小值为 1, y 最小值为 0
-            for (int x = y + 1; x < size_in; ++x)
-            {
-                matrix_sum[y][x] = matrix_sum[y][x - 1] + nums[x];
-                if (matrix_sum[y][x] > max_sum)
-                    max_sum = matrix_sum[y][x];
-            }
-        return max_sum;
+        // int size_in = nums.size();
+        // int max_sum = nums[0];
+        // vector<vector<int>> matrix_sum(nums.size(), vector<int>(nums.size(), 0));
+        // for (int i = 0; i < size_in; ++i)
+        // {
+        //     matrix_sum[i][i] = nums[i];
+        //     max_sum = nums[i] > max_sum ? nums[i] : max_sum;
+        // }
+        // // 从下往上
+        // for (int y = size_in - 2; y >= 0; --y)
+        //     // 从左往右, x 最小值为 1, y 最小值为 0
+        //     for (int x = y + 1; x < size_in; ++x)
+        //     {
+        //         matrix_sum[y][x] = matrix_sum[y][x - 1] + nums[x];
+        //         if (matrix_sum[y][x] > max_sum)
+        //             max_sum = matrix_sum[y][x];
+        //     }
+        // return max_sum;
         // ---------------------- 超时 ----------------------
         // int max_sum = nums[0];
         // for (int i = 0; i < nums.size(); ++i)
