@@ -5,6 +5,62 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/powx-n/
+    // 50. Pow(x, n)
+    /*Implement pow(x, n), which calculates x raised to the power n (i.e., x^n).
+    Input: x = 2.00000, n = 10
+    Output: 1024.00000
+    */
+    /*
+    快速计算 次方: a^n = a^ (n/2) *  a^ (n/2)
+    Runtime: 4 ms, faster than 31.47% of C++ online submissions for Pow(x, n).
+    Memory Usage: 5.9 MB, less than 42.94% of C++ online submissions for Pow(x, n).
+    Runtime: 3 ms, faster than 46.40% of C++ online submissions for Pow(x, n).
+    Memory Usage: 5.9 MB, less than 42.94% of C++ online submissions for Pow(x, n).
+    */
+    double quick_pow(double x, int exponent)
+    {
+        if (exponent == 0)
+            return 1;
+        if (exponent == 1)
+            return x;
+        double result = 1;
+        unsigned int u_exp = exponent;
+        if (exponent < 0 && u_exp != 2147483648) // exponent = -2147483648 时, (unsigned int)(-exponent) 会溢出导致异常
+            u_exp = (unsigned int)(-exponent);
+        else
+            u_exp = (unsigned int)(exponent);
+        result = quick_pow(x, u_exp >> 1);
+        result *= result;
+        // 奇数次方, 额外乘一次
+        if (exponent & 1)
+            result *= x;
+        if (exponent < 0)
+            result = 1 / result;
+        return result;
+    }
+    double myPow(double x, int n)
+    {
+        double ans = 1;
+        long exponent = n;
+        long absExponent = exponent < 0 ? -exponent : exponent;
+        while (absExponent)
+        {
+            if ((absExponent & 1) == 1)
+                ans *= x;
+            absExponent = absExponent >> 1;
+            x *= x;
+        }
+        return n < 0 ? 1 / ans : ans;
+
+        // solution 1
+        // if (x == 0 || x == 1)
+        //     return x;
+        // if (n == 0) // 任何数的 0 次方都是1
+        //     return 1;
+        // return quick_pow(x, n);
+    }
+
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
     // 153. Find Minimum in Rotated Sorted Array
     /*给定一个升序排序的数组 [0,1,2,4,5,6,7] , 它可能被旋转了:

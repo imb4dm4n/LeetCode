@@ -111,6 +111,8 @@ namespace letcoode
         因为 动态规划是 从上往下分析问题, 从下往上 计算子问题, 因此 i,j 的值是从小开始递增.
         Runtime: 1830 ms, faster than 5.00% of C++ online submissions for Longest Palindromic Substring.
         Memory Usage: 47.6 MB, less than 26.57% of C++ online submissions for Longest Palindromic Substring.
+        思路2:
+        简单的暴力查找. 从任意一个字符作为中点, 开始寻找回文. 记录最长的回文起始偏移.
     */
     string longestPalindrome(string s)
     {

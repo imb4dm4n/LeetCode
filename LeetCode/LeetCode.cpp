@@ -6,7 +6,14 @@
 #include "CAddTwoNumbers.h"
 #include "ClengthOfLongestSubstring.h"
 #include "BinaryTree.h"
+#include "CAlgorithm.h"
 #include "CConcurrency.h"
+void test_algorithm()
+{
+    using namespace letcoode;
+    double r = myPow(2, -2147483648);
+    printf("retulr %d \n", r);
+}
 void test_concurrency()
 {
     using namespace CConcurrency;
@@ -172,6 +179,7 @@ void test_bst()
 }
 int main()
 {
+    test_algorithm();
     string s = "hlelo";
     string* l = new string("asdjdaos qwoejqiwoe2109093z zxjczoasjiod2");
     std::cout << l->c_str() << s.c_str();
