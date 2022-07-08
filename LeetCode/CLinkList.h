@@ -32,6 +32,30 @@ namespace LinkList {
 		}
 
 	public:
+		// https://leetcode.com/problems/delete-node-in-a-linked-list/
+		// 237. Delete Node in a Linked List
+		/*Write a function to delete a node in a singly-linked list. You will not be given access to the head of the list, instead you will be given access to the node to be deleted directly.
+		It is guaranteed that the node to be deleted is not a tail node in the list.
+		约束: 至少有两个节点; 删除的不是尾部节点.
+		思路: 拷贝节点的下一个节点值到需要被删除的节点, 并修改需要被删除节点的 next.
+		node可能为: 头部(由于至少有两个节点, 因此如上算法可以直接对头节点修改); 中间位置(上述算法正常运行)
+		Runtime: 32 ms, faster than 5.65% of C++ online submissions for Delete Node in a Linked List.
+		Memory Usage: 7.7 MB, less than 39.39% of C++ online submissions for Delete Node in a Linked List.
+		Runtime: 14 ms, faster than 79.76% of C++ online submissions for Delete Node in a Linked List.
+		Memory Usage: 7.5 MB, less than 92.04% of C++ online submissions for Delete Node in a Linked List.
+		*/
+		void deleteNode(ListNode* node) {
+			ListNode* temp = node->next;
+			*node = *temp;
+			delete temp;
+			// if(!node)
+			// 	return;
+			// ListNode* pNext = node->next;
+			// node->val = pNext->val;
+			// node->next = pNext->next;
+			// delete pNext;
+			// pNext = nullptr;
+		}
 		// https://leetcode.com/problems/split-linked-list-in-parts/
 		// 725. Split Linked List in Parts
 		/*

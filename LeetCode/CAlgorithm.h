@@ -5,6 +5,54 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/regular-expression-matching/
+    // 10. Regular Expression Matching
+    /*
+    Given an input <string s> and a <pattern p>, implement regular expression matching with support for '.' and '*' where:
+    '.' Matches any single character.​​​​
+    '*' Matches zero or more of the preceding element.
+    The matching should cover the entire input string (not partial).
+    思路: 正则表达式是一个状态机, 当符合限制的输入才能达到终止状态. 状态机在某些特定条件下会
+    进行状态转移, 失败状态可以退出.
+    
+    Runtime: 1397 ms, faster than 5.01% of C++ online submissions for Regular Expression Matching.
+    Memory Usage: 6.4 MB, less than 74.02% of C++ online submissions for Regular Expression Matching.
+    */
+    bool match_core(const char *s, const char *p)
+    {
+        // 输入 和 匹配串 都结束
+        if (*s == NULL && *p == NULL)
+            return true;
+        // 匹配串提前结束
+        if (*s != NULL && *p == NULL)
+            return false;
+        // 下一个匹配字符是 *
+        if (*(p + 1) == '*')
+        {
+            // 分为 .* 和 [a-z]* 两种情况
+            if (*s == *p || (*p == '.' && *s != NULL))
+            {
+                return match_core(s + 1, p + 2) ||
+                       match_core(s + 1, p) ||
+                       match_core(s, p + 2);
+            }
+            // 当前输入字符 不匹配, 则移动匹配串: 因为 * 可以表示0个 前一个字符
+            // ie:  p=ab*bd; s= acb; b* 可以匹配0个b, 因此移动匹配串
+            else
+            {
+                return match_core(s, p+2);
+            }
+        }
+        // 下一个匹配字符不是 *
+        if (*s == *p ||
+            (*s != NULL && *p == '.'))
+            return match_core(s + 1, p + 1);
+        return false;
+    }
+    bool isMatch(string s, string p)
+    {
+        return match_core(s.c_str(), p.c_str());
+    }
     // https://leetcode.com/problems/powx-n/
     // 50. Pow(x, n)
     /*Implement pow(x, n), which calculates x raised to the power n (i.e., x^n).
