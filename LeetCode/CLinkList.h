@@ -32,6 +32,60 @@ namespace LinkList {
 		}
 
 	public:
+		// 142. Linked List Cycle II
+		// https://leetcode.com/problems/linked-list-cycle-ii/
+		/*
+			Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+			solution:
+			1. judge whether there is a loop in the cycle and find a node in that cycle.
+			2. calculate the length of the cycle n.
+			3. construct a pair of node for their distance is n. move them synchronic till they meet each other, there is the entry of the loop. 
+			Runtime: 14 ms, faster than 48.16% of C++ online submissions for Linked List Cycle II.
+			Memory Usage: 7.7 MB, less than 20.98% of C++ online submissions for Linked List Cycle II.
+		*/
+		/*
+			若链表存在环, 则返回环中某个节点的地址, 否则返回 null
+		*/
+		ListNode * get_node_in_cycle(ListNode* head)
+		{
+			if(!head)
+				return nullptr;
+			ListNode* p_fast = head, *p_slow = head;
+			while(p_fast && p_slow)
+			{
+				// 确保 fast 指针的下一个节点
+				if(p_fast->next == nullptr)
+					break;
+				p_fast = p_fast->next->next;
+				p_slow = p_slow->next;
+				if(p_fast == p_slow)
+					return p_fast;
+			}
+			// 不存在环
+			return nullptr;
+		}
+		ListNode *detectCycle(ListNode *head) {
+			ListNode* p_node = get_node_in_cycle(head);
+			if(!p_node)
+				return nullptr;
+			// 2. calculate the length of the cycle
+			int length = 1;
+			ListNode * p_tmp = p_node->next;
+			while(p_tmp != p_node) {
+				length++;
+				p_tmp = p_tmp->next;
+			}
+			// 3. move tmp pointer length steps
+			p_tmp = head;
+			for(int i=0;i < length; ++i)
+				p_tmp = p_tmp->next;
+			// 4. move the 'rope' to the cycle, so that both pointers meet each other
+			while(p_tmp != head) {
+				p_tmp = p_tmp->next;
+				head = head->next;
+			}
+			return head;
+		}
 		// https://leetcode.com/problems/delete-node-in-a-linked-list/
 		// 237. Delete Node in a Linked List
 		/*Write a function to delete a node in a singly-linked list. You will not be given access to the head of the list, instead you will be given access to the node to be deleted directly.
@@ -436,16 +490,31 @@ namespace LinkList {
 		solution3 ： 赛跑。 在一个环里，a跑得比b快一倍，那么一定时间后，a会再次遇到b。 Runtime: 12 ms, faster than 74.89% of C++ online submissions for Linked List Cycle.
 	*/
 		bool hasCycle(ListNode *head) {
-			if(!head || head->next == nullptr)	
+			if(!head)
 				return false;
-			ListNode * fast=head, *slow=head;
-			while(fast && fast->next) {
-				fast = fast->next->next;
-				slow = slow->next;
-				if(fast == slow)
+			ListNode* p_fast = head, *p_slow = head;
+			while(p_fast && p_slow)
+			{
+				// 确保 fast 指针的下一个节点
+				if(p_fast->next == nullptr)
+					break;
+				p_fast = p_fast->next->next;
+				p_slow = p_slow->next;
+				if(p_fast == p_slow)
 					return true;
 			}
+			// 不存在环
 			return false;
+			// if(!head || head->next == nullptr)	
+			// 	return false;
+			// ListNode * fast=head, *slow=head;
+			// while(fast && fast->next) {
+			// 	fast = fast->next->next;
+			// 	slow = slow->next;
+			// 	if(fast == slow)
+			// 		return true;
+			// }
+			// return false;
 
 			
 			// if(!head || head->next == nullptr)	
