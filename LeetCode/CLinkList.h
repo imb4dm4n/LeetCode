@@ -204,58 +204,77 @@ namespace LinkList {
 			}
 			return ret;
 		}
+		// https://leetcode.com/problems/merge-two-sorted-lists/
+		// 21. Merge Two Sorted Lists
 		/*
 		merge two sorted list into one sorted list. iterate over two list,
 		find the smaller one and insert it into the new list, change list pointers.
+		// solution 2
+		Runtime: 8 ms, faster than 79.82% of C++ online submissions for Merge Two Sorted Lists.
+		Memory Usage: 14.7 MB, less than 81.06% of C++ online submissions for Merge Two Sorted Lists.
 		*/
 		static ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-			ListNode* head = nullptr, * cur_node = nullptr,
-				*cur_l1= list1, *cul_l2= list2;
-			while (cur_l1 || cul_l2) {
-				int cur_val_1 = 0, cur_val_2 = 0;
-				ListNode* tmp = nullptr;
-				if (cur_l1 != nullptr)
-					cur_val_1 = cur_l1->val;
-				if (cul_l2 != nullptr)
-					cur_val_2 = cul_l2->val;
-				// bost list not empty 
-				if (cur_l1 && cul_l2) {
-					if (cur_val_1 < cur_val_2) {
-						tmp = insert(cur_node, cur_val_1);
-						cur_l1 = cur_l1->next;
-					}
-					else {
-						tmp = insert(cur_node, cur_val_2);
-						cul_l2 = cul_l2->next;
-					}
-					cur_node = tmp;
-					if (head == nullptr) {
-						 head = tmp;
-					}
-					continue;
-				}
-				// list 1 not empty, concat it 
-				else if (cur_l1) {
-					if (cur_node) {
-						cur_node->next = cur_l1;
-					}
-					else {
-						head = cur_node = cur_l1;
-					}
-					break;
-				}
-				// list 1 not empty, concat it 
-				else if (cul_l2) {
-					if (cur_node) {
-						cur_node->next = cul_l2;
-					}
-					else {
-						head = cur_node = cul_l2;
-					}
-					break;
-				}
+			if(list1 == nullptr)
+				return list2;
+			else if (list2 == nullptr)
+				return list1;
+			ListNode* cur = nullptr;
+			if(list1->val < list2->val) {
+				cur = list1;
+				cur->next = mergeTwoLists(list1->next, list2);
 			}
-			return head;
+			else {
+				cur = list2;
+				cur->next = mergeTwoLists(list1, list2->next);
+			}
+			return cur;
+			// ListNode* head = nullptr, * cur_node = nullptr,
+			// 	*cur_l1= list1, *cul_l2= list2;
+			// while (cur_l1 || cul_l2) {
+			// 	int cur_val_1 = 0, cur_val_2 = 0;
+			// 	ListNode* tmp = nullptr;
+			// 	if (cur_l1 != nullptr)
+			// 		cur_val_1 = cur_l1->val;
+			// 	if (cul_l2 != nullptr)
+			// 		cur_val_2 = cul_l2->val;
+			// 	// bost list not empty 
+			// 	if (cur_l1 && cul_l2) {
+			// 		if (cur_val_1 < cur_val_2) {
+			// 			tmp = insert(cur_node, cur_val_1);
+			// 			cur_l1 = cur_l1->next;
+			// 		}
+			// 		else {
+			// 			tmp = insert(cur_node, cur_val_2);
+			// 			cul_l2 = cul_l2->next;
+			// 		}
+			// 		cur_node = tmp;
+			// 		if (head == nullptr) {
+			// 			 head = tmp;
+			// 		}
+			// 		continue;
+			// 	}
+			// 	// list 1 not empty, concat it 
+			// 	else if (cur_l1) {
+			// 		if (cur_node) {
+			// 			cur_node->next = cur_l1;
+			// 		}
+			// 		else {
+			// 			head = cur_node = cur_l1;
+			// 		}
+			// 		break;
+			// 	}
+			// 	// list 1 not empty, concat it 
+			// 	else if (cul_l2) {
+			// 		if (cur_node) {
+			// 			cur_node->next = cul_l2;
+			// 		}
+			// 		else {
+			// 			head = cur_node = cul_l2;
+			// 		}
+			// 		break;
+			// 	}
+			// }
+			// return head;
 		}
 		// https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
 		// remove all duplicated number from a sorted list, return it's head.
@@ -420,7 +439,7 @@ namespace LinkList {
 				return head;
 			ListNode* prev=nullptr, *cur=head, *tmp;
 			while(cur != nullptr) {
-				tmp = cur->next;
+				tmp = cur->next;	// 由于会断链, 保存下一个要被反转的节点指针
 				cur->next = prev;
 				prev = cur;
 				cur = tmp;
