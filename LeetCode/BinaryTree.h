@@ -148,6 +148,10 @@ namespace letcoode{
 	// https://leetcode.com/problems/same-tree/
 	// return true if the given binary tree has same value and same structure
 	// recursively traverse two trees, compare their nodes
+	/*
+	Runtime: 0 ms, faster than 100.00% of C++ online submissions for Same Tree.
+	Memory Usage: 10.1 MB, less than 44.28% of C++ online submissions for Same Tree.
+	*/
 	void cmpTreeNode(TreeNode* p, TreeNode* q,bool& same)
 	{
 		if(same == false || (p == nullptr && q == nullptr)) {
@@ -179,15 +183,35 @@ namespace letcoode{
 
 	// https://leetcode.com/problems/symmetric-tree/
 	// solution: check the root's sub-tree, using isSameTree but exchange the node's 
-	bool isSymmetric(TreeNode* root) {
-		if (root == nullptr)
+	/*
+		solution1 : Runtime: 3 ms, faster than 94.06% of C++ online submissions for Symmetric Tree.
+		Memory Usage: 16.4 MB, less than 47.93% of C++ online submissions for Symmetric Tree.
+		solution2 : 通过前序遍历 和 对称的前序遍历(先右节点再左节点), 去判断对称.
+		Runtime: 8 ms, faster than 58.56% of C++ online submissions for Symmetric Tree.
+		Memory Usage: 16.4 MB, less than 47.93% of C++ online submissions for Symmetric Tree.
+	*/
+	bool isSymmetrical(TreeNode* rootA, TreeNode* rootB)
+	{
+		if(rootA == nullptr && rootB == nullptr)
 			return true;
-        if (root->left == nullptr && root->right == nullptr)
-			return true;
-		if ( (root->left == nullptr && root->right != nullptr) || 
-			  (root->left != nullptr && root->right == nullptr))
+		if(rootA == nullptr || rootB == nullptr)
 			return false;
-		return isSameTree(root->left, root->right);
+		if(rootA->val != rootB->val)
+			return false;
+		// ------ 可以发现, 对 rootA 使用的是普通前序遍历(left, right), 对 rootB 使用的是对称前序遍历(right, left)
+		return isSymmetrical(rootA->left, rootB->right) && 
+			   isSymmetrical(rootA->right, rootB->left);
+	}
+	bool isSymmetric(TreeNode* root) {
+		return isSymmetrical(root, root);
+		// if (root == nullptr)
+		// 	return true;
+        // if (root->left == nullptr && root->right == nullptr)
+		// 	return true;
+		// if ( (root->left == nullptr && root->right != nullptr) || 
+		// 	  (root->left != nullptr && root->right == nullptr))
+		// 	return false;
+		// return isSameTree(root->left, root->right);
     }
 	void test_bt() {
 		list<int*> datas;
@@ -787,10 +811,23 @@ namespace letcoode{
 	// 572. Subtree of Another Tree
 	// https://leetcode.com/problems/subtree-of-another-tree/
 	// given two trees, judge whether it's a sub tree of another .
-	// 类似寻找 字符串的 子串？ 需要完全匹配，意思是从叶节点到根节点都匹配
-	// 只能是 后序遍历，从底部向上对比。 
-	// 为 src 树的每个节点生产后序遍历的结果， 为 target 树生成后序遍历的结果
-	// 对比是否存在完全相同的结果
+	/*
+		思路3:
+		注意到, 若必须是严格子树(没有多余的叶节点), 子树B 的深度
+	*/
+	/*思路2:
+		递归遍历树A所有节点作为根节点, 判断以每个节点为根的子树是否和B相同
+		Runtime: 48 ms, faster than 27.39% of C++ online submissions for Subtree of Another Tree.
+		Memory Usage: 28.8 MB, less than 83.54% of C++ online submissions for Subtree of Another Tree.
+	*/
+	/*
+		思路1:
+		// 类似寻找 字符串的 子串？ 需要完全匹配，意思是从叶节点到根节点都匹配
+		// 只能是 后序遍历，从底部向上对比。 
+		// 为 src 树的每个节点生产后序遍历的结果， 为 target 树生成后序遍历的结果
+		// 对比是否存在完全相同的结果
+		Runtime: 122 ms, faster than 5.05% of C++ online submissions for Subtree of Another Tree.
+		Memory Usage: 77.5 MB, less than 5.26% of C++ online submissions for Subtree of Another Tree.*/
 	/*
 	后序遍历一个节点， 返回后序遍历该节点的结果。 把每个节点的子树都加入到 subtrees 中
 	@param node 一个节点
@@ -811,47 +848,79 @@ namespace letcoode{
 		subtrees.push_back(r);
 		return r;
 	}
+	/*
+	判断树B是否为A的子树: 前序遍历, 若树B节点为空了,则说明树A包含树B; 若树A节点空了, 则说明树A不包含树B
+	@param		rootA		树A的节点指针
+	@param		rootB		树B的节点指针
+	*/
+	bool has_sub_tree(TreeNode* rootA, TreeNode* rootB) {
+		// LeetCode的限制, 必须是完整的子树相同才是一样的. 因此需要叶节点都为空
+		if(rootB == nullptr && rootA == nullptr)
+			return true;
+		if(rootA == nullptr || rootB == nullptr)
+			return false;
+		
+		if(rootA->val != rootB->val)
+			return false;
+		
+		// 因为最终会因为达到B的叶节点而返回 true
+		return has_sub_tree(rootA->left, rootB->left) && has_sub_tree(rootA->right, rootB->right);
+	}
 	bool isSubtree(TreeNode* root, TreeNode* subRoot) {
-		// 单节点树判断
-		if(root->left == nullptr && root->right == nullptr 
-			&& subRoot->left == nullptr && subRoot->right == nullptr) {
-				return root->val == subRoot->val;
-		}
-        vector<vector<int>> subtrees_of_src, subtrees_of_dst;
-		vector<int> post_traverse_of_src, post_traverse_of_dst;
-		post_order_traverse(root, subtrees_of_src, post_traverse_of_src);
-		post_order_traverse(subRoot, subtrees_of_dst, post_traverse_of_dst);
-
-		// 需要对节点个数进行判断，若 size =0 , -1 会得到负数索引
-		if(subtrees_of_src.size() == 0) {
-			subtrees_of_src.push_back({root->val});
-		}
-		if(subtrees_of_dst.size() == 0) {
-			subtrees_of_dst.push_back({subRoot->val});
-		}
-		vector<int> target = subtrees_of_dst[subtrees_of_dst.size() - 1];
-		bool found = false;
-
-		for(auto it=subtrees_of_src.begin(),ie = subtrees_of_src.end(); 
-			it != ie; ++it) {
-			vector<int> src_sub_tree = *it;
-			// 子树的节点个数必须匹配
-			if(src_sub_tree.size() != target.size())
-				continue;
+		bool is_sub_tree = false;
+		
+		if(root && subRoot){
+			// 只有当节点的值相同时, 才去判断 树A 是否包含 树B
+			if(root->val == subRoot->val)
+				is_sub_tree = has_sub_tree(root, subRoot);
 			
-			bool is_same = true;
-			for(int i=0; i < target.size(); ++i) {
-				if(target[i] != src_sub_tree[i]) {
-					is_same = false;
-					break;
-				}
-			}
-			if(is_same) {
-				found = is_same;
-				break;
-			}
+			if(!is_sub_tree)
+				is_sub_tree = isSubtree(root->left, subRoot);
+			
+			if(!is_sub_tree)
+				is_sub_tree = isSubtree(root->right, subRoot);
 		}
-		return found;
+		return is_sub_tree;
+		// // 单节点树判断
+		// if(root->left == nullptr && root->right == nullptr 
+		// 	&& subRoot->left == nullptr && subRoot->right == nullptr) {
+		// 		return root->val == subRoot->val;
+		// }
+        // vector<vector<int>> subtrees_of_src, subtrees_of_dst;
+		// vector<int> post_traverse_of_src, post_traverse_of_dst;
+		// post_order_traverse(root, subtrees_of_src, post_traverse_of_src);
+		// post_order_traverse(subRoot, subtrees_of_dst, post_traverse_of_dst);
+
+		// // 需要对节点个数进行判断，若 size =0 , -1 会得到负数索引
+		// if(subtrees_of_src.size() == 0) {
+		// 	subtrees_of_src.push_back({root->val});
+		// }
+		// if(subtrees_of_dst.size() == 0) {
+		// 	subtrees_of_dst.push_back({subRoot->val});
+		// }
+		// vector<int> target = subtrees_of_dst[subtrees_of_dst.size() - 1];
+		// bool found = false;
+
+		// for(auto it=subtrees_of_src.begin(),ie = subtrees_of_src.end(); 
+		// 	it != ie; ++it) {
+		// 	vector<int> src_sub_tree = *it;
+		// 	// 子树的节点个数必须匹配
+		// 	if(src_sub_tree.size() != target.size())
+		// 		continue;
+			
+		// 	bool is_same = true;
+		// 	for(int i=0; i < target.size(); ++i) {
+		// 		if(target[i] != src_sub_tree[i]) {
+		// 			is_same = false;
+		// 			break;
+		// 		}
+		// 	}
+		// 	if(is_same) {
+		// 		found = is_same;
+		// 		break;
+		// 	}
+		// }
+		// return found;
     }
 	
 	// https://leetcode.com/problems/construct-string-from-binary-tree/
