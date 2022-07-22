@@ -243,7 +243,8 @@ namespace letcoode{
     }
 	// https://leetcode.com/problems/binary-tree-level-order-traversal/
 	// traverse binary tree by level order from left to right
-	// 
+	/*Runtime: 0 ms, faster than 100.00% of C++ online submissions for Binary Tree Level Order Traversal.
+	Memory Usage: 12.6 MB, less than 31.07% of C++ online submissions for Binary Tree Level Order Traversal.*/
 	vector<vector<int>> levelOrder(TreeNode* root) {
 		vector<vector<int>> ret;
 		if (root == nullptr)
@@ -1654,36 +1655,81 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 		given a binary tree, return Zigzag Level Order Traversal of it. traverse in level from left to right, and in the next level right to left.
 		->
 		<-
+		solution1:
 		solution:  level 1 ->, level 2 <- ...  it's a deque traverse. change the start of traverse from begin to end , and end to begin.
 		Runtime: 3 ms, faster than 77.73% of C++ online submissions for Binary Tree Zigzag Level Order Traversal.
+		solution2:
+		use two stack(vector) to store node's value.  (slower)
+		Runtime: 5 ms, faster than 48.73% of C++ online submissions for Binary Tree Zigzag Level Order Traversal.
+		Memory Usage: 12.1 MB, less than 44.94% of C++ online submissions for Binary Tree Zigzag Level Order Traversal.
 	*/
 	vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        deque<TreeNode*> dq;
+		// solution2: two vector
+		if(!root)	return	{};
 		vector<vector<int>> ret;
-		if(!root)
-			return ret;
-		dq.push_back(root);
+		vector<TreeNode*> left_to_right;
+		vector<TreeNode*> right_to_left;
 		bool left_to_right_direction = true;
-		while(!dq.empty()) {
-			int n =dq.size();
-			vector<int> values;
-			for(int i=0; i<n; ++i) {
-				TreeNode* node = dq.front();
-				dq.pop_front();
-				if(!left_to_right_direction)
-					values.push_back(node->val);
-				else
-					values.insert(values.begin(), node->val);	// use insert to append new value
-				if(node->right)
-					dq.push_back(node->right);
-				if(node->left)
-					dq.push_back(node->left);
+		left_to_right.push_back(root);
+		
+		// 其中一个不为空则继续
+		while(!left_to_right.empty() || !right_to_left.empty()) {
+			// 保存当前当前层的节点
+			vector<int>	cur_level;
+			if(left_to_right_direction) {
+				while(!left_to_right.empty()) {
+					TreeNode* cur = left_to_right.back();
+					left_to_right.pop_back();
+					cur_level.push_back(cur->val);
+					if(cur->left)
+						right_to_left.push_back(cur->left);
+					if(cur->right)
+						right_to_left.push_back(cur->right);
+				}
 			}
-			ret.push_back(values);
-			// change direction at the end of this level
-			left_to_right_direction = !left_to_right_direction;
+			else {
+				while(!right_to_left.empty()) {
+					TreeNode* cur = right_to_left.back();
+					right_to_left.pop_back();
+					cur_level.push_back(cur->val);
+					if(cur->right)
+						left_to_right.push_back(cur->right);
+					if(cur->left)
+						left_to_right.push_back(cur->left);
+				}
+			}
+			left_to_right_direction	=	!left_to_right_direction;
+			ret.push_back(cur_level);
 		}
 		return ret;
+
+		// solution1 
+        // deque<TreeNode*> dq;
+		// vector<vector<int>> ret;
+		// if(!root)
+		// 	return ret;
+		// dq.push_back(root);
+		// bool left_to_right_direction = true;
+		// while(!dq.empty()) {
+		// 	int n =dq.size();
+		// 	vector<int> values;
+		// 	for(int i=0; i<n; ++i) {
+		// 		TreeNode* node = dq.front();
+		// 		dq.pop_front();
+		// 		if(!left_to_right_direction)
+		// 			values.push_back(node->val);
+		// 		else
+		// 			values.insert(values.begin(), node->val);	// use insert to append new value
+		// 		if(node->right)
+		// 			dq.push_back(node->right);
+		// 		if(node->left)
+		// 			dq.push_back(node->left);
+		// 	}
+		// 	ret.push_back(values);
+		// 	// change direction at the end of this level
+		// 	left_to_right_direction = !left_to_right_direction;
+		// }
+		// return ret;
     }
 
 	// https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
