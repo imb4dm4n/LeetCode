@@ -179,10 +179,17 @@ void test_bst()
 }
 int main()
 {
-    test_algorithm();
+    vector<int> input = 
+    //{ 1,4 };
+    //{ 1,3 };
+    { 5,7,7,8,8,10 };
+
+    auto ret = searchRange(input,8);
+    ret = ret;
+    /*test_algorithm();
     string s = "hlelo";
     string* l = new string("asdjdaos qwoejqiwoe2109093z zxjczoasjiod2");
-    std::cout << l->c_str() << s.c_str();
+    std::cout << l->c_str() << s.c_str();*/
     //test_random_list();
     //test_concurrency();
     // test_bst();

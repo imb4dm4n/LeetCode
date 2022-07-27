@@ -5,6 +5,61 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+    // 34. Find First and Last Position of Element in Sorted Array
+    /*
+        从一个升序排序的数组中, 找到给定值的 起始和结束偏移. 如:
+        Input: nums = [5,7,7,8,8,10], target = 8
+        Output: [3,4]
+        solution: binary search target, if found target, increasing and decreasing index
+        to find identical value.
+        特殊情况: 1.target 不再数组中. 2. 数组只有两个数字(a.target 是左边一个; b.target 是右边一个) 3.数组只有一个数字(相同和不同的情况)
+        Runtime: 21 ms, faster than 10.97% of C++ online submissions for Find First and Last Position of Element in Sorted Array.
+        Memory Usage: 13.7 MB, less than 17.99% of C++ online submissions for Find First and Last Position of Element in Sorted Array.
+    */
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ret{-1,-1};
+        int left=0, right = nums.size()-1;
+        // boundary case 1: 
+        if(nums.size() == 0 || 
+            (nums.size() == 1 && nums[0] != target))
+            return ret;
+        // boundary case 2:
+        else if (nums.size() == 1 && nums[0] == target)
+            return {0,0};
+        
+        int mid = (right - left) / 2 + left;
+
+        while (nums[mid] != target) {
+            if(nums[mid] < target)
+                left = mid;
+            else
+                right = mid;
+            mid = (right - left) / 2 + left;
+            // by the end, mid will eventually hit left or right boundary
+            if (mid == left || mid == right)
+                break;
+        }
+        // boundary case : {1, 3} & search for  1 
+        if ((mid - 1 >= 0) && (nums[mid - 1] == target))
+            mid = mid - 1;
+        // boundary case : {1, 3} & search for 3
+        else if ((mid + 1 <= nums.size()) && (nums[mid + 1] == target))
+            mid = mid + 1;
+        if(nums[mid] != target)
+            return ret;
+        
+        left = right = mid;
+
+        while((left - 1) >= 0 && nums[(left - 1)] == target)
+            --left;
+
+        while((right + 1) < nums.size() && nums[(right + 1)] == target)
+            ++right;
+        ret[0] = left;
+        ret[1] = right;
+        return ret;
+    }
     // https://leetcode.com/problems/regular-expression-matching/
     // 10. Regular Expression Matching
     /*

@@ -64,28 +64,28 @@ namespace LinkList {
 			// 不存在环
 			return nullptr;
 		}
-		ListNode *detectCycle(ListNode *head) {
-			ListNode* p_node = get_node_in_cycle(head);
-			if(!p_node)
-				return nullptr;
-			// 2. calculate the length of the cycle
-			int length = 1;
-			ListNode * p_tmp = p_node->next;
-			while(p_tmp != p_node) {
-				length++;
-				p_tmp = p_tmp->next;
-			}
-			// 3. move tmp pointer length steps
-			p_tmp = head;
-			for(int i=0;i < length; ++i)
-				p_tmp = p_tmp->next;
-			// 4. move the 'rope' to the cycle, so that both pointers meet each other
-			while(p_tmp != head) {
-				p_tmp = p_tmp->next;
-				head = head->next;
-			}
-			return head;
-		}
+		// ListNode *detectCycle(ListNode *head) {
+		// 	ListNode* p_node = get_node_in_cycle(head);
+		// 	if(!p_node)
+		// 		return nullptr;
+		// 	// 2. calculate the length of the cycle
+		// 	int length = 1;
+		// 	ListNode * p_tmp = p_node->next;
+		// 	while(p_tmp != p_node) {
+		// 		length++;
+		// 		p_tmp = p_tmp->next;
+		// 	}
+		// 	// 3. move tmp pointer length steps
+		// 	p_tmp = head;
+		// 	for(int i=0;i < length; ++i)
+		// 		p_tmp = p_tmp->next;
+		// 	// 4. move the 'rope' to the cycle, so that both pointers meet each other
+		// 	while(p_tmp != head) {
+		// 		p_tmp = p_tmp->next;
+		// 		head = head->next;
+		// 	}
+		// 	return head;
+		// }
 		// https://leetcode.com/problems/delete-node-in-a-linked-list/
 		// 237. Delete Node in a Linked List
 		/*Write a function to delete a node in a singly-linked list. You will not be given access to the head of the list, instead you will be given access to the node to be deleted directly.
