@@ -32,6 +32,31 @@ namespace LinkList {
 		}
 
 	public:
+		// https://leetcode.com/problems/middle-of-the-linked-list/
+		// 876. Middle of the Linked List
+		/*
+			given the head of singly linked list, return the middle of it.
+			If there are two middle nodes, return the second middle node.
+			Runtime: 0 ms, faster than 100.00% of C++ online submissions for Middle of the Linked List.
+			Memory Usage: 7.2 MB, less than 21.76% of C++ online submissions for Middle of the Linked List.
+		*/
+		ListNode* middleNode(ListNode* head) {
+			if(!head || head->next == nullptr)
+				return head;
+			ListNode* fast = head, *slow = head;
+			// bool odd = false;	//	是否奇数个 无所谓的.
+			while(fast) {
+				if(fast->next == nullptr){
+					// odd = true;
+					break;
+				}
+				fast = fast->next->next;
+				slow = slow->next;
+			}
+			// if(odd)
+				return slow;
+			// return slow->next;
+		}
 		// 142. Linked List Cycle II
 		// https://leetcode.com/problems/linked-list-cycle-ii/
 		/*

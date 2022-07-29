@@ -27,6 +27,39 @@ namespace letcoode{
 	 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 	 	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 	 };
+	 // binary search tree to double link list  二叉搜索树转双向链表
+	 void ConvertNode(TreeNode* node, TreeNode*& prev_node)
+	 {
+		if(!node)
+			return;
+		TreeNode* pCurrent = node;
+		
+		// 中序遍历
+		if(pCurrent->left != nullptr)
+			ConvertNode(pCurrent->left, prev_node);
+		
+		// 左节点是前一个节点
+		pCurrent->left	=	prev_node;
+		
+		// 前一个节点的右节点是当前节点
+		if(prev_node)
+			prev_node->right = pCurrent;
+		prev_node	=	pCurrent;
+		
+		if(pCurrent->right != nullptr)
+			ConvertNode(pCurrent->right, prev_node);
+	 }
+	
+	 TreeNode* ConvertBstToDoubleLinkList(TreeNode* root)
+	 {
+		TreeNode* prev = nullptr;
+		ConvertNode(root, prev);
+		// 返回双向链表头节点
+		TreeNode* pHead = prev;
+		while(pHead && pHead->left)
+			pHead = pHead->left;
+		return pHead;
+	 }
 	// vector 转 二叉树
 	TreeNode* create_bt(vector<int> array, int index)
 	{
