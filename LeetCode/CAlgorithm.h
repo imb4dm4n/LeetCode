@@ -7,6 +7,7 @@ namespace letcoode
 {
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
     // 34. Find First and Last Position of Element in Sorted Array
+	// TODO : MAKE it fast
     /*
         从一个升序排序的数组中, 找到给定值的 起始和结束偏移. 如:
         Input: nums = [5,7,7,8,8,10], target = 8
