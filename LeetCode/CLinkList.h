@@ -32,6 +32,30 @@ namespace LinkList {
 		}
 
 	public:
+		// https://leetcode.com/problems/majority-element/
+		// 169. Majority Element
+		/*
+			输入一个数组, 返回出现次数超过一半的数字.
+			思路: 若数字出现次数超过一半, 则它的计数和一定大于其余数字.
+			Runtime: 27 ms, faster than 66.46% of C++ online submissions for Majority Element.
+			Memory Usage: 19.5 MB, less than 92.27% of C++ online submissions for Majority Element.
+		*/
+		int majorityElement(vector<int>& nums) {
+			int count = 0;
+			int last_element = nums[0];
+			for(auto n : nums) {
+				if(count == 0) {
+					last_element = n;
+					count = 1;
+					continue;
+				}
+				if(n == last_element)
+					++count;
+				else
+					--count;
+			}
+			return last_element;
+		}
 		// https://leetcode.com/problems/middle-of-the-linked-list/
 		// 876. Middle of the Linked List
 		/*

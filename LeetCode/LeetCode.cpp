@@ -179,13 +179,27 @@ void test_bst()
 }
 int main()
 {
-    vector<int> input = 
-    //{ 1,4 };
-    //{ 1,3 };
-    { 5,7,7,8,8,10 };
+    TreeNode a(2);
+    TreeNode b(1);
+    TreeNode c(3);
+    TreeNode d(5);
+    TreeNode e(6);
+    a.left = &b;
+    a.right = &c;
+    c.right = &d;
+    b.left = &e;
+    Codec code;
+    auto ret = code.serialize(&a);
+    printf("%s\n", ret.c_str());
+    auto node = code.deserialize(ret);
+    printf("%d\n", node->val);
+    //vector<int> input = 
+    ////{ 1,4 };
+    ////{ 1,3 };
+    //{ 5,7,7,8,8,10 };
 
-    auto ret = searchRange(input,8);
-    ret = ret;
+    //auto ret = searchRange(input,8);
+    //ret = ret;
     /*test_algorithm();
     string s = "hlelo";
     string* l = new string("asdjdaos qwoejqiwoe2109093z zxjczoasjiod2");
