@@ -2081,7 +2081,91 @@ Runtime: vector 8 ms, faster than 66.31% of C++ online submissions for Sum of Ro
 	/*
 		design a class which can serialize a bst to a string , and convert it back to bst.
 		solution: 中序遍历得到顺序的结果; 然后用中序遍历构造 bst ... 直接代码复用啊..
+		solution2: 这是一颗二叉搜索树, 并且数值都是 >=0 . 
+		不能复用, 因为若存在重复的值, 会有问题.
+		通过前序遍历序列化二叉树，遇到空指针添加 $, 
 	*/
+	class Codec {
+	private:
+		string m_value;	//	to store the encoded binary tree
+		int    m_index; //  to store current index of string to deserialize
+		int		read_int(const char * str)
+		{
+			// 2,1,6,$,$,$,3,$,5,$,$,
+			printf("current %s\n", str);
+			int sum = 0, radix = 1;
+			while(*str && *str != ',')
+			{
+				sum += sum*radix + (*str - '0');
+				radix *= 10;
+				++str;
+			}
+			return sum;
+		}
+		bool	decode_value(const char * str, int& value)	//	decode a int value from string, return true if success
+		{
+			if(!str || *str == 0 || *str == '$')
+				return false;
+			// sscanf_s(str, "%d", &value);
+			value = read_int(str);
+			return true;
+		}
+		// 123,34
+		void	find_next_sep(const char * str)
+		{
+			if(!str)
+				return;
+			while(*(str+ m_index) && *(str + m_index) != ',')
+				++m_index;
+			++m_index;
+		}
+		string _serialize(TreeNode* root)
+		{
+			if(!root) {
+				m_value += "$,";
+				return m_value;
+			}
+			// char buf[35];
+			// m_value += itoa(root->val, buf, 10);
+			m_value += std::to_string(root->val);
+			m_value += ",";
+			_serialize(root->left);
+			_serialize(root->right);
+			return m_value;
+
+		}
+		TreeNode* _deserialize()
+		{
+			// move input string to before next seperator. and decode a value
+			int num;
+			if(decode_value(m_value.c_str() + m_index, num)) {
+				TreeNode* node = new TreeNode();
+				node->val =	num;
+				// find_next_sep(m_value.c_str() + m_index);
+				find_next_sep(m_value.c_str());
+				node->left = _deserialize();
+				// find_next_sep(m_value.c_str() + m_index);
+				find_next_sep(m_value.c_str());
+				node->right = _deserialize();
+				return node;
+			}
+			return nullptr;
+		}
+	public:
+
+		// Encodes a tree to a single string.
+		string serialize(TreeNode* root) {
+			m_value	=	"";
+			return _serialize(root);
+		}
+
+		// Decodes your encoded data to tree.
+		TreeNode* deserialize(string data) {
+			m_index = 	0;
+			m_value	=	data;
+			return _deserialize();
+		}
+	};
 	// https://leetcode.com/problems/delete-node-in-a-bst/
 	// 450. Delete Node in a BST
 	/*
