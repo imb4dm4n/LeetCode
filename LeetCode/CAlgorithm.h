@@ -5,6 +5,127 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/median-of-two-sorted-arrays/
+    // 4. Median of Two Sorted Arrays
+    /*Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+    The overall run time complexity should be O(log (m+n)).
+    solution: 计算两个数组大小, 得出他们的个数和, 判断是奇数个还是偶数个.
+    奇数个: 在合并他们的过程中, 遇到 mid 索引直接返回
+    偶数个: 在合并他们的过程中, 遇到 mid 索引 计算 mid 和 mid+1 的平均值返回.
+    */
+    // 合并两个数组
+    typedef vector<int> * vip;
+    void mergeArray(vector<int>& nums1, vector<int>& nums2, int mid, int index, double& result, bool even) {
+        int tmp = 0;
+        vip p = nullptr;
+        if(nums1.size() > 0 && nums2.size() > 0){
+            if(nums1.front() > nums2.front()) {
+                p = &nums2;
+                // 取nums2
+                // tmp = nums2.front();
+                // nums2.erase(nums2.begin());
+                // if(index == mid){
+                //     result = tmp;
+                //     return;
+                // }
+                // mergeArray(nums1, nums2, mid, index+1, result, even);
+            }
+            else {
+                p = &nums1;
+                // tmp = nums1.front();
+                // nums1.erase(nums1.begin());
+                // if(index == mid){
+                //     result = tmp;
+                //     return;
+                // }
+                // mergeArray(nums1, nums2, mid, index+1, result, even);
+            }
+        }
+        else if (nums1.size() >0)
+            p = &nums1;
+        else 
+            p = &nums2;
+        
+        tmp = p->front();
+        p->erase(p->begin());
+        if(index == mid){
+            if(!even){
+                result = tmp;
+                return;
+            }
+            double next = 0;
+            mergeArray(nums1, nums2, mid+1, index+1, next, even);
+            result = (tmp + next) / 2;
+            return ;
+        }
+        mergeArray(nums1, nums2, mid, index+1, result, even);
+    }
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int size = nums1.size() + nums2.size();
+        int mid = size / 2;
+        int index_1 = 0, index_2 = 0, index = 0;
+        bool even_case = false;
+        double result = 0;
+
+        if(size % 2 == 0)     {
+            // even case
+            even_case   =   true;
+            mid         -=  1;
+        }
+        mergeArray(nums1, nums2, mid, 0, result, even_case);
+        return result;
+
+        // while ((index_1 < nums1.size() || index_2 < nums2.size() ) &&
+        //     index != mid)
+        // {
+        //     if(nums1[index_1] < nums2[index_2]) {
+        //         if(index_1 < nums1.size()) {
+        //             ++index_1;
+        //         }
+        //         else {
+        //             ++index_2;
+        //         }
+        //     }
+        //     else {
+        //         if(index_2 < nums2.size()) {
+        //             ++index_2;
+        //         }
+        //         else {
+        //             ++index_1;
+        //         }
+        //     }
+        //     ++index;
+        //     if(index == mid) {
+                
+        //     }
+        // }
+        // if(even_case) {
+        //     // the even case
+        //     int mid2 = index + 1;
+        //     double sum = 0;
+        //     if(index < nums1.size())
+        //         sum += nums1[index];
+        //     else
+        //         sum += nums2[index];
+        //     if(mid2 < nums1.size())
+        //         sum += nums1[mid2];
+        //     else
+        //         sum += nums2[mid2];
+        //     return sum /= 2;
+        // }
+        // if(index < nums1.size())
+        //     return nums1[index];
+        // return nums2[index];
+        
+    }
+    // https://leetcode.com/problems/number-of-digit-one/
+    // 233. Number of Digit One
+    /*
+        Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than or equal to n.
+    */
+    int countDigitOne(int n) {
+        
+    }
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
     // 34. Find First and Last Position of Element in Sorted Array
 	// TODO : MAKE it fast
