@@ -12,6 +12,9 @@ namespace letcoode
     solution: 计算两个数组大小, 得出他们的个数和, 判断是奇数个还是偶数个.
     奇数个: 在合并他们的过程中, 遇到 mid 索引直接返回
     偶数个: 在合并他们的过程中, 遇到 mid 索引 计算 mid 和 mid+1 的平均值返回.
+    Runtime: 46 ms, faster than 83.51% of C++ online submissions for Median of Two Sorted Arrays.
+    Memory Usage: 89.6 MB, less than 39.64% of C++ online submissions for Median of Two Sorted Arrays.
+    // ------------ TAG: 找中位数
     */
     // 合并两个数组
     typedef vector<int> * vip;
@@ -21,24 +24,9 @@ namespace letcoode
         if(nums1.size() > 0 && nums2.size() > 0){
             if(nums1.front() > nums2.front()) {
                 p = &nums2;
-                // 取nums2
-                // tmp = nums2.front();
-                // nums2.erase(nums2.begin());
-                // if(index == mid){
-                //     result = tmp;
-                //     return;
-                // }
-                // mergeArray(nums1, nums2, mid, index+1, result, even);
             }
             else {
                 p = &nums1;
-                // tmp = nums1.front();
-                // nums1.erase(nums1.begin());
-                // if(index == mid){
-                //     result = tmp;
-                //     return;
-                // }
-                // mergeArray(nums1, nums2, mid, index+1, result, even);
             }
         }
         else if (nums1.size() >0)
@@ -54,7 +42,7 @@ namespace letcoode
                 return;
             }
             double next = 0;
-            mergeArray(nums1, nums2, mid+1, index+1, next, even);
+            mergeArray(nums1, nums2, mid+1, index+1, next, !even);  // ---------------- 这里的条件必须修改, 否则进入到下一个递归时, 会不断递归, 导致栈溢出!!!
             result = (tmp + next) / 2;
             return ;
         }
@@ -124,7 +112,7 @@ namespace letcoode
         Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than or equal to n.
     */
     int countDigitOne(int n) {
-        
+        return 0;
     }
     // https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
     // 34. Find First and Last Position of Element in Sorted Array

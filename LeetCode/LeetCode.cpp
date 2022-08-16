@@ -179,7 +179,11 @@ void test_bst()
 }
 int main()
 {
-    TreeNode a(2);
+    vector<int> a = { 1,2 };
+    vector<int> b = { 3,4 };
+    double x = findMedianSortedArrays(a, b);
+    printf("x=%f\n", x);
+    /*TreeNode a(2);
     TreeNode b(1);
     TreeNode c(3);
     TreeNode d(5);
@@ -192,7 +196,7 @@ int main()
     auto ret = code.serialize(&a);
     printf("%s\n", ret.c_str());
     auto node = code.deserialize(ret);
-    printf("%d\n", node->val);
+    printf("%d\n", node->val);*/
     //vector<int> input = 
     ////{ 1,4 };
     ////{ 1,3 };
