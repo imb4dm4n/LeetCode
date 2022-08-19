@@ -142,6 +142,32 @@ namespace letcoode{
 		ret->right = createTree(inputs);
 		return ret;
 	}
+	// https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+	// 230. Kth Smallest Element in a BST
+	/*Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.
+	输入一个二叉搜索树, 返回第 k 小的节点值. 
+	思路: 中序遍历(left, root, right), 递归到 bottom 时, 开始计数 count = 1, 直到 count = k 就可以返回.
+	边界测试: k 不能超过节点个数
+	Runtime: 37 ms, faster than 24.36% of C++ online submissions for Kth Smallest Element in a BST.
+	Memory Usage: 24 MB, less than 87.01% of C++ online submissions for Kth Smallest Element in a BST.
+	*/
+	void search_k(TreeNode* node, int k, int& count, int& kth)
+	{
+		if(!node)
+			return;
+		search_k(node->left, k, count, kth);
+		++count;
+		if(count == k) {
+			kth = node->val;
+			return;
+		}
+		search_k(node->right, k, count, kth);
+	}
+	int kthSmallest(TreeNode* root, int k) {
+        int count=0, kth=0;
+		search_k(root, k, count, kth);
+		return kth;
+    }
 	 
 	void recursive_inorderTraversal(TreeNode* node, vector<int>& r) {
 		//

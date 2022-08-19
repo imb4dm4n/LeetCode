@@ -7,6 +7,22 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/decode-ways/
+    // 91. Decode Ways
+    /*
+        把字母编码成数字: a-1,b-2,c-3,..z-26; 问 输入一个数字, 有多少种解码方法: 11223,-> (1,1,2,2,3), (1,1,2,23),(1,1,22,3),(11,22,3)....
+        以0开头的不能被解码 06 是无法解码的; 
+    */
+    int numDecodings(string s) {
+        const char * pstr = s.c_str();
+        int len = s.size(), index = 0, count = 0;
+        if(*pstr == '0')
+            return 0;
+        while(index < len) {
+            // 开始构造解码可能
+            
+        }
+    }
     // https://leetcode.com/problems/maximum-subarray/
     // 53. Maximum Subarray
     /*
