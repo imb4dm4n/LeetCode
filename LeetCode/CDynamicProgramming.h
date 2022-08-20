@@ -22,6 +22,39 @@ namespace letcoode
             // 开始构造解码可能
             
         }
+    }    // https://leetcode.com/problems/climbing-stairs/
+    // 70. Climbing Stairs
+    /*
+        青蛙跳台阶, 台阶 n 层, 一次可以选择跳1阶或2阶. 问有多少种跳法.
+        Runtime: 0 ms, faster than 100.00% of C++ online submissions for Climbing Stairs.
+        Memory Usage: 5.8 MB, less than 97.34% of C++ online submissions for Climbing Stairs.
+    */
+    // int climbStair(int n, map<int,int>& methods) {
+    //     if(methods.find(n) != methods.end()) 
+    //         return methods[n];
+        
+    //     int count1 = climbStairs(n - 1);        // 第一次跳 1 阶 + 剩下的 (n-1) 阶跳法
+    //     methods[n - 1] = count1;
+        
+    //     int count2 = climbStairs(n - 2);        // 第一次跳 2 阶 + 剩下的 (n-2) 阶跳法
+    //     methods[n - 2] = count2;
+        
+    //     return  count2 + count1;
+    // }
+    int climbStairs(int n) {
+        int a = 1,    //  a 表示 1个台阶有多少跳法, 当 台阶数量超过 2 的时候, 例如 3, 则 a 表示 (3-1) 个台阶的跳法
+            b = 2;    //  b 表示 2个台阶有多少跳法, 当 台阶数量超过 2 的时候, 例如 3, 则 b 表示 3 个台阶的跳法
+        if(n < 3)
+            return n;
+        for(int i=3; i < n; ++i) {
+            b = a + b;      //  第 i 个台阶的跳法 是 第 (i-1) 个台阶的跳法 + 第 (i-2) 个台阶的跳法
+            a = b - a;      // 更新 i-1 个台阶的跳法
+        }
+        return b;
+        // map<int,int> methods;
+        // methods[1]=1;
+        // methods[2]=2;
+        // return climbStair(n, methods);
     }
     // https://leetcode.com/problems/maximum-subarray/
     // 53. Maximum Subarray
