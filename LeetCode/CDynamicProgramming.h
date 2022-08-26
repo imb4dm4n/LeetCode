@@ -12,16 +12,45 @@ namespace letcoode
     /*
         把字母编码成数字: a-1,b-2,c-3,..z-26; 问 输入一个数字, 有多少种解码方法: 11223,-> (1,1,2,2,3), (1,1,2,23),(1,1,22,3),(11,22,3)....
         以0开头的不能被解码 06 是无法解码的; 
+        "226"-> 2,26;  2,2,6;  22,6
+        思路1: 从前往后, 递归的计算. 11223 -> 1,1223; 和 11,223 然后分别对他们继续做运算 1,223; 12,23; 
+        继续 (1,223)的 223->(2,23; 2,2,3; 22,3) 发现和问题 (11,223)的 223 重叠.
+        定义 f(i) 为解码从 0-i 个字符的可能, f(0) = 1; f(1) = f(0) + g(0,1)
+        先判断当前字符是否符合解码标准, 符合则返回 1 + 值
+        思路2: 从后往前计算. right = size - 1;  
     */
+    int try_decode(const char* pstr, int index, int size,int& count)
+    {
+        // 
+        if(index == size)
+            return 0;
+        if(*(pstr+index) != '0') {
+            return 1 + try_decode(pstr, index+1, size, count) +
+                ((*(pstr+index) < '3') ? (try_decode(pstr, index+2, size, count)) :0);
+            // ++count;
+            // try_decode(pstr, index+1, size, count);
+            // if  ((index+2) < size && 
+            //     (*(pstr+index) < '3')) {
+            //     ++count;
+            //     try_decode(pstr, index+2, size, count);
+            // }
+        }
+        else {
+            // count = 0;
+            return 0;
+        }
+    }
     int numDecodings(string s) {
         const char * pstr = s.c_str();
         int len = s.size(), index = 0, count = 0;
         if(*pstr == '0')
             return 0;
-        while(index < len) {
-            // 开始构造解码可能
+        try_decode(pstr, 0, len, count);
+        return count;
+        // while(index < len) {
+        //     // 开始构造解码可能
             
-        }
+        // }
     }    // https://leetcode.com/problems/climbing-stairs/
     // 70. Climbing Stairs
     /*
