@@ -180,7 +180,8 @@ void test_bst()
 }
 int main()
 {
-    int c = numDecodings("2611055971756562");
+    //int c = numDecodings("2611055971756562");
+    int c = numDecodings("223");
     printf("c = %d\n", c);
     /*vector<int> a = { 1,2 };
     vector<int> b = { 3,4 };

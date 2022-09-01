@@ -64,20 +64,29 @@ namespace letcoode
     int numDecodings(string s) {
         // 数组保存 从结尾 到 对应字符 f(i) 的解码个数
         int n = s.size();
-        vector<int> ways(n + 1);
-        ways[n]   =   1;
+        int cur =0,p = 1, pp = 1;   // cur 表示第i到结尾的解码个数, 
+            // p 表示 第 i+1到结尾的解码个数, pp 表示第 i+2到结尾的解码个数
         for(int i=n-1; i >= 0; --i) {
-            if(s[i] == '0'){
-                ways[i] =   0;
-                continue;
-            }
-            ways[i] = ways[i+1];    // f(i) = f(i+1) + f(i+2) * g(i, i+1) 这一步是 f(i) = f(i+1)
-            if((i < n - 1) && (s[i] == '1' || s[i] == '2' && s[i+1] < '7')) {
-                // 这一步是 f(i) = f(i+2) * g(i, i+1)
-                ways[i] += ways[i+2];
-            }
+            int cur = s[i]=='0' ? 0 : p;
+            if(i<n-1 && (s[i]=='1'||s[i]=='2'&&s[i+1]<'7')) cur+=pp;
+            pp = p;
+            p = cur;
         }
-        return n == 0 ? 0 :ways[0];
+        return cur;
+        // vector<int> ways(n + 1);
+        // ways[n]   =   1;
+        // for(int i=n-1; i >= 0; --i) {
+        //     if(s[i] == '0'){
+        //         ways[i] =   0;
+        //         continue;
+        //     }
+        //     ways[i] = ways[i+1];    // f(i) = f(i+1) + f(i+2) * g(i, i+1) 这一步是 f(i) = f(i+1)
+        //     if((i < n - 1) && (s[i] == '1' || s[i] == '2' && s[i+1] < '7')) {
+        //         // 这一步是 f(i) = f(i+2) * g(i, i+1)
+        //         ways[i] += ways[i+2];
+        //     }
+        // }
+        // return n == 0 ? 0 :ways[0];
         // const char * pstr = s.c_str();
         // int len = s.size(), index = 0, count = 0;
         // return try_decode(pstr, 0, len, count);
