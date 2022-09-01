@@ -8,6 +8,7 @@
 #include "BinaryTree.h"
 #include "CAlgorithm.h"
 #include "CConcurrency.h"
+#include "CDynamicProgramming.h"
 void test_algorithm()
 {
     using namespace letcoode;
@@ -179,10 +180,12 @@ void test_bst()
 }
 int main()
 {
-    vector<int> a = { 1,2 };
+    int c = numDecodings("2611055971756562");
+    printf("c = %d\n", c);
+    /*vector<int> a = { 1,2 };
     vector<int> b = { 3,4 };
     double x = findMedianSortedArrays(a, b);
-    printf("x=%f\n", x);
+    printf("x=%f\n", x);*/
     /*TreeNode a(2);
     TreeNode b(1);
     TreeNode c(3);

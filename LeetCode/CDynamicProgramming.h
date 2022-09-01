@@ -18,35 +18,87 @@ namespace letcoode
         定义 f(i) 为解码从 0-i 个字符的可能, f(0) = 1; f(1) = f(0) + g(0,1)
         先判断当前字符是否符合解码标准, 符合则返回 1 + 值
         思路2: 从后往前计算. right = size - 1;  
+        223:    ->  1 * ( 1*(1) + 1*1) + 1*1 = 3 
+        思路3: 从后往前解码.
+        10321 : 1,3, 2,1;   1,3,21,  2 种
+        a = f(i - 1)    a 表示 从i - 1 到结束字符，有几种解法
+        b = f(i)        b 表示 从 i 到结束字符，有几种解法
+
+        i = 4
+        b=f(4) = 1
+        a=f(3) = f(i) * f(i-1) = 1 * 2 = 2
+
+        i = 3
+        b = f(3) = 2
+        a = f(2) = f(3) * f(2) = 2 * 1 = 2
+
+        i = 2 
+        b = f(2) = 2 
+        a = f(1) = f(2) * f(1) = 2	// 无效输入沿用解法个数
+
+        i = 1
+        b = f(1) = 2
+        a = f(0) = 1 * f(1) = 2
+        思路3: f(i) = f(i+1) + f(i+2) * g(i, i+1)
+        Runtime: 0 ms, faster than 100.00% of C++ online submissions for Decode Ways.
+        Memory Usage: 6.2 MB, less than 75.34% of C++ online submissions for Decode Ways.
     */
-    int try_decode(const char* pstr, int index, int size,int& count)
-    {
-        // 
-        if(index == size)
-            return 0;
-        if(*(pstr+index) != '0') {
-            return 1 + try_decode(pstr, index+1, size, count) +
-                ((*(pstr+index) < '3') ? (try_decode(pstr, index+2, size, count)) :0);
-            // ++count;
-            // try_decode(pstr, index+1, size, count);
-            // if  ((index+2) < size && 
-            //     (*(pstr+index) < '3')) {
-            //     ++count;
-            //     try_decode(pstr, index+2, size, count);
-            // }
-        }
-        else {
-            // count = 0;
-            return 0;
-        }
-    }
+    // int try_decode(const char* pstr, int index, int size,int& count)
+    // {
+    //     // 
+    //     if(index >= size)
+    //         return 1;
+    //     if (*pstr == '0' )
+    //         return 0 ;
+    //     else if (*(pstr + index) == '0')
+    //         return try_decode(pstr, index+1, size, count);
+    //     int res= try_decode(pstr, index+1, size, count) ;
+    //     if(index < size - 1)
+    //         return res +    
+    //             (
+    //             ((*(pstr+index) < '3')
+    //             && (*(pstr + index + 1) < '7')
+    //             ) ? (try_decode(pstr, index+2, size, count)) :0);
+    //     return res;
+    // }
     int numDecodings(string s) {
-        const char * pstr = s.c_str();
-        int len = s.size(), index = 0, count = 0;
-        if(*pstr == '0')
-            return 0;
-        try_decode(pstr, 0, len, count);
-        return count;
+        // 数组保存 从结尾 到 对应字符 f(i) 的解码个数
+        int n = s.size();
+        vector<int> ways(n + 1);
+        ways[n]   =   1;
+        for(int i=n-1; i >= 0; --i) {
+            if(s[i] == '0'){
+                ways[i] =   0;
+                continue;
+            }
+            ways[i] = ways[i+1];    // f(i) = f(i+1) + f(i+2) * g(i, i+1) 这一步是 f(i) = f(i+1)
+            if((i < n - 1) && (s[i] == '1' || s[i] == '2' && s[i+1] < '7')) {
+                // 这一步是 f(i) = f(i+2) * g(i, i+1)
+                ways[i] += ways[i+2];
+            }
+        }
+        return n == 0 ? 0 :ways[0];
+        // const char * pstr = s.c_str();
+        // int len = s.size(), index = 0, count = 0;
+        // return try_decode(pstr, 0, len, count);
+        // int a = 0, b = 0;
+        // index = len - 2;
+        // if(*(pstr + len -1) != '0') // 最后一个字符不为 0 
+        //     b = 1;
+        // while(index >= 0 ) {
+        //     char c = *(pstr + index);
+        //     if(c !='0' && c < '3')
+        //         a = 2 * b;
+        //     else if (b == 0 && c !='0')
+        //         a = 1;
+        //     else // c == 0 或 c > '3' 都是沿用前一个的解法个数 
+        //         a = b; 
+        //     b = a;
+        //     -- index;
+        // }
+        // return a;
+        // return try_decode(pstr, 0, len, count);
+        // return count;
         // while(index < len) {
         //     // 开始构造解码可能
             
