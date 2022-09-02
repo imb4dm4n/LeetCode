@@ -7,6 +7,49 @@ using namespace std;
 // using leetcode::ListNode;
 namespace letcoode
 {
+    // https://leetcode.com/problems/unique-paths/
+    // 62. Unique Paths
+    /*
+        在一个 m 行 n 列的矩阵中, 左上角放置一个机器人, 每次只能移动一格, 方向只能是向右或向下,
+        问移动到右下角有多少种唯一的路径解法.
+        思路1: 相当于 pos_x, pos_y 每次只能有一个去+1, 直到 pos_x 和 pos_y 的值分别为n和m.
+        暴力穷举法, 当前坐标可以向右 或 向下移动时, 产生两个递归路径, 递归直到 pos_x和pos_y
+        分别为n和m, count解法+1
+    */
+    enum direction {
+        right,
+        down,
+    };
+    /*
+        pos_x 对于n的坐标
+        pos_y 对于m的坐标
+        dir   移动方向
+        count 解法个数
+    */
+    void enter_next(int pos_x, int pos_y, int n, int m, direction dir, int& count)
+    {
+        if(pos_x == (n-1) && 
+            pos_y == (m-1)) {
+                count += 1;
+                return;
+        }
+        if(dir == right && pos_x < (n-1)) {
+            // 向右移动
+            enter_next(pos_x + 1, pos_y, n, m, right, count);
+            enter_next(pos_x + 1, pos_y, n, m, down, count);
+        }
+        else if(dir == down && pos_y < (m-1)) {
+            // 向下移动
+            enter_next(pos_x, pos_y + 1, n, m, right, count);
+            enter_next(pos_x, pos_y + 1, n, m, down, count);
+        }
+    }
+    int uniquePaths(int m, int n) {
+        int count = 0;
+        enter_next(0, 0, n, m, right, count);
+        enter_next(0, 0, n, m, down, count);
+        return count;
+    }
     // https://leetcode.com/problems/decode-ways/
     // 91. Decode Ways
     /*
