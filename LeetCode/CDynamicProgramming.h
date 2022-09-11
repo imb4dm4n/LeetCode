@@ -15,7 +15,9 @@ namespace letcoode
         思路1: 相当于 pos_x, pos_y 每次只能有一个去+1, 直到 pos_x 和 pos_y 的值分别为n和m.
         暴力穷举法, 当前坐标可以向右 或 向下移动时, 产生两个递归路径, 递归直到 pos_x和pos_y
         分别为n和m, count解法+1
-        超时.
+        思路2: 前一种解法, 存在大量的重复计算, 比如经过坐标(3,3)到达target的方法个数是固定的，但是从初始坐标
+        移动到(3,3)的方法有多个, 每一个方法都会再次计算 (3,3) 到 target 的解法个数, 是多余的计算.
+        
     */
     enum direction {
         right,
@@ -48,7 +50,38 @@ namespace letcoode
         }
         return false;
     }
-    int uniquePaths(int m, int n) {
+    /*
+        leetCode 思路1: 每移动一步, 都会构成新的唯一路径. 当移动的坐标超过m或n时, 返回0表示无法到达目标,
+        当坐标是 (m-1, n-1)时, 返回1.
+    */
+    int uniquePaths_(int m, int n, int i=0, int j=0) {
+        if(i == m || n == j)    return 0;
+        if(i == m-1 && j == n - 1)  return 1;
+        return uniquePaths_(m, n, i+1, j) +      //  因为到达下一层遍历的时候, (i+1, j) 坐标会扩展为 (i+2,j) 和 (i+1, j+1) 的两个遍历
+        uniquePaths_(m, n, i, j+1);
+    }
+    /*
+        leetCode 思路2: 基于思路1, 可以发现, 会重复的计算相同坐标到目标节点(m-1, n-1)的走法个数, 因此用一个 二维数组, 保存每个坐标到目标节点的走法个数.
+        减少冗余计算.
+        Runtime: 2 ms, faster than 50.06% of C++ online submissions for Unique Paths.
+        Memory Usage: 6.6 MB, less than 27.04% of C++ online submissions for Unique Paths.
+    */
+    int dfs(vector<vector<int>>& dp, int i, int j) {
+        if (i == size(dp) || j == size(dp[0]))    return 0;
+
+        if (i == size(dp) - 1 && j == size(dp[0]) - 1)  return 1;
+
+        if (dp[i][j])    return dp[i][j];        //  若结果已经存在,则直接返回
+
+        return dp[i][j] =                       // 保存计算过的节点
+            dfs(dp, i + 1, j) +      //  因为到达下一层遍历的时候, (i+1, j) 坐标会扩展为 (i+2,j) 和 (i+1, j+1) 的两个遍历
+            dfs(dp, i, j + 1);
+    }
+    int uniquePaths(int m, int n, int i=0, int j=0) {
+        vector<vector<int>> dp(m, vector<int>(n));
+        return dfs(dp, 0, 0);
+    }
+    int uniquePaths1(int m, int n) {
         int count = 0;
         enter_next(0, 0, n, m, right, count) ||
         enter_next(0, 0, n, m, down, count);

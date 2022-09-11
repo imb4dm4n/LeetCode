@@ -9,6 +9,7 @@
 #include "CAlgorithm.h"
 #include "CConcurrency.h"
 #include "CDynamicProgramming.h"
+#include "CBackTracing.h"
 void test_algorithm()
 {
     using namespace letcoode;
@@ -180,9 +181,12 @@ void test_bst()
 }
 int main()
 {
+    auto ret = generateParenthesis(3);
+    for(auto s : ret)
+        printf("%s\n", s.c_str());
     //int c = numDecodings("2611055971756562");
-    int x = uniquePaths(1, 1);
-    printf("x=%d\n", x);
+    // int x = uniquePaths(1, 1);
+    // printf("x=%d\n", x);
     /*int c = numDecodings("223");
     printf("c = %d\n", c);*/
     /*vector<int> a = { 1,2 };
