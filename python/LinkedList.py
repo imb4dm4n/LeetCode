@@ -11,18 +11,40 @@ class ListNode:
         self.val = val
         self.next = next
 
-# https://leetcode.com/problems/add-two-numbers/
-# 2. Add Two Numbers
-'''
-问题:
-You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
 
-You may assume the two numbers do not contain any leading zero, except the number 0 itself.
-思路1:
-构建新的链表返回. head 保存返回的链表头, prev_node 表示前一个节点, cur_node 表示当前节点.
-用 prev 保存进位数值, 若最后没有节点了, 则需要分配一个节点作为最后的进位.
-'''
 class Solution:
+    # https://leetcode.com/problems/swap-nodes-in-pairs/
+    # 24. Swap Nodes in Pairs
+    '''
+    Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+    交换两个相邻的节点, 返回链表头. 不能修改节点的值.
+    思路: 
+    head 保存修改后的头, cur 保存需要被交换的两个节点头, prev 保存
+    交换后的节点尾. tmp 作为临时节点
+    '''
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        ret_head        =   None
+        cur             =   head
+        prev            =   None
+        while cur:
+            if not ret_head:
+                ret_head    =   cur.next    # 初始化返回的头
+            prev         =   cur.next.next
+
+        pass
+
+
+    # https://leetcode.com/problems/add-two-numbers/
+    # 2. Add Two Numbers
+    '''
+    问题:
+    You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+    You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+    思路1:
+    构建新的链表返回. head 保存返回的链表头, prev_node 表示前一个节点, cur_node 表示当前节点.
+    用 prev 保存进位数值, 若最后没有节点了, 则需要分配一个节点作为最后的进位.
+    '''
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode], prev=0) -> Optional[ListNode]:
         '''
         Runtime: 164 ms, faster than 6.52% of Python3 online submissions for Add Two Numbers.

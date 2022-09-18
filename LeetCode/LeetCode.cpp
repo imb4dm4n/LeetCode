@@ -181,9 +181,10 @@ void test_bst()
 }
 int main()
 {
-    auto ret = generateParenthesis(3);
+    uniquePaths2(1, 2);
+    /*auto ret = generateParenthesis(3);
     for(auto s : ret)
-        printf("%s\n", s.c_str());
+        printf("%s\n", s.c_str());*/
     //int c = numDecodings("2611055971756562");
     // int x = uniquePaths(1, 1);
     // printf("x=%d\n", x);

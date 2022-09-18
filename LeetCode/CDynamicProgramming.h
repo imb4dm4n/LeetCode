@@ -81,6 +81,26 @@ namespace letcoode
         vector<vector<int>> dp(m, vector<int>(n));
         return dfs(dp, 0, 0);
     }
+    /*
+        思路3: 保存(0,0) -> (i, j) 的走法个数
+    */
+    int uniquePaths2(int m, int n) {
+        // 因为在第一行, 所有的走法都是1, 因此初始化 vector<int>(n, 1)
+        // vector<vector<int>> dp(m, vector<int>(n, 1));
+        // for(int i=1; i<m; ++i)
+        // // 需要一行一行的计算, 因为下一行会依赖上一行的计算结果
+        //     for(int j=1; j<n; ++j) {
+        //         dp[i][j]    =   dp[i-1][j] + dp[i][j-1];
+        //     }
+        // return dp[m-1][n-1];
+        // -------- 进一步优化
+        // -------- 因为计算某一行实际上仅仅依赖前一行, 可以复用一维数组
+        vector<int> dp(n, 1);
+        for(int i = 1; i < m; i++)
+            for(int j = 1; j < n; j++)
+                dp[j] += dp[j-1];   
+        return dp[n-1];
+    }
     int uniquePaths1(int m, int n) {
         int count = 0;
         enter_next(0, 0, n, m, right, count) ||
