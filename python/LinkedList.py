@@ -17,21 +17,44 @@ class Solution:
     # 24. Swap Nodes in Pairs
     '''
     Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
-    交换两个相邻的节点, 返回链表头. 不能修改节点的值.
-    思路: 
-    head 保存修改后的头, cur 保存需要被交换的两个节点头, prev 保存
-    交换后的节点尾. tmp 作为临时节点
+    交换两个相邻的节点, 返回链表头. 不能修改节点的值. 注意: 节点个数可能为奇数个
+    思路1: 
+    递归交换两个节点, 返回交换后的 head 节点. 
+    Runtime: 46 ms, faster than 63.93% of Python3 online submissions for Swap Nodes in Pairs.
+    Memory Usage: 13.9 MB, less than 19.73% of Python3 online submissions for Swap Nodes in Pairs.
     '''
-    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        ret_head        =   None
-        cur             =   head
-        prev            =   None
-        while cur:
-            if not ret_head:
-                ret_head    =   cur.next    # 初始化返回的头
-            prev         =   cur.next.next
+    def exchange(self, node:ListNode):
+        '''
+        交换 node 链表的两个节点, 返回交换后的节点头
+        '''
+        if not node or \
+            not node.next:      # 节点的个数可能为奇数个
+            return  node
+        
+        ret_head        =   node.next
+        tmp             =   node.next.next  # 下一组需要交换的节点头
+        node.next.next  =   node            # 当前节点的下一个节点, 修改指向为当前节点
+        node.next       =   self.exchange(tmp)
+        return          ret_head
 
-        pass
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        ret_head        =   ListNode()
+        ret_head.next   =   self.exchange(head)
+        return          ret_head.next
+
+    # 优化代码:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        '''
+        Runtime: 54 ms, faster than 42.81% of Python3 online submissions for Swap Nodes in Pairs.
+        Memory Usage: 13.9 MB, less than 19.73% of Python3 online submissions for Swap Nodes in Pairs.
+        '''
+        if not head or not head.next:
+            return head
+        
+        next_node       =   head.next
+        head.next       =   self.swapPairs(next_node.next)  # 修改当前节点的 next 为递归返回的
+        next_node.next  =   head
+        return          next_node       # 返回新的节点头
 
 
     # https://leetcode.com/problems/add-two-numbers/
