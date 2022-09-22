@@ -5,14 +5,116 @@
 # Definition for singly-linked list.
 from typing import Optional
 
+class ListNode:
+    pass
 
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
 
+    @staticmethod
+    def list_to_ListNode(li:list):
+        '''
+        转输入的 数组为 ListNode 链表, 返回链表头
+        '''
+        ret_head        =   ListNode()
+        prev            =   None
+        for i in li:
+            node        =   ListNode(i)
+            if not ret_head.next:
+                ret_head.next   =   node
+            if prev:
+                prev.next       =   node
+            prev        =   node
+        
+        return  ret_head.next
+
+    @staticmethod
+    def print(node:ListNode):
+        '''
+        输出node
+        '''
+        l       =   ""
+        while node:
+            l += str(node.val) + " -> "
+            node        =   node.next
+        print(l[:-3])
+
 
 class Solution:
+    '''
+    # https://leetcode.com/problems/rotate-list/
+    # 61. Rotate List
+    问题: 输入一个链表, 把它向右 循环移动 k 次
+    思路1: 
+    类似寻找倒数第 k 个节点, 先计算实际要移动的次数 x . 然后用3个指针: cur_head, prev, cur.
+    cur 先移动 x - 1次, prev 指向cur前一个节点, 当 cur 移动 x-1 后,
+    cur_head 开始移动, 直到 cur 指向 None. 此时 cur_head 指向需要断开的节点.
+    [1,2] : 1 -> [2,1]
+    [1,2,3,4,5] : 2 -> []
+    负面处理: k<=0,不移动; 输入空链表 或 只有一个节点, 直接返回; 
+    边界处理: k>链表长度, 则计算实际需要移动的次数.
+    Runtime: 76 ms, faster than 22.37% of Python3 online submissions for Rotate List.
+    Memory Usage: 14 MB, less than 31.62% of Python3 online submissions for Rotate List.
+    
+    思路2:
+    用数组保存每个节点的地址, 直接根据索引来修改指针. 需要额外 O(N) 空间
+    Runtime: 58 ms, faster than 59.84% of Python3 online submissions for Rotate List.
+    Memory Usage: 14.1 MB, less than 31.62% of Python3 online submissions for Rotate List.
+    '''
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        #  ------------------------- 思路2: -------------------------
+        if not head or not head.next or k <= 0:
+            return head
+        li_addr             =   []
+        list_len            =   0
+        node                =   head
+        while node:
+            list_len        +=  1
+            node            =   node.next
+        k                   =   k % list_len
+        node                =   head
+        while node:
+            li_addr.append(node)
+            node            =   node.next
+        
+        new_head            =   li_addr[-k]
+        break_point         =   li_addr[-(k+1)]
+        li_addr[-1].next    =   head    # 修复最后一个节点
+        break_point.next    =   None
+        
+        return      new_head
+        
+        #  ------------------------- 思路1: -------------------------
+        if not head or not head.next or k <= 0:
+            return head
+        list_len            =   0
+        cur,prev,cur_head   =   head, None, head # cur 指向 None时, prev 是最后一个节点指针, cur_head 是需要断链处的指针
+        while cur:
+            list_len        +=  1
+            cur             =   cur.next
+        k                   =   k % list_len    # 计算实际移动次数; 或者说 倒数第 k 个节点
+        # 移动次数正好是链表长度的 整数倍, 相当于没有移动
+        if k == 0:
+            return head 
+        # x                   =   0
+        cur                 =   head
+        for i in range(k+1):# 若 k 不加 1, 则会导致最后 cur_head 指向的是断链的后一个节点
+        # while x < k+1:  # 若 k 不加 1, 则会导致最后 cur_head 指向的是断链的后一个节点
+            # x           +=  1
+            prev    =   cur         # 这里移动 prev 是为了解决 [1,2] : 1 这种输入情况, k+1=数组长
+            cur         =   cur.next
+        while cur:
+            prev    =   cur         # cur 为None时, prev 指向最后一个节点
+            cur         =   cur.next
+            cur_head    =   cur_head.next
+        
+        ret_head        =   cur_head.next   # 返回新的头结点
+        prev.next       =   head            # 修复最后一个节点的next为 头结点
+        cur_head.next   =   None            # 修复断链处的 next 为 None
+        return      ret_head
+
     # https://leetcode.com/problems/swap-nodes-in-pairs/
     # 24. Swap Nodes in Pairs
     '''
@@ -163,3 +265,12 @@ class Solution:
         #     sum     =   sum % 10
         #     cur.val =   sum
             
+solution =  Solution()            
+ret = solution.rotateRight(ListNode.list_to_ListNode([1,2]), 1)
+ListNode.print(ret)
+
+ret = solution.rotateRight(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
+ListNode.print(ret)
+
+ret = solution.rotateRight(ListNode.list_to_ListNode([]), 2)
+ListNode.print(ret)
