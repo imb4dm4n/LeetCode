@@ -44,6 +44,38 @@ class ListNode:
 
 class Solution:
     '''
+    # https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+    # 19. Remove Nth Node From End of List
+    问题: 输入一个链表, 删除倒数第 N 个节点, 返回链表头
+    思路: 这不就是之前一直复习的. 若 N 小于链表长度 L, 则用两个指针 prev,cur.
+    cur 先移动 N+1 次, 然后 prev 开始跟着移动. cur 为空的时候, prev 指向要删除的节点的前一个.
+    边界处理: N=0(无意义), N=1(最后一个, 正常处理), N=L(删除头结点, 则需要修改head指针)
+    异常处理: N > L (溢出)
+    Runtime: 24 ms, faster than 99.75% of Python3 online submissions for Remove Nth Node From End of List.
+    Memory Usage: 13.8 MB, less than 70.34% of Python3 online submissions for Remove Nth Node From End of List.
+    '''
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        prev,cur        =   ListNode(), head
+        prev.next       =   head
+        
+        for i in range(n):
+            if cur:
+                cur     =   cur.next
+        
+        while cur:
+            cur         =   cur.next
+            prev        =   prev.next
+        
+        # 删除头指针, 返回头指针的下一个
+        if prev.next     ==  head:
+            return      prev.next.next
+        
+        # 否则 prev.next 指向的是需要被删除的节点, 注意可能是最后一个节点
+        prev.next   =   prev.next.next if prev.next else None
+        return      head
+        
+    
+    '''
     # https://leetcode.com/problems/rotate-list/
     # 61. Rotate List
     问题: 输入一个链表, 把它向右 循环移动 k 次
@@ -265,12 +297,21 @@ class Solution:
         #     sum     =   sum % 10
         #     cur.val =   sum
             
-solution =  Solution()            
-ret = solution.rotateRight(ListNode.list_to_ListNode([1,2]), 1)
+solution =  Solution()   
+# -------------- 
+ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
+ListNode.print(ret)
+ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2]), 1)
+ListNode.print(ret)
+ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1]), 1)
 ListNode.print(ret)
 
-ret = solution.rotateRight(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
-ListNode.print(ret)
+# -------------- 
+# ret = solution.rotateRight(ListNode.list_to_ListNode([1,2]), 1)
+# ListNode.print(ret)
 
-ret = solution.rotateRight(ListNode.list_to_ListNode([]), 2)
-ListNode.print(ret)
+# ret = solution.rotateRight(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
+# ListNode.print(ret)
+
+# ret = solution.rotateRight(ListNode.list_to_ListNode([]), 2)
+# ListNode.print(ret)
