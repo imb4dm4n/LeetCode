@@ -44,6 +44,30 @@ class ListNode:
 
 class Solution:
     '''
+    # 21. Merge Two Sorted Lists
+    # https://leetcode.com/problems/merge-two-sorted-lists/
+    问题: 输入两个排序的链表头, 合并他们成为一个排序的链表, 返回合并的立案表头
+    思路: 递归的合并两个链表的当前节点, 取出小的那个节点, 作为返回节点ret,
+    递归得到下一层返回的节点, 设置为 ret 的 next. 直到两个链表为空.
+    边界处理: 任意一个链表为空, 则直接返回非空的链表头
+    Runtime: 42 ms, faster than 87.95% of Python3 online submissions for Merge Two Sorted Lists.
+    Memory Usage: 14 MB, less than 32.77% of Python3 online submissions for Merge Two Sorted Lists.
+    '''
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        ret         =   None
+        if not list1:
+            return list2
+        if not list2:
+            return list1
+        if list1.val < list2.val:
+            ret     =   list1
+            ret.next    =   self.mergeTwoLists(list1.next, list2)
+        else:
+            ret     =   list2
+            ret.next    =   self.mergeTwoLists(list1, list2.next)
+        return ret
+    
+    '''
     # https://leetcode.com/problems/remove-nth-node-from-end-of-list/
     # 19. Remove Nth Node From End of List
     问题: 输入一个链表, 删除倒数第 N 个节点, 返回链表头
