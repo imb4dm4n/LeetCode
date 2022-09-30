@@ -37,12 +37,109 @@ class ListNode:
         '''
         l       =   ""
         while node:
+            tmp = "->" if node.next else ""
+            # print("{}".format(str(node.val) + tmp))
             l += str(node.val) + " -> "
             node        =   node.next
         print(l[:-3])
 
 
 class Solution:
+    '''
+    # 82. Remove Duplicates from Sorted List II
+    # https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+    问题: 输入一个排序的链表头, 移除存在重复的节点. ie: [1,2,3,3,3,4,4,5] => [1,2,5]
+    思路1:  一个prev指针保存前一个节点, 一个cur指向当前节点, 若prev和当前节点相同,
+    用递归吧, 每一层递归找到当前第一个非重复节点, 准备返回, 把递归下一层的节点设置为当前层的next
+    思路2: 只有当前后两个节点不同, 且历史不发生重复, 才能把前一个节点加入到 唯一链表
+    思路3:
+    1,1,2 - 删除头节点&连续删除
+    1,1,2,2 - 删除头节点&连续删除两组&返回空
+    1,1,2,2,3 - 删除头节点&连续删除两组&返回非空
+    1,2,2,3,3 - 删除非头节点 & 连续删除 & 最后为空
+    1,2,2,3,3,4 - 删除非头结点 & 连续删除 & 最后非空
+    Runtime: 80 ms, faster than 33.98% of Python3 online submissions for Remove Duplicates from Sorted List II.
+    Memory Usage: 13.9 MB, less than 74.88% of Python3 online submissions for Remove Duplicates from Sorted List II.
+    '''
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        ret         =   None
+        if not head or not head.next:
+            return head
+
+        dummy       =   ListNode()
+        cur_new     =   None
+        prev,cur    =   head, head.next
+        has_dup     =   False if head.val != cur.val else True
+        while cur:
+            # print("\nworking prev {} cur {}  dup {}".format(prev.val, cur.val, has_dup))
+            if not has_dup and prev.val != cur.val:
+                # 不曾重复过, 且当前值不等于prev, 说明 prev 唯一
+                if not dummy.next:
+                    dummy.next  =   prev
+                    # print("Init head {}".format(prev.val))
+                if cur_new:
+                    cur_new.next=   prev
+                cur_new =   prev
+                prev    =   cur
+                cur     =   cur.next
+                continue
+            # 和前一个值重复, 继续寻找, 直到找到不同 或者 cur 为 None
+            if prev.val == cur.val:
+                has_dup =   True
+                cur     =   cur.next
+                continue
+            elif has_dup:
+                prev    =   cur
+                cur     =   cur.next
+                has_dup =   False
+                continue
+        
+        # print("\nworking prev {}  dup {} cur_new {}".format(prev.val,  has_dup, cur_new.val))
+        if not has_dup and not dummy.next:
+            dummy.next  =   prev
+        if not has_dup and cur_new:
+            cur_new.next    =   prev
+        elif cur_new:
+            cur_new.next    =   None    # 修复新链表最后一个节点
+        # if tmp_cur:
+        #     tmp_cur.next    =   None
+        return dummy.next
+        
+        # print("working on {}".format(head.val))
+        # prev,   cur =   None, head
+        # has_dup     =   False
+        # while cur:
+        #     if cur.next:
+        #         # 下一个节点和当前节点重复
+        #         if cur.next.val == cur.val:
+        #             has_dup =   True
+        #             cur =   cur.next        # 没有考虑到, 若 cur 本身就存在重复的情况, 这样是不能作为唯一节点返回的
+        #             continue
+        #         elif has_dup:
+        #             ret     =   cur.next
+        #         else:
+        #             ret     =   cur
+        #         break
+        #     elif has_dup:   # 和前一个节点相同, 且到达结尾了
+        #         ret         =   None
+        #     else:
+        #         ret         =   cur
+        #     break
+        #     # if not prev :
+        #     #     prev=   cur
+        #     #     cur =   cur.next
+        #     #     continue
+        #     # if prev.val ==  cur.val:
+        #     #     cur =   cur.next
+        #     #     continue
+        #     # ret     =   cur
+        #     # break
+        # if ret:
+        #     print("ret = {}".format(ret.val))
+        #     ret.next= self.deleteDuplicates(cur.next)
+        # return      ret
+        # pass
+    
     '''
     # 21. Merge Two Sorted Lists
     # https://leetcode.com/problems/merge-two-sorted-lists/
@@ -323,12 +420,24 @@ class Solution:
             
 solution =  Solution()   
 # -------------- 
-ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
+ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,2,3,3,4,4,5]))
 ListNode.print(ret)
-ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2]), 1)
+ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2]))
 ListNode.print(ret)
-ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1]), 1)
+ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2,2]))
 ListNode.print(ret)
+ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2,2,3]))
+ListNode.print(ret)
+ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,2,2,2,3]))
+ListNode.print(ret)
+
+# -------------- 
+# ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
+# ListNode.print(ret)
+# ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2]), 1)
+# ListNode.print(ret)
+# ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1]), 1)
+# ListNode.print(ret)
 
 # -------------- 
 # ret = solution.rotateRight(ListNode.list_to_ListNode([1,2]), 1)
