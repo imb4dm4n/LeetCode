@@ -46,6 +46,39 @@ class ListNode:
 
 class Solution:
     '''
+    # 83. Remove Duplicates from Sorted List
+    # https://leetcode.com/problems/remove-duplicates-from-sorted-list/
+    问题: 输入一个链表, 删除重复的节点, 保持唯一. 类似做 set([]) 操作
+    思路: 两个指针 prev, cur; prev 与 cur 不同时, 移动两个指针前进;
+    相同时, 仅移动 cur 指针, 直到 cur 为空 或者 prev 与 cur 不同,修复 prev 的next
+    然后移动两个指针.
+    边界处理: 即使头结点重复, 也不用担心, 因为至少存在一个节点.
+    所有节点值都一样, 则最后需要把头节点的next修改为 null;
+    最后的节点是相同, 修改 prev 的 next 为 null;
+    Runtime: 74 ms, faster than 50.50% of Python3 online submissions for Remove Duplicates from Sorted List.
+    Memory Usage: 14 MB, less than 29.77% of Python3 online submissions for Remove Duplicates from Sorted List.
+    '''
+    def deleteDuplicates1(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        # ListNode.print(head)
+        prev,   cur =   head, head.next
+        has_dup     =   False
+        while cur:
+            if prev.val ==  cur.val:
+                cur         =   cur.next
+                has_dup     =   True
+                continue
+            has_dup         =   False
+            prev.next       =   cur
+            prev            =   cur
+            cur             =   cur.next
+        # 边界处理
+        if has_dup:
+            prev.next       =   None
+        return      head
+        
+    '''
     # 82. Remove Duplicates from Sorted List II
     # https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
     问题: 输入一个排序的链表头, 移除存在重复的节点. ie: [1,2,3,3,3,4,4,5] => [1,2,5]
@@ -418,18 +451,18 @@ class Solution:
         #     sum     =   sum % 10
         #     cur.val =   sum
             
-solution =  Solution()   
+# solution =  Solution()   
 # -------------- 
-ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,2,3,3,4,4,5]))
-ListNode.print(ret)
-ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2]))
-ListNode.print(ret)
-ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2,2]))
-ListNode.print(ret)
-ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2,2,3]))
-ListNode.print(ret)
-ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,2,2,2,3]))
-ListNode.print(ret)
+# ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,2,3,3,4,4,5]))
+# ListNode.print(ret)
+# ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2]))
+# ListNode.print(ret)
+# ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2,2]))
+# ListNode.print(ret)
+# ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,1,2,2,3]))
+# ListNode.print(ret)
+# ret  = solution.deleteDuplicates(ListNode.list_to_ListNode([1,2,2,2,3]))
+# ListNode.print(ret)
 
 # -------------- 
 # ret  = solution.removeNthFromEnd(ListNode.list_to_ListNode([1,2,3,4,5]), 2)
