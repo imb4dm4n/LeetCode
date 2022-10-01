@@ -31,20 +31,94 @@ class ListNode:
         return  ret_head.next
 
     @staticmethod
-    def print(node:ListNode):
+    def print(node:ListNode, *args):
         '''
         输出node
         '''
+        print("")
         l       =   ""
         while node:
             tmp = "->" if node.next else ""
             # print("{}".format(str(node.val) + tmp))
             l += str(node.val) + " -> "
             node        =   node.next
+        for arg in args:
+            print(arg)
         print(l[:-3])
+        print("")
 
 
 class Solution:
+    '''
+    # 86. Partition List
+    # https://leetcode.com/problems/partition-list/
+    问题: 输入链表 和 值x, 在保持顺序的情况下, 根据 x 把链表分区, 使得 <x 的在前面, >x 在后面.
+    思路: 生成两个链表, 一个链表保存小于x的节点, 另一个保存大于等于x的节点.
+    变量声明: head_small(小于x的链表头), head_big(大于等于x的链表头), cur_small(小于x的链表cur指针),
+    cur(原始链表工作指针)
+    用 cur 遍历输入链表, 当 cur 小于 x 时, 把cur插入 small 链表(进行初始化), 大于x时, 把cur插入 big 链表(初始化),
+    修复节点关系.
+    边界情况:   所有节点都小于x 或 都大于等于x, 则不需要修改.
+    Runtime: 67 ms, faster than 34.53% of Python3 online submissions for Partition List.
+    Memory Usage: 13.9 MB, less than 77.20% of Python3 online submissions for Partition List.
+    思路2: 同样是两个链表头, 额外构造指针.
+
+    '''
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        # 思路2
+        left_head       =   ListNode(None)  # head of the list with nodes values < x
+        right_head      =   ListNode(None)  # head of the list with nodes values >= x
+        left            =   left_head       # attach here nodes with values < x
+        right           =   right_head      # attach here nodes with values >= x
+        
+        # traverse the list and attach current node to left or right nodes
+        while head:
+            if head.val < x:
+                left.next   =   head
+                left        =   left.next
+            else:  # head.val >= x
+                right.next  =   head
+                right       =   right.next
+            head    =   head.next
+        
+        right.next  =   None  # set tail of the right list to None
+        left.next   =   right_head.next  # attach left list to the right
+        
+        return left_head.next 
+
+        # 思路1
+        if not head or not head.next:
+            return      head
+        
+        head_small,head_big,cur_small,cur,prev      =   None,None,None,head,None
+        while cur:
+            if cur.val < x:
+                if cur_small:
+                    cur_small.next      =   cur
+                if not head_small:
+                    head_small          =   cur
+                cur_small           =   cur
+                cur             =   cur.next
+                continue
+            
+            # 处理大于 等于的情况
+            else:
+                # 若已经有前一个大于等于的节点
+                if prev:
+                    prev.next   =   cur
+                if not head_big:
+                    head_big    =   cur
+                prev        =   cur
+                cur         =   cur.next
+            
+        # 所有都小于 或 都大于等于
+        if not head_small or not head_big:
+            return      head_small if not head_big else head_big
+        # 修复关系
+        cur_small.next  =   head_big
+        prev.next       =   None
+        return      head_small
+
     '''
     # 83. Remove Duplicates from Sorted List
     # https://leetcode.com/problems/remove-duplicates-from-sorted-list/
