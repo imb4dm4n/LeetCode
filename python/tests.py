@@ -17,6 +17,13 @@ class timer():
         print("<%s> elapsed %s ms " % (self.module_name, (stop - self.create)*1000))
         return (stop - self.create)*1000
 
+class TestAlgorithm(unittest.TestCase):
+    def test_threeSumClosest(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        ret = so.threeSumClosest([-1,2,1,-4], 1)
+        print("ret = {}".format(ret))
+
 class TestDynamicProgram(unittest.TestCase):
     def setUp(self) -> None:
         self.so     =   SD()
