@@ -50,6 +50,44 @@ class ListNode:
 
 class Solution:
     '''
+    # 92. Reverse Linked List II
+    # https://leetcode.com/problems/reverse-linked-list-ii/
+    问题: 输入一个链表 和 数字 left & right, 且 left<=right. 反转这区间的节点并返回链表.
+    思路1: 定位需要反转的链表头和尾,
+    思路2: 直接保存到数组, 进行反转. 需要额外空间
+    思路3: 类似栈的操作, 不断的把需要反转的链表加入到"栈" 顶
+    Runtime: 67 ms, faster than 17.27% of Python3 online submissions for Reverse Linked List II.
+    Memory Usage: 14 MB, less than 52.02% of Python3 online submissions for Reverse Linked List II.
+    '''
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        if not head or not head.next or\
+            left == right:
+            return head
+        
+        dummy, prev, cur    =   ListNode(), None, head
+        prev        =   dummy
+        prev.next   =   head
+
+        # 移动到第一个反转点, prev 指向 "栈顶"
+        for i in range(left-1):
+            cur     =   cur.next
+            prev    =   prev.next
+        
+        # 反转 m-n 次
+        for i in range(right-left):
+            # 把当前节点的下一个节点, 移动到 "栈顶"
+            tmp     =   cur.next
+            if not tmp:
+                break
+            cur.next    =   tmp.next
+            top         =   prev.next   # 保存原始 "栈顶节点"
+            prev.next   =   tmp
+            tmp.next    =   top   # 新的 "栈顶节点"
+        
+        return dummy.next
+                
+    
+    '''
     # 86. Partition List
     # https://leetcode.com/problems/partition-list/
     问题: 输入链表 和 值x, 在保持顺序的情况下, 根据 x 把链表分区, 使得 <x 的在前面, >x 在后面.

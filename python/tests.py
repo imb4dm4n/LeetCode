@@ -18,7 +18,7 @@ class timer():
         return (stop - self.create)*1000
 
 class TestAlgorithm(unittest.TestCase):
-    def test_threeSumClosest(self):
+    def xtest_threeSumClosest(self):
         from Algorithm import Solution
         so      =   Solution()
         ret = so.threeSumClosest([-1,2,1,-4], 1)
@@ -61,6 +61,33 @@ class TestLinkList(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
+    def test_reverseBetween(self):
+        inp         =   ListNode.list_to_ListNode([1,2,3,4,5])
+        ListNode.print(inp,"[+]input:")
+        ret         =   self.so.reverseBetween(inp,2,4)
+        ListNode.print(ret,"[+]result:")
+
+        inp         =   ListNode.list_to_ListNode([3,5])
+        ListNode.print(inp,"[+]input:")
+        ret         =   self.so.reverseBetween(inp,1,1)
+        ListNode.print(ret,"[+]result:")
+
+        inp         =   ListNode.list_to_ListNode([3,5])
+        ListNode.print(inp,"[+]input:")
+        ret         =   self.so.reverseBetween(inp,1,2)
+        ListNode.print(ret,"[+]result:")
+
+        inp         =   ListNode.list_to_ListNode([1,2,3])
+        ListNode.print(inp,"[+]input:")
+        ret         =   self.so.reverseBetween(inp,1,2)
+        ListNode.print(ret,"[+]result:")
+
+        inp         =   ListNode.list_to_ListNode([1,2,3,4,5])
+        ListNode.print(inp,"[+]input:")
+        ret         =   self.so.reverseBetween(inp,1,2)
+        ListNode.print(ret,"[+]result:")
+
+
     def xtest_partition(self):
         inp         =   ListNode.list_to_ListNode([1,4,3,2,5,2])
         ListNode.print(inp,"[+]input:")
