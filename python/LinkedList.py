@@ -50,6 +50,28 @@ class ListNode:
 
 class Solution:
     '''
+    # 2095. Delete the Middle Node of a Linked List
+    # https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/
+    问题: 给定一个链表，删除它的中间节点, 返回修改后的链表头.
+    middle从0开始计算. 比如n个节点, 那么中间节点是 n/2 取小于的整数
+    思路:  之前有个思路是一个快慢指针, 快的移动两次, 慢的移动一次, 快的为None 时 慢的就是middle了.
+    Runtime: 1913 ms, faster than 89.39% of Python3 online submissions for Delete the Middle Node of a Linked List.
+    Memory Usage: 60.7 MB, less than 40.40% of Python3 online submissions for Delete the Middle Node of a Linked List
+    '''
+    def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy , slow, fast  =   ListNode(), head, head
+        dummy.next          =   head
+        prev            =   dummy
+        while fast and fast.next:
+            fast    =   fast.next.next
+            slow    =   slow.next
+            prev    =   prev.next
+        
+        # fast 为 None 时 , slow 指向中间节点, prev 是它的前一个
+        prev.next   =   prev.next.next
+        return dummy.next
+
+    '''
     # 237. Delete Node in a Linked List
     # https://leetcode.com/problems/delete-node-in-a-linked-list/
     问题: 把输入的节点从链表删除. 约束: 非尾部节点.
