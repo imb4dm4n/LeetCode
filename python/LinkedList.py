@@ -50,6 +50,24 @@ class ListNode:
 
 class Solution:
     '''
+    # 237. Delete Node in a Linked List
+    # https://leetcode.com/problems/delete-node-in-a-linked-list/
+    问题: 把输入的节点从链表删除. 约束: 非尾部节点.
+    思路: 直接把下一个节点的值拷贝到当前节点即可
+    Runtime: 96 ms, faster than 5.35% of Python3 online submissions for Delete Node in a Linked List.
+    Memory Usage: 14.4 MB, less than 15.04% of Python3 online submissions for Delete Node in a Linked List.
+    '''
+    def deleteNode(self, node: Optional[ListNode]):
+        """
+        :type node: ListNode
+        :rtype: void Do not return anything, modify node in-place instead.
+        """
+        if node:
+            next_node   =   node.next
+            node.val    =   next_node.val
+            node.next   =   next_node.next
+        
+    '''
     # 92. Reverse Linked List II
     # https://leetcode.com/problems/reverse-linked-list-ii/
     问题: 输入一个链表 和 数字 left & right, 且 left<=right. 反转这区间的节点并返回链表.
