@@ -6,8 +6,29 @@ from typing import Optional
 from unittest   import *
 import unittest
 import collections
+from xml.sax.handler import all_properties
 
 class Solution:
+    '''
+    # 1832. Check if the Sentence Is Pangram (easy)
+    # https://leetcode.com/problems/check-if-the-sentence-is-pangram/
+    问题: 输入一个字符串, 若所有的字符覆盖了26个字母, 则返回 true ,否则返回false
+    思路1: 用集合保存唯一的字符, 遍历一遍字符串, 把每个字符加入到集合中, 若集合的长度为26, 则提前返回.
+    遍历结束, 集合长度不为 26, 则返回false.
+    Runtime: 55 ms, faster than 54.97% of Python3 online submissions for Check if the Sentence Is Pangram.
+    Memory Usage: 13.9 MB, less than 11.66% of Python3 online submissions for Check if the Sentence Is Pangram.
+    '''
+    def checkIfPangram(self, sentence: str) -> bool:
+        alphabet    =   set()
+        for c in sentence:
+            if alphabet.__len__() == 26:
+                return True
+            alphabet.add(c)
+        
+        if alphabet.__len__() == 26:
+            return True
+        return False
+
     '''
     # https://leetcode.com/problems/longest-palindrome/
     # 409. Longest Palindrome

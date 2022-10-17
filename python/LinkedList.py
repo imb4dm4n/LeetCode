@@ -59,12 +59,11 @@ class Solution:
     Memory Usage: 60.7 MB, less than 40.40% of Python3 online submissions for Delete the Middle Node of a Linked List
     '''
     def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        dummy , slow, fast  =   ListNode(), head, head
+        dummy ,  fast  =   ListNode(), head
         dummy.next          =   head
         prev            =   dummy
         while fast and fast.next:
             fast    =   fast.next.next
-            slow    =   slow.next
             prev    =   prev.next
         
         # fast 为 None 时 , slow 指向中间节点, prev 是它的前一个
