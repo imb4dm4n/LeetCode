@@ -3,6 +3,8 @@ from LinkedList import  *
 import time
 import os, datetime
 from DynamicProgram import Solution as SD
+from BinaryTree import Solution as SBT
+from BinaryTree import TreeNode
 
 class timer():
     def __init__(self, module_name=""):
@@ -23,6 +25,15 @@ class TestAlgorithm(unittest.TestCase):
         so      =   Solution()
         ret = so.threeSumClosest([-1,2,1,-4], 1)
         print("ret = {}".format(ret))
+
+class TestBinaryTree(unittest.TestCase):
+    def test_inorderTraversal(self):
+        so      =   SBT()
+        root    =   TreeNode(1)
+        left    =   TreeNode(2)
+        root.left=left
+        ret     =    so.inorderTraversal(root)
+        print(ret)
 
 class TestDynamicProgram(unittest.TestCase):
     def setUp(self) -> None:
