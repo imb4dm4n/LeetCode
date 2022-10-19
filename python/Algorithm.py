@@ -1,12 +1,73 @@
 '''
 未分类的算法
 '''
+from collections import Counter
 from typing import List
 
 
 
 
 class Solution:
+    '''
+    # 692. Top K Frequent Words
+    # https://leetcode.com/problems/top-k-frequent-words/
+    问题: 输入一组单词和数字k, 返回k个最常出现的单词, 若频率一样,则按字母顺序排序.
+    返回的列表按照出现频率和单词字母顺序排序.
+    思路1: 用字典统计单词出现的频率, 按照频率排序他们.
+    Runtime: 118 ms, faster than 43.88% of Python3 online submissions for Top K Frequent Words.
+    Memory Usage: 14.1 MB, less than 27.71% of Python3 online submissions for Top K Frequent Words.
+    '''
+    def topKFrequent(self, words: List[str], k: int) -> List[str]:
+        # 思路2 : 
+        freq=Counter(words)
+        sortedDict=sorted(freq.items(),key=lambda x:(-x[1],x[0]))
+        out=[key for key,val in sortedDict[:k]]
+        return out
+        
+        # 思路1 : 
+        # word_map        =   {}
+        # ret             =   {}  # {3: ('asd','zxc')}
+        # # 统计频率
+        # for word in words:
+        #     if word_map.get(word) is None:
+        #         word_map[word]  =   1
+        #         continue
+        #     word_map[word]  +=  1
+        
+        # # 出现频率一样的放在同一个字典
+        # for word,count in word_map.items():
+        #     if ret.get(count) is None:
+        #         ret[count]      =   []
+        #         ret[count].append(word)
+        #     else:
+        #         ret[count].append(word)
+        
+        # # 根据出现次数排序
+        # desc_words  =   sorted(ret.items(), key=lambda x:x[0], reverse=True)
+        # r_li        =   []
+        # for count, words in desc_words:
+        #     # print(sorted(words))
+        #     r_li.extend(sorted(words))
+        
+        # return r_li[:k]
+
+
+        # # 用 word_map 的 value 进行降序排序 
+        # desc_words  =   sorted(word_map.items(), key=lambda x:x[1], reverse=True)
+        # print(word_map)
+
+        # for word,count in desc_words:
+        #     if ret.get(count) is None:
+        #         ret[count]      =   []
+        #         ret[count].append(word)
+        #     else:
+        #         ret[count].append(word)
+        #     # if count <= k:
+        #     #     ret.append(word)
+        
+        
+        # return  sorted(ret)
+    
     '''
     # 16. 3Sum Closest
     # https://leetcode.com/problems/3sum-closest/

@@ -1,2 +1,1 @@
-python -m unittest tests
-pause
+python -m unittest tests -k TestAlgorithm

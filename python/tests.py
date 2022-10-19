@@ -20,6 +20,19 @@ class timer():
         return (stop - self.create)*1000
 
 class TestAlgorithm(unittest.TestCase):
+    def test_topKFrequent(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        ret = so.topKFrequent(["love","leetcode","i","i","love","coding"], 1)
+        print("ret = {}".format(ret))
+
+        ret = so.topKFrequent(["the","day","is","sunny","the","the","the","sunny","is","is"], 4)
+        print("ret = {}".format(ret))
+        '''
+        ["the","day","is","sunny","the","the","the","sunny","is","is"], k = 4
+Output: ["the","is","sunny","day"]
+        '''
+    
     def xtest_threeSumClosest(self):
         from Algorithm import Solution
         so      =   Solution()
