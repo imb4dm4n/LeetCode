@@ -20,7 +20,35 @@ class timer():
         return (stop - self.create)*1000
 
 class TestAlgorithm(unittest.TestCase):
-    def test_topKFrequent(self):
+    def test_intToRoman(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        print("input {} output {}".format(
+            123,
+            so.intToRoman(123)
+        ))
+        print("input {} output {}".format(
+            149,
+            so.intToRoman(149)
+        ))
+        print("input {} output {}".format(
+            1997,
+            so.intToRoman(1997)
+        ))
+        print("input {} output {}".format(
+            5494,
+            so.intToRoman(5494)
+        ))
+        print("input {} output {}".format(
+            444,
+            so.intToRoman(444)
+        ))
+        print("input {} output {}".format(
+            54,
+            so.intToRoman(54)
+        ))
+
+    def xtest_topKFrequent(self):
         from Algorithm import Solution
         so      =   Solution()
         ret = so.topKFrequent(["love","leetcode","i","i","love","coding"], 1)

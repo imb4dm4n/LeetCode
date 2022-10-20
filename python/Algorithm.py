@@ -5,9 +5,106 @@ from collections import Counter
 from typing import List
 
 
-
-
 class Solution:
+    '''
+    # 12. Integer to Roman
+    # https://leetcode.com/problems/integer-to-roman/
+    问题: 输入一个数字, 转化为罗马数字. 罗马数字的一些规则:
+    (1:I, 5:V, X:10, L:50, C:100, D:500, M:1000). 遇到相近的数字时,需要通过减法来表示. 比如4: IV, 9:IX, 40:XL, 400:CD, 900:CM.
+    疑问: 49? 怎么表示 : XXXXVIIII, XLIX. 遇到特殊的就用特殊的组合表示.
+    思路1:  对个位/十位/百位/千位分别声明一个解析函数.
+    从最低位开始生成每一位对应的数字, 调用函数解析, 最后拼接得到目标.
+    Runtime: 66 ms, faster than 79.63% of Python3 online submissions for Integer to Roman.
+    Memory Usage: 13.9 MB, less than 80.12% of Python3 online submissions for Integer to Roman.
+    '''
+    def intToRoman(self, num: int) -> str:
+        def parse_1(i):
+            i   =   int(i)
+            if i == 0:
+                return ''
+            elif i == 4:
+                return 'IV'
+            elif i == 9:
+                return 'IX'
+            elif i == 5:
+                return 'V'
+            elif i < 4:
+                return 'I' * i
+            else:
+                return 'V' + 'I' * int(i-5)
+            
+        def parse_10(i):
+            i   =   int(i)
+            if i == 0:
+                return ''
+            elif i == 4:
+                # 40 = 50 - 10
+                return 'XL'
+            elif i == 9:
+                # 90 = 100 - 10
+                return 'XC'
+            elif i < 4:
+                return 'X' * i
+            else:
+                return 'L' + 'X' * int(i-5)
+            
+        def parse_100(i):
+            i   =   int(i)
+            if i == 0:
+                return ''
+            elif i == 4:
+                # 400 = 500 - 100
+                return 'CD'
+            elif i == 9:
+                # 900 = 1000 - 100
+                return 'CM'
+            elif i < 4:
+                return 'C' * i
+            else:
+                return 'D' + 'C' * int(i-5)
+        
+        def parse_1000(i):
+            i   =   int(i)
+            if i == 0:
+                return ''
+            else:
+                return 'M' * i
+        
+        funs        =   [parse_1,parse_10,parse_100,parse_1000]
+        parts       =   []
+        while num > 0:
+            if funs.__len__() == 1:
+                parts.append( funs[0](num))
+                break
+            else:
+                fun =   funs.pop(0)
+                parts.append( fun(num%10))
+                num     /=  10
+            # print(parts)
+        
+        parts.reverse()
+        return "".join(parts)
+        '''
+        method 2
+        '''
+        map = {1:'I', 5:'V', 10: 'X', 50:'L', 100:'C', 500:'D', 1000:'M', 4:"IV", 9:"IX", 40:"XL", 90:"XC", 400:"CD", 900:"CM", 2:"II", 3:"III"}
+        num2chk = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4]
+        
+        stack = []
+        def d2r(num):
+            if num == 0:
+                return
+            if num in map:
+                stack.append(map[num])
+                return
+            for val in num2chk:
+                if num >= val:
+                    stack.append(map[val])
+                    d2r(num-val)
+                    break
+        d2r(num)
+        return "".join(stack)
+    
     '''
     # 692. Top K Frequent Words
     # https://leetcode.com/problems/top-k-frequent-words/
