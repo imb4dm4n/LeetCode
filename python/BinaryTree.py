@@ -12,6 +12,25 @@ class TreeNode:
 
 class Solution:
     '''
+    # https://leetcode.com/problems/same-tree/
+    # 100. Same Tree (easy)
+    问题: 判断两个二叉树是否相同
+    思路1:  判断指针是否存在, 判断值是否存在. 递归判断子节点.
+    Runtime: 27 ms, faster than 98.21% of Python3 online submissions for Same Tree.
+    Memory Usage: 13.8 MB, less than 75.48% of Python3 online submissions for Same Tree.
+    '''
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return  True
+        if not p or not q:
+            return False
+
+        if p.val != q.val:
+            return False
+        
+        return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+
+    '''
     # https://leetcode.com/problems/binary-tree-inorder-traversal/
     # 94. Binary Tree Inorder Traversal (easy)
     问题: 输入二叉树根节点, 返回中序遍历.
