@@ -15,6 +15,15 @@ class Solution:
     Memory Usage: 27.2 MB, less than 53.63% of Python3 online submissions for Contains Duplicate II.
     '''
     def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        # faster
+        d = {} #d[num] is the last index for which i is seen
+        for i, num in enumerate(nums):
+            if i - d.get(num, -k-1) <= k:
+                return True
+            else:
+                d[num] = i
+        return False
+
         # save the num's pos
         map_num_pos     =   {}
         for i in range(nums.__len__()):
