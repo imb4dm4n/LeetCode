@@ -7,6 +7,28 @@ from typing import List
 
 class Solution:
     '''
+    # 219. Contains Duplicate II
+    # https://leetcode.com/problems/contains-duplicate-ii/
+    问题: 输入一组数字和k, 判断是否存在两个相同的数字, 且他们的距离小于等于k. (即在特定小范围内, 判断是否有重复的数字.)
+    思路: 用一个字典存储每个数字的索引, 若发现存在相同数字, 对比他们的间距是否小于k, 小于则返回这两个索引, 若大于, 则更新数字的索引.
+    Runtime: 1503 ms, faster than 34.08% of Python3 online submissions for Contains Duplicate II.
+    Memory Usage: 27.2 MB, less than 53.63% of Python3 online submissions for Contains Duplicate II.
+    '''
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        # save the num's pos
+        map_num_pos     =   {}
+        for i in range(nums.__len__()):
+            if map_num_pos.get(nums[i]) is None:
+                map_num_pos[nums[i]]    =   i
+                continue
+            diff    =   i   -   map_num_pos[nums[i]]
+            if diff <= k:
+                return True
+            map_num_pos[nums[i]]    =   i
+
+        return False
+        
+    '''
     # 12. Integer to Roman
     # https://leetcode.com/problems/integer-to-roman/
     问题: 输入一个数字, 转化为罗马数字. 罗马数字的一些规则:
