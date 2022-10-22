@@ -8,7 +8,74 @@ import unittest
 import collections
 from xml.sax.handler import all_properties
 
+set('zxc').intersection(set('cxz'))
+
+
 class Solution:
+    '''
+    # 76. Minimum Window Substring (hard)
+    # https://leetcode.com/problems/minimum-window-substring/
+    # tag: window
+    问题: 输入字符串 s 和 t, 找出s中的一小段子字符串, 包括了 t 的所有字母(包括重复的字母), 若不存在, 返回空.
+    (s的长度可能小于t)
+    思路: 包括 t 的所有字符, 那么窗口大小至少是 t 的长度. 从 0 偏移开始构建窗口.
+    构造t的集合, 每个窗口的集合, 求交集. 但是窗口长度可能会大于t的长度. 因此从0开始遍历.
+
+    LeetCode思路: 滑动窗口. 用 left 和 right 指针表示一个窗口的左右区间.  https://leetcode.com/problems/minimum-window-substring/discuss/26808/Here-is-a-10-line-template-that-can-solve-most-'substring'-problems
+    a.当 left 和 right 构成的窗口无法满足条件时, 把 right 增大, 直到找到一个满足的窗口.
+    b.当 left 和 right 构成的窗口满足条件时. 把 left 增大, 判断窗口是否满足, 若满足则继续缩小窗口, 否则回到步骤a
+    c. 遍历直到结束
+    类似投票算法? 
+    Runtime: 215 ms, faster than 56.25% of Python3 online submissions for Minimum Window Substring.
+    Memory Usage: 14.8 MB, less than 36.77% of Python3 online submissions for Minimum Window Substring.
+    '''
+    def minWindow(self, s: str, t: str) -> str:
+        if len(t) > len(s):
+            return ""
+        
+        # store ascii chrarcter counts. 不用 collection.Counter 是因为 dict 更慢
+        ch_hash     =   [0] * 128
+
+        for c in t:
+            # 统计丢失的字符个数/ 初始化需要寻找的字符的个数
+            ch_hash[ord(c)]  +=  1
+        
+        left            =   0   # 窗口起始坐标
+        right           =   0   # 窗口结束坐标
+        begin           =   0   # 最新满足条件的窗口起始坐标
+        min_size        =   0x1fffff # 最小的窗口大小
+        missing         =   t.__len__() # 丢失\ 需要寻找的字符个数
+        
+        while right < s.__len__():
+            # 当前字符在 需要寻找的字符中, 减少需要寻找的字符个数
+            if ch_hash[ord(s[right])] > 0:
+                missing          -=  1
+            
+            # 无论当前字符是否能够在 t 中找到, 都减1, 如果是不存在的, 则对应字符计数器为负数
+            # 让丢失的字符个数减1
+            ch_hash[ord(s[right])]   -=  1
+            right        +=  1  # 移动窗口
+
+            # 若所有字符都找到了, 开始尝试缩小窗口
+            while missing    ==  0:
+                # calculate the window size to find the smallest window.
+                if right - left < min_size:
+                    min_size    =   right   -   left
+                    begin       =   left
+                
+                # 从窗口最左边开始, 使得窗口无效. 字符是想要的, 则计数器会大于0, 若不是想要的, 会变成0
+                # 让丢失的字符个数加1
+                ch_hash[ord(s[left])]    +=  1
+                # 若当前字符 丢失个数 大于0, 说明是想要的字符, 前一步已经让它再次作为丢失的字符了
+                if ch_hash[ord(s[left])] > 0:
+                    missing  +=  1      # 丢失的字符个数 +1
+                left        +=  1       # 缩小窗口
+        
+        if min_size != 0x1fffff:
+            return s[begin:begin+min_size]
+        return ''
+
+
     '''
     # 1832. Check if the Sentence Is Pangram (easy)
     # https://leetcode.com/problems/check-if-the-sentence-is-pangram/
@@ -119,7 +186,7 @@ ret             =   solution.longestPalindrome("ccc")
 print(ret)
 ret             =   solution.longestPalindrome("abccccdd")
 print(ret)
-exit(0)
+# exit(0)
 # 3. Longest Substring Without Repeating Characters
 ret             =   solution.lengthOfLongestSubstring("abcabcbb")
 print(ret)

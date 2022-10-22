@@ -19,6 +19,14 @@ class timer():
         print("<%s> elapsed %s ms " % (self.module_name, (stop - self.create)*1000))
         return (stop - self.create)*1000
 
+class TestStrings(unittest.TestCase):
+    def test_minWindow(self):
+        from Strings import Solution
+        so      =   Solution()
+        inp     =   "ADOBECODEBANC"
+        print("input {}\noutput {}".format(inp, so.minWindow(inp, "ABC")))
+        print("expect: BANC")
+
 class TestAlgorithm(unittest.TestCase):
     def test_intToRoman(self):
         from Algorithm import Solution
