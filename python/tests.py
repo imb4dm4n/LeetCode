@@ -28,6 +28,46 @@ class TestStrings(unittest.TestCase):
         print("expect: BANC")
 
 class TestAlgorithm(unittest.TestCase):
+    def test_findErrorNums(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        inp     =   [1,2,2,4]
+        print("inp {}\noutput {}\nexpect {}\n".format(
+            inp,
+            so.findErrorNums(inp),
+            [2,3]
+        ))
+        inp     =   [3,2,2]
+        print("inp {}\noutput {}\nexpect {}\n".format(
+            inp,
+            so.findErrorNums(inp),
+            [2,1]
+        ))
+        inp     =   [1,1]
+        print("inp {}\noutput {}\nexpect {}\n".format(
+            inp,
+            so.findErrorNums(inp),
+            [1,2]
+        ))
+        inp     =   [3,4,2,2]
+        print("inp {}\noutput {}\nexpect {}\n".format(
+            inp,
+            so.findErrorNums(inp),
+            [2,1]
+        ))
+        inp     =   [2,3,2]
+        print("inp {}\noutput {}\nexpect {}\n".format(
+            inp,
+            so.findErrorNums(inp),
+            [2,1]
+        ))
+        inp     =   [2,1,2,3,4,5]
+        print("inp {}\noutput {}\nexpect {}\n".format(
+            inp,
+            so.findErrorNums(inp),
+            [2,6]
+        ))
+
     def test_intToRoman(self):
         from Algorithm import Solution
         so      =   Solution()
@@ -167,4 +207,9 @@ class TestLinkList(unittest.TestCase):
         # ret     =   so.deleteDuplicates1(ListNode.list_to_ListNode([1,1,2]))
         ListNode.print(ret)
 
-
+l = ["the","day","is","is","sunny","the","the","the","sunny","is","is"]
+import collections
+c = collections.Counter(l)
+d = c.most_common(4)
+order_items = sorted(d, key=lambda x: (-x[1], x[0]))
+out = [k for k,v in order_items]

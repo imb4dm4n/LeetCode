@@ -2,10 +2,47 @@
 未分类的算法
 '''
 from collections import Counter
+import collections
 from typing import List
 
 
 class Solution:
+    '''
+- https://leetcode.com/problems/contains-duplicate-ii/
+- 645. Set Mismatch(easy)
+- 问题:  
+输入一组数从1-n, 其中一个数重复了, 找出并返回它和丢失的那个. ie: [1,2,2,4] => [2,3]
+- 大神思路1:
+1.找出重复的数字: 计算所有数字的和, 减去 set(输入的数组), 即可找到重复的数字.
+2.找出丢失的数字: 计算1到n的 累加和, 减去 set(输入的数组)
+Runtime: 230 ms, faster than 85.57% of Python3 online submissions for Set Mismatch.
+Memory Usage: 15.9 MB, less than 23.96% of Python3 online submissions for Set Mismatch.
+- 大神思路2:
+1.找出重复的数字: 用Counter计数, 用 most_common 得出最常出现的.
+2.找出丢失的数字: 计算1到n的 累加和, 减去 set(输入的数组)
+Runtime: 203 ms, faster than 94.35% of Python3 online submissions for Set Mismatch.
+Memory Usage: 15.9 MB, less than 23.96% of Python3 online submissions for Set Mismatch.
+- 思路:
+每两个进行对比, 若相同, 则返回.注意,要求是1-n, 若输入[2,2], 需要返回[1,2]
+注意: 丢失的数字可能是 x+1 也可能是 1. 1 的情况为: 开头的数字不为1 且最后一个数字.
+注意: 这数组没有排序, 重复的数字可能不是相邻的.
+    '''
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        return [
+            sum(nums) - sum(set(nums)), # 找出重复数字
+            int(len( nums ) * ( len( nums ) + 1 ) / 2  - sum(set(nums)))
+        ]
+        # 思路2
+        from collections import Counter
+        c = Counter(nums)
+        n = len(nums)
+        res = []
+        dup = c.most_common(1)[0][0]
+        res.append(dup)        
+        miss = n*(n+1) // 2 - (sum(nums) - dup)
+        res.append(miss)
+        return res
+        
     '''
     # 219. Contains Duplicate II
     # https://leetcode.com/problems/contains-duplicate-ii/
