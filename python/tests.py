@@ -26,6 +26,11 @@ class TestStrings(unittest.TestCase):
         inp     =   ['un','iq','ue']
         print("input {}\noutput {}".format(inp, so.maxLength(inp)))
         print("expect: 4")
+        inp     =   ["cha","r","act","ers"]
+        print("input {}\noutput {}".format(inp, so.maxLength(inp)))
+        print("expect: 6")
+
+
     def test_minWindow(self):
         from Strings import Solution
         so      =   Solution()

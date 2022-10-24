@@ -31,11 +31,13 @@ class Solution:
                 continue
             unique_strs.append(set(s))
         
-        for i, t in enumerate(unique_strs):
-            tmp     =   [t]
+        # for i, t in enumerate(unique_strs):
+            tmp     =   [unique_strs[0]]
             cur_len =   0
-            for j in range(i+1, unique_strs.__len__()):
+            print(f"tmp is {tmp}")
+            for j in range(1, unique_strs.__len__()-1):
                 s1  =   unique_strs[j]
+                print(f"work on {s1}")
                 should_append   =   True
                 # tmp.append(s1)
                 for i1, t1 in enumerate(tmp):
@@ -45,12 +47,16 @@ class Solution:
                         # 存在重复,移除最短的那个
                         if len(t1) >= len(s1):
                             should_append   =   False
+                            print(f"{should_append} not append {s1}")
                             break
                         else:
                             cur_len -=  len(t1)
-                            tmp.pop(i1)
+                            x=tmp.pop(i1)
+                            print(f"pop {x}")
                             break
+                print(f"{should_append} append {s1}")
                 if should_append:
+                    # print(f"{should_append} append {s1}")
                     cur_len += len(s1)
                     tmp.append(s1)
             if cur_len > max_len:
