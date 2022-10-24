@@ -20,6 +20,12 @@ class timer():
         return (stop - self.create)*1000
 
 class TestStrings(unittest.TestCase):
+    def testmaxLength(self):
+        from Strings import Solution
+        so      =   Solution()
+        inp     =   ['un','iq','ue']
+        print("input {}\noutput {}".format(inp, so.maxLength(inp)))
+        print("expect: 4")
     def test_minWindow(self):
         from Strings import Solution
         so      =   Solution()

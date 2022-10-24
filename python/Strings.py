@@ -13,6 +13,75 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/
+- 645. 1239. Maximum Length of a Concatenated String with Unique Characters(Medium)
+- 问题:  
+输入一组字符串数组, 找出包含唯一字符的子序列 能够构成的最长字符串的字符个数.  子序列由一组数据在不改变顺序的前提下, 删除一些或不删除元素. 如输入 arr = ["un","iq","ue"], 得到4. 
+因为可以构成 un; iq; ue; uniq; ique; 这几个子序列, 最长长度为4
+-  
+- 思路: 
+遍历O(N^2)次字符串, 用一个栈保存唯一的序列,一个max_len保存结果, 入栈一个元素, 更新结果max_len, 若存在重复元素, 把最短的元素出栈.
+    '''
+    def maxLength(self, arr: List[str]) -> int:
+        max_len         =   0
+        unique_strs     =   []
+        
+        for i, s in enumerate(arr):
+            if set(s).__len__() != len(s):
+                continue
+            unique_strs.append(set(s))
+        
+        for i, t in enumerate(unique_strs):
+            tmp     =   [t]
+            cur_len =   0
+            for j in range(i+1, unique_strs.__len__()):
+                s1  =   unique_strs[j]
+                should_append   =   True
+                # tmp.append(s1)
+                for i1, t1 in enumerate(tmp):
+                    cur_len +=  len(t1)
+                    if t1.intersection( s1):
+                        print(f"conflict {t1} {s1}")
+                        # 存在重复,移除最短的那个
+                        if len(t1) >= len(s1):
+                            should_append   =   False
+                            break
+                        else:
+                            cur_len -=  len(t1)
+                            tmp.pop(i1)
+                            break
+                if should_append:
+                    cur_len += len(s1)
+                    tmp.append(s1)
+            if cur_len > max_len:
+                max_len =   cur_len
+        
+        return max_len
+        
+        for i, s in enumerate(arr):
+            if set(s).__len__() != len(s):
+                continue
+            tmp     =   [set(s)]
+            for j in range(i+1, arr.__len__()):
+                s1  =   arr[j]
+                s1_ =   set(s1)
+                if s1_.__len__() != len(s1):
+                    continue
+                tmp.append(s1_)
+                tmp_s   =   "".join(tmp)
+                if set(tmp_s).__len__()   != len(tmp_s):
+                    # 存在重复元素, 移除最小的那个
+                    for i1, t in enumerate(tmp):
+                        if t & s1_:
+                            tmp.pop(i1)
+                            break
+                # 计算最长的
+                tmp_s   =   "".join(tmp)
+                if len(tmp_s) > max_len:
+                    max_len =   tmp_s
+        return max_len
+                    # tmp.pop(-1)
+    '''
     # 76. Minimum Window Substring (hard)
     # https://leetcode.com/problems/minimum-window-substring/
     # tag: window
