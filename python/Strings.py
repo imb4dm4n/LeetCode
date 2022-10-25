@@ -19,74 +19,26 @@ class Solution:
 输入一组字符串数组, 找出包含唯一字符的子序列 能够构成的最长字符串的字符个数.  子序列由一组数据在不改变顺序的前提下, 删除一些或不删除元素. 如输入 arr = ["un","iq","ue"], 得到4. 
 因为可以构成 un; iq; ue; uniq; ique; 这几个子序列, 最长长度为4
 -  
-- 思路: 
-遍历O(N^2)次字符串, 用一个栈保存唯一的序列,一个max_len保存结果, 入栈一个元素, 更新结果max_len, 若存在重复元素, 把最短的元素出栈.
+- 大神思路: 
+1.用一个数组保存所有可能的字符组合集合
+2.过滤存在重复字符的字符串.
+3.遍历当前生成的所有可能的组合, 求交集, 若不存在交集则合并, 存在交集则跳过这个组合.
+Runtime: 91 ms, faster than 96.86% of Python3 online submissions for Maximum Length of a Concatenated String with Unique Characters.
+Memory Usage: 52.9 MB, less than 8.77% of Python3 online submissions for Maximum Length of a Concatenated String with Unique Characters.
     '''
     def maxLength(self, arr: List[str]) -> int:
-        max_len         =   0
-        unique_strs     =   []
-        
-        for i, s in enumerate(arr):
-            if set(s).__len__() != len(s):
+        unique_strs     =   [set()]
+        for string in arr:
+            if set(string).__len__() < string.__len__():
                 continue
-            unique_strs.append(set(s))
-        
-        # for i, t in enumerate(unique_strs):
-            tmp     =   [unique_strs[0]]
-            cur_len =   0
-            print(f"tmp is {tmp}")
-            for j in range(1, unique_strs.__len__()-1):
-                s1  =   unique_strs[j]
-                print(f"work on {s1}")
-                should_append   =   True
-                # tmp.append(s1)
-                for i1, t1 in enumerate(tmp):
-                    cur_len +=  len(t1)
-                    if t1.intersection( s1):
-                        print(f"conflict {t1} {s1}")
-                        # 存在重复,移除最短的那个
-                        if len(t1) >= len(s1):
-                            should_append   =   False
-                            print(f"{should_append} not append {s1}")
-                            break
-                        else:
-                            cur_len -=  len(t1)
-                            x=tmp.pop(i1)
-                            print(f"pop {x}")
-                            break
-                print(f"{should_append} append {s1}")
-                if should_append:
-                    # print(f"{should_append} append {s1}")
-                    cur_len += len(s1)
-                    tmp.append(s1)
-            if cur_len > max_len:
-                max_len =   cur_len
-        
-        return max_len
-        
-        for i, s in enumerate(arr):
-            if set(s).__len__() != len(s):
-                continue
-            tmp     =   [set(s)]
-            for j in range(i+1, arr.__len__()):
-                s1  =   arr[j]
-                s1_ =   set(s1)
-                if s1_.__len__() != len(s1):
+            cur_set     =   set(string)
+            for prev in unique_strs[:]:
+                if prev & cur_set:
                     continue
-                tmp.append(s1_)
-                tmp_s   =   "".join(tmp)
-                if set(tmp_s).__len__()   != len(tmp_s):
-                    # 存在重复元素, 移除最小的那个
-                    for i1, t in enumerate(tmp):
-                        if t & s1_:
-                            tmp.pop(i1)
-                            break
-                # 计算最长的
-                tmp_s   =   "".join(tmp)
-                if len(tmp_s) > max_len:
-                    max_len =   tmp_s
-        return max_len
-                    # tmp.pop(-1)
+                unique_strs.append(prev|cur_set)
+        
+        return max([len(a) for a in unique_strs])
+        
     '''
     # 76. Minimum Window Substring (hard)
     # https://leetcode.com/problems/minimum-window-substring/
