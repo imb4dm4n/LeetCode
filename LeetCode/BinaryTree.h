@@ -177,6 +177,54 @@ namespace letcoode{
 			recursive_inorderTraversal(node->right, r);
 		}
 	}
+	/*
+	https://leetcode.com/problems/add-one-row-to-tree/
+- 623. Add One Row to Tree
+- 问题
+输入一个二叉树的根节点、val 表示值、depth表示深度,在树的depth
+深度插入一行val的节点. 注意数的深度从1开始计算. 
+- 思路
+深度遍历, 用一个 cur_dep 保存当前深度, 当深度的值为 depth-1时, 开始插入新的节点:
+判断子节点是否为空, 非空则保存子节点,插入新节点后, 修复新节点的子节点.
+边界情况: depth = 1, 则替换根节点. 需要返回新的根节点.
+负面情况: depth > 树的深度.
+Runtime: 24 ms, faster than 86.95% of C++ online submissions for Add One Row to Tree.
+Memory Usage: 25 MB, less than 57.21% of C++ online submissions for Add One Row to Tree.
+	*/
+	TreeNode* dfs_add_row_nodes(TreeNode* node, int val, int depth, int cur_dep) {
+		if (depth == 0) {
+			// 边界处理
+			TreeNode* root  = new TreeNode(val);
+			root->left		=	node;
+			return 		root;
+		}
+		if(!node || cur_dep > depth)
+			return nullptr;
+		if(cur_dep == depth) {
+			// 到达父节点层
+			TreeNode* left = node->left,  *right= node->right;
+			TreeNode* tmp 	=	new TreeNode(val);
+			tmp->left		=	left;
+			node->left		=	tmp;		//	修改当前节点的子节点为新的节点
+			tmp 	=	new TreeNode(val);
+			tmp->right		=	right;
+			node->right		=	tmp;		//	修改当前节点的子节点为新的节点
+			
+			return nullptr;
+		}
+		else {
+			dfs_add_row_nodes(node->left, val, depth, cur_dep+1);
+			dfs_add_row_nodes(node->right, val, depth, cur_dep+1);
+			return nullptr;
+		}
+	}
+	TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        TreeNode* ret = dfs_add_row_nodes(root, val, depth-1, 1);
+		// 若修改了根节点
+		if(ret)
+			return ret;
+		return root;
+    }
 	// https://leetcode.com/problems/binary-tree-inorder-traversal/
 	vector<int> inorderTraversal(TreeNode* root) {
         vector<int> ret;
