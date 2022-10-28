@@ -8,6 +8,20 @@ from typing import List
 
 class Solution:
     '''
+- https://leetcode.com/problems/image-overlap/
+- 835. Image Overlap
+- 问题:  
+输入两个图片, 以二进制表示, 每个单元值为1或0. 通过对一张图片中的所有1做 翻译 操作, 
+即把所有的1同时向上/下/左/右移动(超出边界的1被抹去), 最后计算这两种图片最大的1重叠个数.
+- 思路:
+最优的情况, 第一张图片移动后和第二张完全一样.
+定义一个翻译函数, 把输入的矩阵根据方向移动1
+统计每一行有多少个1. 把
+    '''
+    def largestOverlap(self, img1: List[List[int]], img2: List[List[int]]) -> int:
+        pass
+    
+    '''
 - https://leetcode.com/problems/contains-duplicate-ii/
 - 645. Set Mismatch(easy)
 - 问题:  

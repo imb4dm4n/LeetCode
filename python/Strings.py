@@ -13,6 +13,54 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/group-anagrams/
+- 49. Group Anagrams(medium)
+- 问题:  
+输入一组字符串, 把回文字符串组合成子数组. 这里的回文指的是用同样的字符列表, 组成不同的单词即可.
+- 思路:
+~~非常简单, 遍历一遍字符串数组, 每个都计算set, 写入到字典即可.~~
+排序字符串后, 转为字符串 再写入字典
+Runtime: 235 ms, faster than 40.41% of Python3 online submissions for Group Anagrams.
+Memory Usage: 17.5 MB, less than 73.37% of Python3 online submissions for Group Anagrams.
+边界处理: set 会把相同的字符去掉, 导致不同字符个数的会一样.
+
+    '''
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        word_map        =   {}
+        r               =   []
+        for s in strs:
+            s_      =   str(sorted(s))      # 通过排序
+            if word_map.get(s_) is not None:
+                word_map[s_].append(s)
+                continue
+            word_map[s_]    =   []
+            word_map[s_].append(s)
+        for s, words in word_map.items():
+            r.append(words)
+        return      r
+    '''
+- https://leetcode.com/problems/check-if-two-string-arrays-are-equivalent/
+- 1662. Check If Two String Arrays are Equivalent(easy)
+- 问题:  
+输入两个字符串数组, 判断由他们拼接得到的字符串是否相同: Input: word1 = ["ab", "c"], word2 = ["a", "bc"]. Output: true 
+Runtime: 55 ms, faster than 62.71% of Python3 online submissions for Check If Two String Arrays are Equivalent.
+Memory Usage: 13.8 MB, less than 75.82% of Python3 online submissions for Check If Two String Arrays are Equivalent
+    '''
+    def arrayStringsAreEqual(self, word1: List[str], word2: List[str]) -> bool:
+        return "".join(word1) == "".join(word2)
+    def arrayStringsAreEqual(self, word1: List[str], word2: List[str]) -> bool:
+        for c1, c2 in zip(self.generate(word1), self.generate(word2)):
+            if c1 != c2:
+                return False
+        return True
+
+    def generate(self, wordlist: List[str]):
+        for word in wordlist:
+            for char in word:
+                yield char
+        yield None
+    
+    '''
 - https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/
 - 645. 1239. Maximum Length of a Concatenated String with Unique Characters(Medium)
 - 问题:  
