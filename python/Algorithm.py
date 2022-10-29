@@ -8,6 +8,31 @@ from typing import List
 
 class Solution:
     '''
+- https://leetcode.com/problems/earliest-possible-day-of-full-bloom/
+- 2136. Earliest Possible Day of Full Bloom
+- 问题:  
+一朵花播种需要耗时, 生长需要耗时. 输入一组种子的播种耗时和生长耗时, 找出最短的时间内可以让所有种子开花的播种顺序, 返回耗时.
+- 思路: (类似apk的解析研判 和 入库操作, 入库可以与解析并行, 但是解析之间不能并行, 是串行的; 但是入库与入库之间是可以并行的.)
+观察到: 
+a.无论时间怎么短, 种花的耗时是必须的, 因此最短时间至少是所有种花时间的总和.(因此找出一个最优种花顺序, 然后找到开花时间最长的那个耗时, 就是最短耗时. 因为种花顺序已经是最优了)
+b.耗时取决于最后一个种子播种时间和最后一个种子开花时间
+1. 播种耗时是无法并行的, 所以需要尽可能减少对生长耗时的阻塞?
+2. 为了尽可能的并行生长, 需要根据生长耗时降序排序.
+Runtime: 1760 ms, faster than 96.77% of Python3 online submissions for Earliest Possible Day of Full Bloom.
+Memory Usage: 34.8 MB, less than 39.35% of Python3 online submissions for Earliest Possible Day of Full Bloom.
+    '''
+    def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
+        ret         =   0
+        plant_day   =   0   
+        # 生长是可以并行的, 所以把生长耗时长的任务先做
+        # 剩下就是慢慢的种地, 找到耗时最长的重地?
+        for plant, grow in sorted(zip(plantTime, growTime), key=lambda x: -x[1]):
+            plant_day    +=  plant    # 
+            ret     =   max(ret, plant_day+grow)
+            pass
+        return      ret
+        
+    '''
 - https://leetcode.com/problems/image-overlap/
 - 835. Image Overlap
 - 问题:  

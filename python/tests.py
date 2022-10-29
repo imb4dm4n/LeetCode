@@ -42,6 +42,15 @@ class TestAlgorithm(unittest.TestCase):
     def test_findErrorNums(self):
         from Algorithm import Solution
         so      =   Solution()
+        inp     =   [27,5,24,17,27,4,23,16,6,26,13,17,21,3,9,10,28,26,4,10,28,2]
+        inp1= [26,9,14,17,6,14,23,24,11,6,27,14,13,1,15,5,12,15,23,27,28,12]
+        print("最短耗时 {}".format(
+            so.earliestFullBloom(inp, inp1)
+        ))
+
+    def xtest_findErrorNums(self):
+        from Algorithm import Solution
+        so      =   Solution()
         inp     =   [1,2,2,4]
         print("inp {}\noutput {}\nexpect {}\n".format(
             inp,
@@ -79,7 +88,7 @@ class TestAlgorithm(unittest.TestCase):
             [2,6]
         ))
 
-    def test_intToRoman(self):
+    def xtest_intToRoman(self):
         from Algorithm import Solution
         so      =   Solution()
         print("input {} output {}".format(
