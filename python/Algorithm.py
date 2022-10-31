@@ -8,8 +8,29 @@ from typing import List
 
 class Solution:
     '''
+- https://leetcode.com/problems/toeplitz-matrix/
+- 766. Toeplitz Matrix(easy)
+- 问题:  
+输入一个 mxn的矩阵,  若矩阵是 Toeplitz 则返回true: 即每个坐上到右下的对角线的元素是一样的.
+- 思路
+判断当前节点是否有下一行和下一列, 若存在则直接计算对角线的坐标, 进行对别. 只要有一项不符合, 立刻返回 false
+Runtime: 92 ms, faster than 91.65% of Python3 online submissions for Toeplitz Matrix.
+Memory Usage: 13.8 MB, less than 78.65% of Python3 online submissions for Toeplitz Matrix.
+    '''
+    def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
+        for x in range(0, matrix.__len__()-1):
+            for y in range(0, matrix[0].__len__()-1):
+                # find the diagonal element
+                # print(f"[{x}][{y}]")
+                if matrix[x][y] != matrix[x+1][y+1]:
+                    return False
+                        
+        return True
+
+
+    '''
 - https://leetcode.com/problems/earliest-possible-day-of-full-bloom/
-- 2136. Earliest Possible Day of Full Bloom
+- 2136. Earliest Possible Day of Full Bloom(hard)
 - 问题:  
 一朵花播种需要耗时, 生长需要耗时. 输入一组种子的播种耗时和生长耗时, 找出最短的时间内可以让所有种子开花的播种顺序, 返回耗时.
 - 思路: (类似apk的解析研判 和 入库操作, 入库可以与解析并行, 但是解析之间不能并行, 是串行的; 但是入库与入库之间是可以并行的.)

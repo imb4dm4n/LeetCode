@@ -39,7 +39,18 @@ class TestStrings(unittest.TestCase):
         print("expect: BANC")
 
 class TestAlgorithm(unittest.TestCase):
-    def test_findErrorNums(self):
+    def test_isToeplitzMatrix(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        inp     =   [[1,2,3,4],[5,1,2,3],[9,5,1,2]]
+        print("对角矩阵相同 {}".format(
+            so.isToeplitzMatrix(inp)
+        ))
+        inp     =   [[1,2],[2,2]]
+        print("对角矩阵相同 {}".format(
+            so.isToeplitzMatrix(inp)
+        ))
+    def xtest_findErrorNums(self):
         from Algorithm import Solution
         so      =   Solution()
         inp     =   [27,5,24,17,27,4,23,16,6,26,13,17,21,3,9,10,28,26,4,10,28,2]
