@@ -39,7 +39,15 @@ class TestStrings(unittest.TestCase):
         print("expect: BANC")
 
 class TestAlgorithm(unittest.TestCase):
-    def test_isToeplitzMatrix(self):
+    def test_findBall(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        inp     =   [[1,1,1,-1,-1],[1,1,1,-1,-1],[-1,-1,-1,1,1],[1,1,1,1,-1],[-1,-1,-1,-1,-1]]
+        print("返回 {}".format(
+            so.findBall(inp)
+        ))
+        
+    def xtest_isToeplitzMatrix(self):
         from Algorithm import Solution
         so      =   Solution()
         inp     =   [[1,2,3,4],[5,1,2,3],[9,5,1,2]]

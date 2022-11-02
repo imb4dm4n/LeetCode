@@ -8,6 +8,59 @@ from typing import List
 
 class Solution:
     '''
+- https://leetcode.com/problems/where-will-the-ball-fall/
+- 1706. Where Will the Ball Fall(medium)
+- 问题:  
+输入一个 mxn的2D矩阵.有n个盒子, 通向底部, 若盒子的值为1, 则朝右开放, 否则朝左开放. 请问从上面每一个格子丢小球, 对应会从哪列出来. 若出不来, 用-1表示
+- 思路
+构成通道必须相邻的盒子值是相同的, 否则构成死路.
+每一个入口对应一个出口 或 死路.
+输入入口索引, 判断当前层的出口通道, 若正好是出口通道, 则移动到下一层;
+同时修改入口索引为选择的出口通道.
+    '''
+    def dfs_next_level(self, grid: List[List[int]], entry:int, level:int) -> int:
+        '''
+        深度遍历 grid. 
+        :param      grid        矩阵
+        :param      entry       入口的索引
+        :param      level       当前处于第几行
+        :returns    当前层对应的出口索引
+        '''
+        if level == len(grid) or \
+            entry >= len(grid[0]) or \
+            entry < 0:
+            return -1
+    
+        row_data    =   grid[level] # 取出一层
+        # 边界处理: 遇到最右边的入口
+        if entry == len(row_data) - 1:
+            if row_data[entry] == 1 or \
+                row_data[entry]== -1 and entry-1>-1 and\
+                row_data[entry-1] == 1:
+                return -1
+            return self.dfs_next_level(grid, entry-1, level+1)
+
+        # 判断当前层对应的入口是否有出口, 有则进入下一层, 否则返回 -1
+        if entry+1 < len(row_data):
+            if row_data[entry] == row_data[entry+1]:
+                next_entry  = entry + 1 if row_data[entry] == 1 else entry -1
+                # 到达最后一层, 找到出口返回
+                if level+1 == len(grid):
+                    return next_entry
+                return self.dfs_next_level(grid, next_entry, level+1)
+            return -1
+        return -1
+    
+    def findBall(self, grid: List[List[int]]) -> List[int]:
+        ret     =   []
+        for i in range(len(grid[0])):
+            # 从每一个入口进入
+            ret.append(
+                self.dfs_next_level(grid, i, 0)
+            )
+        return  ret
+
+    '''
 - https://leetcode.com/problems/toeplitz-matrix/
 - 766. Toeplitz Matrix(easy)
 - 问题:  
