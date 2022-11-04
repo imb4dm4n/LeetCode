@@ -13,6 +13,40 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/reverse-vowels-of-a-string/
+- 345. Reverse Vowels of a String(easy)
+- 问题:  
+输入一个字符串, 翻转里面所有的元音字母(包含大小写).
+- 思路:
+遍历字符串, 用一个数组保存遇到的元音字母, 同时修改原始的字符串
+中的元音字母为标记符. 
+翻转保存的元音字母数组, 再遍历一遍原始字符, 遇到标记字符则替换.
+Runtime: 232 ms, faster than 8.71% of Python3 online submissions for Reverse Vowels of a String.
+Memory Usage: 15.3 MB, less than 33.93% of Python3 online submissions for Reverse Vowels of a String.
+    '''
+    def reverseVowels(self, s: str) -> str:
+        s           =   list(s)
+        vowels      =   []
+        const_vowel =   ['a','e','i','o','u', 'A','E','I','O','U']
+        for a in range(s.__len__()):
+            c   =   s[a]
+            if c in const_vowel:
+                vowels.append(c)
+                s[a]    =   1
+                continue
+        vowels.reverse()
+        # print("反转 得到 {}\n原始 {}".format(vowels, "".join(s)))
+        if len(vowels)  ==  0:
+            return "".join(s)
+        for a in range(s.__len__()):
+            if s[a] == 1:
+                s[a]    =   vowels.pop(0)
+                # print("替换 {}".format(s[a]))
+
+
+        return  "".join(s)
+
+    '''
 - https://leetcode.com/problems/group-anagrams/
 - 49. Group Anagrams(medium)
 - 问题:  

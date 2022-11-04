@@ -20,7 +20,12 @@ class timer():
         return (stop - self.create)*1000
 
 class TestStrings(unittest.TestCase):
-    def testmaxLength(self):
+    def test_reverseVowels(self):
+        from Strings import Solution
+        so      =   Solution()
+        print(so.reverseVowels('hello'))
+    
+    def xtestmaxLength(self):
         from Strings import Solution
         so      =   Solution()
         inp     =   ['un','iq','ue']
