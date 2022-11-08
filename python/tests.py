@@ -20,7 +20,17 @@ class timer():
         return (stop - self.create)*1000
 
 class TestStrings(unittest.TestCase):
-    def test_reverseVowels(self):
+    def test_makeGood(self):
+        from Strings import Solution
+        so      =   Solution()
+        s='leEetcode'
+        print("{} => {}".format(s, so.makeGood(s)))
+        s='abBACc'
+        print("{} => {}".format(s, so.makeGood(s)))
+        s=''
+        print("{} => {}".format(s, so.makeGood(s)))
+    
+    def xtest_reverseVowels(self):
         from Strings import Solution
         so      =   Solution()
         print(so.reverseVowels('hello'))
@@ -36,7 +46,7 @@ class TestStrings(unittest.TestCase):
         print("expect: 6")
 
 
-    def test_minWindow(self):
+    def xtest_minWindow(self):
         from Strings import Solution
         so      =   Solution()
         inp     =   "ADOBECODEBANC"
