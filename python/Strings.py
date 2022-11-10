@@ -13,6 +13,32 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+- 1047. Remove All Adjacent Duplicates In String(easy)
+- 问题:  
+输入一个字符串, 把相邻且一样的字符移除, 若移除后, 还存在相邻又相同, 则继续移除, 直到结束.
+- 思路: 
+跟下面一题思路是一样的. 换一种吧.
+用一个栈保存符合条件的字符列表.
+遍历输入的每个字符, 和栈顶对比, 若相同, 则出栈,
+否则入栈.
+Runtime: 238 ms, faster than 29.33% of Python3 online submissions for Remove All Adjacent Duplicates In String.
+Memory Usage: 14.7 MB, less than 86.70% of Python3 online submissions for Remove All Adjacent Duplicates In String.
+    '''
+    def removeDuplicates(self, s: str) -> str:
+        if not s :
+            return s 
+        stack   =   []
+        for c in s:
+            if stack.__len__() == 0:
+                stack.append(c)
+                continue
+            if stack[-1] == c:
+                stack.pop(-1)
+                continue
+            stack.append(c)
+        return  ''.join(stack)
+    '''
 - https://leetcode.com/problems/make-the-string-great/
 - 1544. Make The String Great(easy)
 - 问题:  
