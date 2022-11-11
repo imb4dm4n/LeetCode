@@ -22,22 +22,20 @@ class Solution:
 用一个栈保存符合条件的字符列表.
 遍历输入的每个字符, 和栈顶对比, 若相同, 则出栈,
 否则入栈.
+- 思路2:
+手动模拟一个栈, 用 end 指针模拟栈顶
 Runtime: 238 ms, faster than 29.33% of Python3 online submissions for Remove All Adjacent Duplicates In String.
 Memory Usage: 14.7 MB, less than 86.70% of Python3 online submissions for Remove All Adjacent Duplicates In String.
     '''
     def removeDuplicates(self, s: str) -> str:
-        if not s :
-            return s 
-        stack   =   []
-        for c in s:
-            if stack.__len__() == 0:
-                stack.append(c)
-                continue
-            if stack[-1] == c:
-                stack.pop(-1)
-                continue
-            stack.append(c)
-        return  ''.join(stack)
+        end, a = -1, list(s)
+        for c in a:
+            if end >= 0 and a[end] == c:
+                end -= 1
+            else:
+                end += 1
+                a[end] = c
+        return ''.join(a[: end + 1])
     '''
 - https://leetcode.com/problems/make-the-string-great/
 - 1544. Make The String Great(easy)

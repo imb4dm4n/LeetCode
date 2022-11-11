@@ -214,8 +214,19 @@ class TestLinkList(unittest.TestCase):
     def tearDown(self) -> None:
         self.t.stop()
         return super().tearDown()
+
+    def test_removeDuplicates(self):
+        inp     =   [0,0,1,1,1,2,2,3,3,4]
+        print("输入 {}".format(inp))
+        s       =   self.so.removeDuplicates(inp)
+        print("s={} inp = {}".format(s, inp))
+
+        inp     =   [1,1,2]
+        print("输入 {}".format(inp))
+        s       =   self.so.removeDuplicates(inp)
+        print("s={} inp = {}".format(s, inp))
     
-    def test_reverseBetween(self):
+    def xtest_reverseBetween(self):
         inp         =   ListNode.list_to_ListNode([1,2,3,4,5])
         ListNode.print(inp,"[+]input:")
         ret         =   self.so.reverseBetween(inp,2,4)

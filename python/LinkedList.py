@@ -3,7 +3,7 @@
 '''
 
 # Definition for singly-linked list.
-from typing import Optional
+from typing import Optional, List
 
 class ListNode:
     pass
@@ -49,6 +49,34 @@ class ListNode:
 
 
 class Solution:
+    '''
+- https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+- 26. Remove Duplicates from Sorted Array(easy)
+- 问题:  
+输入一个升序排序的数组, 移除重复的数字, 得到唯一的数组,
+不能分配额外空间, 只能修改原始数组, 返回唯一的数字个数 k
+- 思路
+栈的模拟. top 表示栈顶, 指向最新的非重复数字. 若不相同
+则栈顶+1保存进来.
+Runtime: 92 ms, faster than 92.50% of Python3 online submissions for Remove Duplicates from Sorted Array.
+Memory Usage: 15.5 MB, less than 66.20% of Python3 online submissions for Remove Duplicates from Sorted Array.
+    '''
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if nums.__len__() == 0 or nums.__len__() == 1:
+            return nums.__len__()
+        last_unique =   nums[0]
+        top         =   0
+
+        for i in range(1, nums.__len__()):
+            if nums[i] == last_unique:
+                continue
+            else:
+                top     +=  1
+                nums[top]    =   nums[i]
+                last_unique     =   nums[i]
+        
+        # print("retuls {}".format(nums))
+        return top+1
     '''
     # 2095. Delete the Middle Node of a Linked List
     # https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/
