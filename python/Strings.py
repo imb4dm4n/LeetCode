@@ -13,6 +13,25 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/reverse-words-in-a-string/
+- 151. Reverse Words in a String(medium)
+- 问题:  
+输入一组单词, 翻转他们的顺序. 返回用一个空格间隔的结果
+- 思路:
+Runtime: 34 ms, faster than 94.31% of Python3 online submissions for Reverse Words in a String.
+Memory Usage: 14.1 MB, less than 48.44% of Python3 online submissions for Reverse Words in a String.
+    '''
+    def reverseWords(self, s: str) -> str:
+        return " ".join(s.split()[::-1])
+        # li_s        =   s.split(" ")
+        # ret         =   []
+        # for word in li_s:
+        #     if not word:
+        #         continue
+        #     ret.append(word)
+        # ret.reverse()
+        # return " ".join(ret)
+    '''
 - https://leetcode.com/problems/reverse-vowels-of-a-string/
 - 345. Reverse Vowels of a String(easy)
 - 问题:  

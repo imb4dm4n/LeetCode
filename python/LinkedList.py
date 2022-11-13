@@ -4,6 +4,7 @@
 
 # Definition for singly-linked list.
 from typing import Optional
+from heapq import *
 
 class ListNode:
     pass
@@ -47,6 +48,68 @@ class ListNode:
         print(l[:-3])
         print("")
 
+'''
+# https://leetcode.com/problems/find-median-from-data-stream/
+# 295. Find Median from Data Stream hard (hard)
+问题: 实现一个类, 动态插入数据 以及 动态获取中位数.
+思路:
+把数字存储到 list 中, 然后需要求中位数的时候算一次 sorted ?
+Runtime: 7465 ms, faster than 5.00% of Python3 online submissions for Find Median from Data Stream.
+Memory Usage: 35.6 MB, less than 86.34% of Python3 online submissions for Find Median from Data Stream.
+思路2: 平衡最大堆&最小堆
+通过最大堆可以获取左半部分最大的值, 通过最小堆可以获取右半部分最小的值.
+把输入的数据动态的插入到最大堆或最小堆中. 保持堆平衡.
+
+先插入最大堆, 若最大堆数据比最小堆多, pop 一个最大堆的数据并转为负数到最小堆,
+这样可以得到最大堆中的最小数字.
+先插入最小堆, 若最小堆的数据比最大堆多, 那么把他 pop 出最小堆 写入最大堆.
+计算中位数时, 若两个堆长度一样, 则把两个堆的顶部求和计算平均值即可;
+若堆长度不一样, 取出
+'''
+class MedianFinder:
+    def __init__(self):
+        self.heaps = [], []
+
+    def addNum(self, num):
+        small, large = self.heaps
+        heappush(small, -heappushpop(large, num))
+        if len(large) < len(small):
+            heappush(large, -heappop(small))
+
+    def findMedian(self):
+        small, large = self.heaps
+        if len(large) > len(small):
+            return float(large[0])
+        return (large[0] - small[0]) / 2.0
+    # def __init__(self):
+    #     self.heaps       =   [],    []
+
+    # def addNum(self, num: int) -> None:
+    #     # small 是最小堆, large 是最大堆
+    #     small, large    =   self.heaps
+    #     heappush(large, num)
+    #     if small.__len__() < large.__len__():
+    #         # 最大堆移动一个到最小堆并转为负数
+    #         heappush(small, -heappop(large))
+
+    #     # self.data.append(num)
+
+    # def findMedian(self) -> float:
+    #     # small 是最小堆, large 是最大堆
+    #     small, large    =   self.heaps
+    #     if small.__len__() == large.__len__():
+    #         print("small {} large {}".format(small, large))
+    #         return (-small[0] + large[0]) / 2
+    #     else:
+    #         print("[+]small {} large {}".format(small, large))
+    #         return -small[0]
+
+        # self.data.sort()
+        # if self.data.__len__() % 2 == 0:
+        #     mid = int(self.data.__len__()/2)
+        #     return  (self.data[mid-1] + self.data[mid]) / 2
+        # else:
+        #     return self.data[int(self.data.__len__() / 2)]
 
 class Solution:
     '''
@@ -246,7 +309,6 @@ class Solution:
     Memory Usage: 13.9 MB, less than 74.88% of Python3 online submissions for Remove Duplicates from Sorted List II.
     '''
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        ret         =   None
         if not head or not head.next:
             return head
 

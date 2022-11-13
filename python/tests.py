@@ -205,7 +205,33 @@ class TestLinkList(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_reverseBetween(self):
+    def test_MedianFinder(self):
+        mf  =   MedianFinder()
+        # mf.addNum(5)
+        # mf.addNum(7)
+        # print("mf = {}".format(mf.findMedian()))
+        # mf.addNum(1)
+        # mf.addNum(3)
+        # print("mf = {}".format(mf.findMedian()))
+        # ---------------
+        # mf.addNum(1)
+        # mf.addNum(2)
+        # print("mf = {}".format(mf.findMedian()))
+        # mf.addNum(3)
+        # print("mf = {}".format(mf.findMedian()))
+        # ---------------
+        mf.addNum(-1)
+        print("mf = {}".format(mf.findMedian()))
+        mf.addNum(-2)
+        print("mf = {}".format(mf.findMedian()))
+        mf.addNum(-3)
+        print("mf = {}".format(mf.findMedian()))
+        mf.addNum(-4)
+        print("mf = {}".format(mf.findMedian()))
+        mf.addNum(-5)
+        print("mf = {}".format(mf.findMedian()))
+
+    def xtest_reverseBetween(self):
         inp         =   ListNode.list_to_ListNode([1,2,3,4,5])
         ListNode.print(inp,"[+]input:")
         ret         =   self.so.reverseBetween(inp,2,4)
