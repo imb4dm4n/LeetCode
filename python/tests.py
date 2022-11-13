@@ -20,7 +20,17 @@ class timer():
         return (stop - self.create)*1000
 
 class TestStrings(unittest.TestCase):
-    def test_reverseVowels(self):
+    def test_makeGood(self):
+        from Strings import Solution
+        so      =   Solution()
+        s='leEetcode'
+        print("{} => {}".format(s, so.makeGood(s)))
+        s='abBACc'
+        print("{} => {}".format(s, so.makeGood(s)))
+        s=''
+        print("{} => {}".format(s, so.makeGood(s)))
+    
+    def xtest_reverseVowels(self):
         from Strings import Solution
         so      =   Solution()
         print(so.reverseVowels('hello'))
@@ -36,7 +46,7 @@ class TestStrings(unittest.TestCase):
         print("expect: 6")
 
 
-    def test_minWindow(self):
+    def xtest_minWindow(self):
         from Strings import Solution
         so      =   Solution()
         inp     =   "ADOBECODEBANC"
@@ -204,7 +214,19 @@ class TestLinkList(unittest.TestCase):
     def tearDown(self) -> None:
         self.t.stop()
         return super().tearDown()
+
+    def test_removeDuplicates(self):
+        inp     =   [0,0,1,1,1,2,2,3,3,4]
+        print("输入 {}".format(inp))
+        s       =   self.so.removeDuplicates(inp)
+        print("s={} inp = {}".format(s, inp))
+
+        inp     =   [1,1,2]
+        print("输入 {}".format(inp))
+        s       =   self.so.removeDuplicates(inp)
+        print("s={} inp = {}".format(s, inp))
     
+    #def test_reverseBetween(self):
     def test_MedianFinder(self):
         mf  =   MedianFinder()
         # mf.addNum(5)

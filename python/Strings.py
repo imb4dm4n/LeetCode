@@ -32,6 +32,97 @@ Memory Usage: 14.1 MB, less than 48.44% of Python3 online submissions for Revers
         # ret.reverse()
         # return " ".join(ret)
     '''
+    '''
+- https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+- 1047. Remove All Adjacent Duplicates In String(easy)
+- 问题:  
+输入一个字符串, 把相邻且一样的字符移除, 若移除后, 还存在相邻又相同, 则继续移除, 直到结束.
+- 思路: 
+跟下面一题思路是一样的. 换一种吧.
+用一个栈保存符合条件的字符列表.
+遍历输入的每个字符, 和栈顶对比, 若相同, 则出栈,
+否则入栈.
+- 思路2:
+手动模拟一个栈, 用 end 指针模拟栈顶
+Runtime: 238 ms, faster than 29.33% of Python3 online submissions for Remove All Adjacent Duplicates In String.
+Memory Usage: 14.7 MB, less than 86.70% of Python3 online submissions for Remove All Adjacent Duplicates In String.
+    '''
+    def removeDuplicates(self, s: str) -> str:
+        end, a = -1, list(s)
+        for c in a:
+            if end >= 0 and a[end] == c:
+                end -= 1
+            else:
+                end += 1
+                a[end] = c
+        return ''.join(a[: end + 1])
+    '''
+- https://leetcode.com/problems/make-the-string-great/
+- 1544. Make The String Great(easy)
+- 问题:  
+输入一个字符串, 把它转为 好的 字符串. 不好的字符串是 相邻的两个字母是一样的, 但是大小写不同. 可以把他们删除.
+注意: 删除后会拼接出新的字符串, 这时候可能会组合出新的 不好字符组.
+- 思路: 
+遍历索引, 当i和i+1 不好时, 删除他们, 在i>1的情况下, 把i-1,
+继续操作新的字符串. 直到字符串为空 或 i 成为最后一个
+Runtime: 79 ms, faster than 24.04% of Python3 online submissions for Make The String Great.
+Memory Usage: 13.9 MB, less than 61.93% of Python3 online submissions for Make The String Great.
+    '''
+    def makeGood(self, s: str) -> str:
+        if not s or s.__len__()==1:
+            return s
+        s   =   list(s)
+        top =   0
+        def same_char(c1, c2):
+            return abs(ord(c1) - ord(c2)) == 32
+        while top < s.__len__() -1:
+            # print(f"top = {top}")
+            if not same_char(s[top], s[top+1]):
+                top     +=  1
+                continue
+            s.pop(top)
+            s.pop(top)
+            # print("pop {}".format(s.pop(top)))
+            # print("pop {}".format(s.pop(top)))
+            # s.pop(top)
+            if top > 0:
+                top -= 1
+            
+        return "".join(s)
+    '''
+- https://leetcode.com/problems/word-search-ii/
+- 212. Word Search II(hard)
+- 问题:  
+输入一个字符矩阵 和 一组单词, 返回能够从矩阵中找出 相邻且能构成单词的列表. 相邻是水平和垂直相邻。
+- 思路:
+对每个单词都做一次查找. 把输入的单词作为一个集合, 遍历矩阵每个字符,
+判断是否在集合内, 若在集合内, 则探测下一个字符(右边或下边)
+    '''
+    def contain_word(self, board: List[List[str]], words:set, x:int, y:int):
+        '''
+        :param      x       矩阵的坐标
+        :param      y       矩阵的坐标
+        '''
+        if x == board[0].__len__() -1 and \
+            y == board.__len__() - 1 and \
+                len(words) != 0 and\
+                board[x][y] not in words:
+                return False
+        
+        if board[x][y] in words:
+            tmp     =   board[x][y]
+            words.remove(tmp)
+            if words.__len__() == 0:
+                return  True
+            # continue search till words is empty
+            return self.contain_word(board, words, x+1, y) or self.contain_word(board, words, x, y+1)
+        else:
+            # 需要回溯到前一个节点
+            pass
+
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        pass
+    '''
 - https://leetcode.com/problems/reverse-vowels-of-a-string/
 - 345. Reverse Vowels of a String(easy)
 - 问题:  
