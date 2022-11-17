@@ -6,7 +6,62 @@ import collections
 from typing import List
 
 
+def guess(self, x):
+    pass
 class Solution:
+    '''
+- https://leetcode.com/problems/rectangle-area/
+- 223. Rectangle Area(medium)
+- 问题:  
+输入两对坐标(ax1, ay1) (ax2, ay2),(bx1, by1)  (bx2, by2) 表示两个矩阵, 求他们占用的大小. (可能重叠)
+- 思路 
+y轴的重叠区间, 可以判断他们是否在同一个高度.
+x轴的重叠区间, 可以判断他们是否重叠.
+通过 range 输出两对 set, 每一对set表示 x 轴的 坐标集合, y 轴的坐标集合.
+若他们没有交集, 则返回他们的大小的和.
+若有交集, 计算他们大小的和后, 减去重叠部分.
+Runtime: 404 ms, faster than 5.30% of Python3 online submissions for Rectangle Area.
+Memory Usage: 31.9 MB, less than 5.43% of Python3 online submissions for Rectangle Area.
+    '''
+    def computeArea(self, ax1: int, ay1: int, ax2: int, ay2: int, bx1: int, by1: int, bx2: int, by2: int) -> int:
+        import numpy as np
+        set_ax  , set_ay, set_bx, set_by = set(np.arange(ax1, ax2)),\
+            set(np.arange(ay1, ay2)),set(np.arange(bx1, bx2)),\
+                set(np.arange(by1, by2))
+        has_collision = 0
+        collision_x     =   (set_bx & set_ax)
+        collision_y     =   (set_ay & set_by)
+        if collision_x and collision_y:
+            has_collision       =   len(collision_x) * len(collision_y)
+
+        
+        a = (ax2- ax1) * (ay2 - ay1)
+        b = (bx2- bx1) * (by2 - by1)
+        return  a + b - has_collision
+
+    '''
+- https://leetcode.com/problems/guess-number-higher-or-lower/
+- 374. Guess Number Higher or Lower(easy)
+- 问题:  
+玩一个游戏,输入一个数字n, 机器随机选一个数字, 然后
+你去猜测它选了哪个, 可以调用一个 函数获取选中的数字是
+大于(返回-1)还是小于(1) 它选的.
+- 思路 
+    '''
+    def guessNumber(self, n: int) -> int:
+        while True:
+            i = int(n/2)
+            g_result    =   guess(i)
+            if  g_result== 0:
+                return i
+            elif g_result == -1:
+                # i 太大了 选取左半部分
+                n = i 
+                # i -= 1
+            else:
+                n += i
+            
+            
     '''
 - https://leetcode.com/problems/where-will-the-ball-fall/
 - 1706. Where Will the Ball Fall(medium)
