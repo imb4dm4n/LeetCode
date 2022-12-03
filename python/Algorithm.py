@@ -10,6 +10,75 @@ def guess(self, x):
     pass
 class Solution:
     '''
+- https://leetcode.com/problems/sort-characters-by-frequency/
+- 451. Sort Characters By Frequency(medium)
+- 问题:  
+输入一个字符串s, 以字符出现次数的降序, 输出每个字符. 比如输入
+abcaab -> aaabbc
+- 思路 1
+直接 Counter计数, 然后来个 sort, 最后遍历一遍乘出来即可
+Runtime: 87 ms, faster than 56.10% of Python3 online submissions for Sort Characters By Frequency.
+Memory Usage: 15.3 MB, less than 49.59% of Python3 online submissions for Sort Characters By Frequency.
+    '''
+    def frequencySort(self, s: str) -> str:
+        r       =   ''
+        for c in sorted(
+            Counter(s).items(),
+            key= lambda x: -x[1]
+            ):
+            r += c[0] * c[1]
+        return r
+    '''
+- https://leetcode.com/problems/unique-number-of-occurrences/solution/
+- 1207. Unique Number of Occurrences(easy)
+- 问题:  
+输入一组数字, 判断每个数字出现的次数, 是否唯一. 不唯一返回False
+- 思路 
+直接Counter计数, 然后 set 一下对比长度
+Runtime: 33 ms, faster than 97.46% of Python3 online submissions for Unique Number of Occurrences.
+Memory Usage: 14 MB, less than 34.11% of Python3 online submissions for Unique Number of Occurrences.
+    '''
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        counts=Counter(arr).values()
+        return set(counts).__len__() == counts.__len__()
+    '''
+- https://leetcode.com/problems/valid-sudoku/
+- 36. Valid Sudoku(medium)
+- 问题:  
+输入一个 9X9 的九宫格, 验证存在数字的格子是否满足以下条件:
+每一行没有重复的数字, 每一列没有重复的数字, 每3x3小个的九宫格
+没有重复的数字.
+
+- 思路 
+每一行的数字加入到一个数组, 然后做 set 验证长度是否相等;
+每一列的数字加入到数组, 做set后验证长度;
+
+    '''
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        pass
+    '''
+- https://leetcode.com/problems/perfect-squares/
+- 279. Perfect Squares(medium)
+- 问题:  
+输入一个数字n, 返回最少需要的 完美方形数字的个数, 他们的和为n.
+完美方形数字指的是可以被某个数字乘以自身得到的, 如1/4/9/16...
+
+- 思路 
+根据n的值, 生成到大于等于n的 完美方形数字列表.
+然后从后往前加, 直到发现一组满足的数字.
+
+    '''
+    def numSquares(self, n: int) -> int:
+        perfect_squares     =   [1]
+        square_base  =   1
+        cur_square   =   1
+        while cur_square    <   n:
+            square_base+=1
+            cur_square  =   square_base*square_base
+            perfect_squares.append(cur_square)
+        
+
+    '''
 - https://leetcode.com/problems/rectangle-area/
 - 223. Rectangle Area(medium)
 - 问题:  
