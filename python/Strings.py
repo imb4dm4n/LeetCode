@@ -13,6 +13,33 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/determine-if-two-strings-are-close/
+- 1657. Determine if Two Strings Are Close(medium)
+- 问题:  
+通过两个操作判断连个单词是否相近:
+    1. 随意交互两个字母的位置, 如 abc -> cbc
+    2. 随意把出现的一个字母完全和另一个字母交换, 比如 aab -> bba
+输入两个单词, 判断他们是否相近。 提示： 操作1 允许任意排序字母，操作2 允许任意修改字母出现频率
+- 思路: 
+先进行长度校验(不同长度肯定不能变化), 再进行字符校验(变化不能超出已有的字符).
+其实本质就是, 验证输入的两个单词, 不同字符出现的频率列表, 是否一致. 
+因为字母的顺序可以随意交换, 那么剩下的问题就是如何按照字母的个数, 变化成另一个单词了.
+(类似洗牌变魔术?) 比如你有 3个A 和 1个K, 那么你是否可以通过以上规则, 得到 3个K和 1个A呢?
+答案是肯定的, 本质是把A和K对应的 key 进行交换: {A:3 , K:1} => {K:3 , A:1}
+
+Runtime: 210 ms, faster than 82.33% of Python3 online submissions for Determine if Two Strings Are Close.
+Memory Usage: 15.4 MB, less than 16.87% of Python3 online submissions for Determine if Two Strings Are Close.
+    '''
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        # return False if word1.__len__() != word2.__len__() or set(word1) != set(word2) else sorted(collections.Counter(word1).values()) == sorted(collections.Counter(word2).values())
+        if word1.__len__() != word2.__len__() or \
+            set(word1) != set(word2):
+            return False
+
+        return sorted(collections.Counter(word1).values()) == sorted(collections.Counter(word2).values())
+    
+    
+    '''
 - https://leetcode.com/problems/reverse-words-in-a-string/
 - 151. Reverse Words in a String(medium)
 - 问题:  
@@ -31,7 +58,7 @@ Memory Usage: 14.1 MB, less than 48.44% of Python3 online submissions for Revers
         #     ret.append(word)
         # ret.reverse()
         # return " ".join(ret)
-    '''
+
     '''
 - https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
 - 1047. Remove All Adjacent Duplicates In String(easy)

@@ -21,13 +21,29 @@ Runtime: 87 ms, faster than 56.10% of Python3 online submissions for Sort Charac
 Memory Usage: 15.3 MB, less than 49.59% of Python3 online submissions for Sort Characters By Frequency.
     '''
     def frequencySort(self, s: str) -> str:
-        r       =   ''
-        for c in sorted(
-            Counter(s).items(),
-            key= lambda x: -x[1]
-            ):
-            r += c[0] * c[1]
+        # r       =   ''
+        # for c in sorted(
+        #     Counter(s).items(),
+        #     key= lambda x: -x[1]
+        #     ):
+        #     r += c[0] * c[1]
+        # return r
+
+        c_counter   =   [0] * 127
+        for c in s:
+            c_counter[ord(c)]   +=  1
+        r           =   ''
+        while len(r) != s.__len__():
+            max_    =   0
+            c = ''
+            for i in range(127):
+                if c_counter[i] > max_:
+                    max_    =   c_counter[i]
+                    c = chr(i)
+            c_counter[ord(c)]=0
+            r += c * max_
         return r
+                
     '''
 - https://leetcode.com/problems/unique-number-of-occurrences/solution/
 - 1207. Unique Number of Occurrences(easy)
