@@ -10,6 +10,64 @@ def guess(self, x):
     pass
 class Solution:
     '''
+- https://leetcode.com/problems/find-pivot-index/?envType=study-plan&id=level-1
+- 724. Find Pivot Index(easy)
+- 问题:  
+输入一组数字, 找到中间索引, 以此索引左边的数的和 等于 右边数的和.
+如  [1,7,3,6,5,6] => 3 因为 1+7+3 = 5+6
+边界条件: 若索引是左边的边界, 那么左边的和为0, 同理适用右边边界
+- 思路 1 
+先计算数组中间索引, 然后求左边的和是否等于右边的和.
+若 left_sum < right_sum 那么 pivot + 1 
+否则 pivot -1
+错了. 这个数组不是排序的数组, 因此修改 pivot 的方向并不能增大或减小他们的和.
+因此只能暴力的穷举了.
+- 思路2
+从第一个索引开始到倒数第二个索引, 开始求和
+Runtime: 9799 ms, faster than 5.01% of Python3 online submissions for Find Pivot Index.
+Memory Usage: 15.2 MB, less than 49.09% of Python3 online submissions for Find Pivot Index.
+- 思路3
+先求总和, 然后从左往右开始分别做减法和加法
+    '''
+    def pivotIndex(self, nums: List[int]) -> int:  
+        left_sum, right_sum =   0,  sum(nums)
+        for idx, num in enumerate(nums):
+            right_sum    -=  num    # 因为是开区间
+            if left_sum == right_sum:
+                return idx
+            left_sum    +=  num
+        return -1
+            
+        # for i in range(0, len(nums)):
+        #     if sum(nums[:i]) == sum(nums[i+1:]):
+        #         return i
+        # return -1
+        
+        # pivot   =   int(nums.__len__() / 2)
+        # left_sum    =   sum(nums[:pivot])
+        # right_sum   =   sum(nums[pivot+1:])
+        # print(f"pivot {pivot}")
+        # while left_sum != right_sum and \
+        #     pivot >=0 and pivot < nums.__len__():
+        #     is_left_small   =   False
+        #     if left_sum < right_sum:
+        #         pivot   +=  1
+        #         is_left_small   =   True
+        #     else:
+        #         pivot   -=  1
+        #     left_sum    =   sum(nums[:pivot])
+        #     right_sum   =   sum(nums[pivot+1:])
+        #     if is_left_small and left_sum > right_sum or \
+        #         not is_left_small and left_sum < right_sum:
+        #         break
+        
+        # if left_sum ==  right_sum:
+        #     return pivot
+        
+        # return -1 
+        
+
+    '''
 - https://leetcode.com/problems/sort-characters-by-frequency/
 - 451. Sort Characters By Frequency(medium)
 - 问题:  

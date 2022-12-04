@@ -53,8 +53,32 @@ class TestStrings(unittest.TestCase):
         print("input {}\noutput {}".format(inp, so.minWindow(inp, "ABC")))
         print("expect: BANC")
 
+'''
+python -m unittest  tests  -k TestAlgorithm
+'''
 class TestAlgorithm(unittest.TestCase):
-    def test_findBall(self):
+    def test_pivotIndex(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        inp     =   [-1,-1,-1,-1,-1,-1]
+        print("返回 {}".format(
+            so.pivotIndex(inp)
+        ))
+        inp     =   [1,2,3,4,6]
+        print("返回 {}".format(
+            so.pivotIndex(inp)
+        ))
+        inp     =   [-1,-1,-1,-1,-1,0]
+        print("返回 {}".format(
+            so.pivotIndex(inp)
+        ))
+        inp     =   [2,1,-1]
+        print("返回 {}".format(
+            so.pivotIndex(inp)
+        ))
+
+
+    def xtest_findBall(self):
         from Algorithm import Solution
         so      =   Solution()
         inp     =   [[1,1,1,-1,-1],[1,1,1,-1,-1],[-1,-1,-1,1,1],[1,1,1,1,-1],[-1,-1,-1,-1,-1]]
