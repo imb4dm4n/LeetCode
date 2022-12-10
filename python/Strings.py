@@ -13,6 +13,33 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/isomorphic-strings/?envType=study-plan&id=level-1
+- 205. Isomorphic Strings(easy)
+- 问题:  
+判断两个字符串是否 Isomorphic 同构的: 即一个单词可以通过替换每个字母变成另一个单词,
+注意, 字母出现的顺序不能变化, 一个字母只能映射成一个字母, 不能同时映射两个字母.
+s = "foo", t = "bar" -> False ; s = "egg", t = "add" -> True ;  s = "paper", t = "title" -> True
+- 思路:   
+把s的每个字符映射到t. 若映射的 目标字符 已经在映射字典的 value 里了, 说明 存在重复的映射, 这时候不保存这个映射, 然后直接替换一个空的.
+Beats 85.61%
+    '''
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        if s.__len__ () != t.__len__ ():
+            return  False
+        map_word    =   {}
+        s,t     =   list(s), list(t)
+        for i in range(s.__len__()):
+            # mapping every character
+            if map_word.get(s[i]) is None and t[i] not in map_word.values():
+                map_word[s[i]]  =   t[i]
+                s[i]    =   t[i]
+                continue
+            s[i]    =   map_word.get(s[i])
+        # print(s,t)
+        return  s==t
+
+
+    '''
 - https://leetcode.com/problems/determine-if-two-strings-are-close/
 - 1657. Determine if Two Strings Are Close(medium)
 - 问题:  

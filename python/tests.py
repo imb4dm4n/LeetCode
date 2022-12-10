@@ -5,6 +5,7 @@ import os, datetime
 from DynamicProgram import Solution as SD
 from BinaryTree import Solution as SBT
 from BinaryTree import TreeNode
+from BinaryTree import *
 
 class timer():
     def __init__(self, module_name=""):
@@ -20,7 +21,24 @@ class timer():
         return (stop - self.create)*1000
 
 class TestStrings(unittest.TestCase):
-    def test_makeGood(self):
+    def test_isIsomorphic(self):
+        from Strings import Solution
+        so      =   Solution()
+        print("isIsomorphic {}".format(so.isIsomorphic(
+            'paper',
+            'title'
+        )))
+        print("isIsomorphic {}".format(so.isIsomorphic(
+            'foo',
+            'bar'
+        )))
+        print("isIsomorphic {}".format(so.isIsomorphic(
+            "badc",
+            'baba'
+        )))
+    
+    
+    def xtest_makeGood(self):
         from Strings import Solution
         so      =   Solution()
         s='leEetcode'
@@ -193,8 +211,23 @@ Output: ["the","is","sunny","day"]
         ret = so.threeSumClosest([-1,2,1,-4], 1)
         print("ret = {}".format(ret))
 
+'''
+python -m unittest  tests  -k TestBinaryTree
+'''
 class TestBinaryTree(unittest.TestCase):
-    def test_inorderTraversal(self):
+    def test_maxAncestorDiff(self):
+        so  =   SBT()
+        root    =   list_2_tree([1,null,2,null,0,3])
+        ret = so.maxAncestorDiff(root)
+        print("ret = {} ".format(ret))
+        self.assertEqual(ret, 3)
+
+        root    =   list_2_tree([8,3,10,1,6,null,14,null,null,4,7,13])
+        ret = so.maxAncestorDiff(root)
+        print("ret = {} ".format(ret))
+        self.assertEqual(ret, 7)
+
+    def xtest_inorderTraversal(self):
         so      =   SBT()
         root    =   TreeNode(1)
         left    =   TreeNode(2)

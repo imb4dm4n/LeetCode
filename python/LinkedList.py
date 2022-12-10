@@ -113,6 +113,24 @@ class MedianFinder:
 
 class Solution:
     '''
+- https://leetcode.com/problems/middle-of-the-linked-list/
+- 876. Middle of the Linked List(easy)
+- 问题:  
+输入一个链表, 返回中间节点. 若是偶数个, 则返回后面一个
+- 思路 
+双指针移动.
+Runtime: 37 ms, faster than 84.56% of Python3 online submissions for Middle of the Linked List.
+Memory Usage: 13.8 MB, less than 55.96% of Python3 online submissions for Middle of the Linked List.
+    '''
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+        slow,fast    =   head, head
+        while fast and fast.next:
+            fast    =   fast.next.next
+            slow    =   slow.next
+        return slow
+    '''
 - https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 - 26. Remove Duplicates from Sorted Array(easy)
 - 问题:  

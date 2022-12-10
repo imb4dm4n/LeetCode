@@ -2,15 +2,144 @@
 二叉树相关算法.
 '''
 from typing import Optional, List
-
+import heapq
+import queue
 # Definition for a binary tree node.
+null,Null    =   None,None    # 对 null 进行转义
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 
+def list_2_tree(values:list):
+    '''
+    把 list 数据转为一颗二叉树. 输入的list是按层级遍历的结果.
+    '''
+    if not values:
+        return  None
+    root                =   TreeNode(values.pop(0))
+    last_level_nodes    =   [root]  # 保存前一层的节点(从左往右)
+    while values.__len__() > 0:
+        new_level_nodes =   []  # 保存下一层需要遍历的节点
+        
+        while last_level_nodes.__len__() > 0:
+            cur_node    =   last_level_nodes.pop(0)
+            if values.__len__() > 0:
+                left_val    =   values.pop(0)
+                if left_val is not None:
+                    cur_node.left   =   TreeNode(left_val)
+                    new_level_nodes.append(cur_node.left)
+            
+            if values.__len__() > 0:
+                right_val    =   values.pop(0)
+                if right_val is not None:
+                    cur_node.right   =   TreeNode(right_val)
+                    new_level_nodes.append(cur_node.right)
+        
+        # 需要遍历的下一层节点
+        last_level_nodes    =   new_level_nodes
+    
+    return root
+
+
+
 class Solution:
+    '''
+    # https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
+    # 1026. Maximum Difference Between Node and Ancestor (medium)
+- 问题: 
+输入一颗二叉树, 找出节点的差的绝对值的最大值. 理解错了, 是任意的子节点
+节点的距离不超过深度2. 即 a 节点最多只能到达它的孙节点.
+(节点的值都是正数)
+- 思路1 爆破:
+从根节点往下, 对比节点的所有父节点
+- 思路2 最值:
+从根节点往下到任意节点, 保存遇到的最大值和最小值, 计算当前节点与父节点中的两个最值对比即可.
+Beats 61.22%
+- 思路3 链路最值:
+从根节点往下遍历, 更新链路上的最值, 当遇到叶节点时, 返回链路上最值的差
+Beats 93.13%
+    '''
+
+    def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        def root_2_leaf(node, max_val, min_val):
+            if node:
+                max_val =   max(node.val, max_val)
+                min_val =   min(node.val, min_val)
+                return max(
+                    root_2_leaf(node.left, max_val, min_val),
+                    root_2_leaf(node.right, max_val, min_val)
+                )
+            else:
+                return abs(max_val-min_val)
+
+            
+        return root_2_leaf(root, root.val, root.val)
+
+        self.max_diff   =   0
+        def find_max_diff(node, max_val, min_val):
+            '''
+            递归, max_val 是到当前节点的最大值, min_val 是到当前节点的最小值
+            '''
+            if node:
+                self.max_diff   =   max(self.max_diff, 
+                    abs(node.val - max_val), 
+                    abs(node.val - min_val))
+                max_val =   max(node.val, max_val)
+                min_val =   min(node.val, min_val)
+                find_max_diff(node.left, max_val, min_val)
+                find_max_diff(node.right, max_val, min_val)
+        
+        find_max_diff(root,root.val, root.val)
+        return self.max_diff
+        
+    
+    '''
+    # https://leetcode.com/problems/leaf-similar-trees/
+    # 872. Leaf-Similar Trees (easy)
+- 问题: 
+输入两个二叉树, 判断他们的所有叶子节点是否值都相同.
+- 思路1:  
+深度遍历即可.
+Beats 52.92%
+    '''
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        def get_leafs(node:TreeNode, leafs:list):
+            if not node:
+                return
+            if not node.left and not node.right:
+                leafs.append(node.val)
+            get_leafs(node.left, leafs)
+            get_leafs(node.right, leafs)
+            
+        leafs1 = []
+        get_leafs(root1, leafs1)
+        leafs2 = []
+        get_leafs(root2, leafs2)
+        return leafs1 == leafs2
+    '''
+    # https://leetcode.com/problems/range-sum-of-bst/
+    # 938. Range Sum of BST (easy)
+- 问题: 
+输入一个二叉树根节点, 返回在 [low,high] 区间数字的和
+- 思路1:  
+深度遍历即可.
+    Runtime: 27 ms, faster than 98.21% of Python3 online submissions for Same Tree.
+    Memory Usage: 13.8 MB, less than 75.48% of Python3 online submissions for Same Tree.
+    '''
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        sum_    =   0
+        if not root:
+            return 0
+        sum_    =   self.rangeSumBST(root.left,low,high) + self.rangeSumBST(root.right,low,high)
+        if root.val >= low and root.val <=high:
+            return root.val + sum_
+        else:
+            return sum_
     '''
     # https://leetcode.com/problems/same-tree/
     # 100. Same Tree (easy)
