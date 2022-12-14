@@ -4,11 +4,66 @@
 from collections import Counter
 import collections
 from typing import List
-
+from functools import lru_cache
 
 def guess(self, x):
     pass
 class Solution:
+    '''
+- https://leetcode.com/problems/house-robber/
+- 198. House Robber(medium)
+- 问题:  
+抢劫一个街道上的房子, 每个房子有一定的现金, 但是每个房子有警报, 若同时抢劫相邻的两个房子会报警, 问最多可以抢多少钱.
+- 思路
+和斐波那契数列有关系? 抢了第一家就不能抢第二家, 抢第二家就不能抢第1和3家.  一共n家, 找出所有的 n-1 家. 
+得出递推方程 f(n) 表示n家能抢的最多钱, house[n] 表示第 n 家有多少钱
+f(1) = house[1]
+f(2) = max( f(1), house[2])
+f(3) = max( f(2), house[3]+f(1))
+f(4) = max( f(3), house[4]+f(2))
+f(5) = max( f(4), house[5]+f(3))
+Beats 92.6%
+    '''
+    def rob(self, nums: List[int]) -> int:
+        # within 2 house, return the max one
+        if nums.__len__() < 3:
+            return max(nums)
+        f_1 =   nums[0]
+        f_2 =   max(f_1, nums[1])
+        f_cur   =   f_2
+        for i in range(2, nums.__len__()):
+            f_cur   =   max(f_2, nums[i] + f_1)
+            f_1     =   f_2
+            f_2     =   f_cur
+        return f_cur
+    '''
+- https://leetcode.com/problems/climbing-stairs/
+- 70. Climbing Stairs(easy)
+- 问题:  
+跳楼梯, 一次跳一阶或两节, 跳到 n 阶有多少种跳法
+- 思路
+青蛙跳楼梯, 若第一次跳1阶, 剩下 n-1阶的跳法为 f(n-1)+1, 若第一次跳2阶,
+剩下 n-2 阶跳法为 f(n-2) +1, 因此 n 个台阶, 是 f(n) = f(n-1) + f(n-2)
+Beats 74.57%
+'''
+    def climbStairs(self, n: int) -> int:
+        if n < 3:
+            return n
+        a,b = 1,2
+        for i in range(2, n):
+            b  = a + b
+            a  = b - a 
+        return b
+    
+    @lru_cache(1000)
+    def climbStairs(self, n):
+        if n == 1:
+            return 1
+        elif n == 2:
+            return 2
+        else:
+            return self.climbStairs(n-1) + self.climbStairs(n-2)
+
     '''
 - https://leetcode.com/problems/find-pivot-index/?envType=study-plan&id=level-1
 - 724. Find Pivot Index(easy)

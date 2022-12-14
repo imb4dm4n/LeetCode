@@ -75,7 +75,26 @@ class TestStrings(unittest.TestCase):
 python -m unittest  tests  -k TestAlgorithm
 '''
 class TestAlgorithm(unittest.TestCase):
-    def test_pivotIndex(self):
+    def test_rob(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        self.assertEqual(so.rob([1,2,3,1]), 4)
+        self.assertEqual(so.rob([2,7,9,3,1]), 12)
+        print("rob test ok ")
+    
+    def xtest_climbStairs(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        self.assertEqual(so.climbStairs(11), 144)
+        self.assertEqual(so.climbStairs(3), 3)
+        print("返回 {}".format(
+            so.climbStairs(11)
+        ))
+        so      =   Solution()
+        print("返回 {}".format(
+            so.climbStairs(3)
+        ))
+    def xtest_pivotIndex(self):
         from Algorithm import Solution
         so      =   Solution()
         inp     =   [-1,-1,-1,-1,-1,-1]
@@ -215,7 +234,29 @@ Output: ["the","is","sunny","day"]
 python -m unittest  tests  -k TestBinaryTree
 '''
 class TestBinaryTree(unittest.TestCase):
-    def test_maxAncestorDiff(self):
+    def test_maxPathSum(self):
+        so  =   SBT()
+        inp     =   [-10,9,20,null,null,15,7]
+        self.assertEqual(
+            42,
+            so.maxPathSum(
+                list_2_tree(inp)
+            )
+        )
+        inp     =   [-3]
+        print("返回 {}".format(
+            so.maxPathSum(
+                list_2_tree(inp)
+            )
+        ))
+        inp     =   [1,-2,-3,1,3,-2,null,-1]
+        print("返回 {}".format(
+            so.maxPathSum(
+                list_2_tree(inp)
+            )
+        ))
+    
+    def xtest_maxAncestorDiff(self):
         so  =   SBT()
         root    =   list_2_tree([1,null,2,null,0,3])
         ret = so.maxAncestorDiff(root)
