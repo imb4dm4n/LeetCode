@@ -276,6 +276,34 @@ class TestBinaryTree(unittest.TestCase):
         ret     =    so.inorderTraversal(root)
         print(ret)
 
+'''
+python -m unittest  tests  -k TestStack
+'''
+from Stack import Solution as SS
+class TestStackProgram(unittest.TestCase):
+    def setUp(self) -> None:
+        self.so     =   SS()
+        self.t          =   timer("Stack")
+        return super().setUp()
+    
+    def tearDown(self) -> None:
+        self.t.stop()
+        return super().tearDown()
+
+    def test_evalRPN(self):
+        r=self.so.evalRPN(["2","1","+","3","*"])
+        print("R={}".format(r))
+
+        r=self.so.evalRPN(["4","13","5","/","+"])
+        print("R={}".format(r))
+
+        r=self.so.evalRPN(["10","6","9","3","+","-11","*","/","*","17","+","5","+"])
+        print("R={}".format(r))
+
+
+'''
+python -m unittest  tests  -k TestDynamicProgram
+'''
 class TestDynamicProgram(unittest.TestCase):
     def setUp(self) -> None:
         self.so     =   SD()
@@ -286,7 +314,19 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_numDecodings(self):
+    def test_longestCommonSubsequence(self):
+        r   =   self.so.longestCommonSubsequence("abcde", "aaace")
+        print(r)
+        r   =   self.so.longestCommonSubsequence("abcde", "ace")
+        print(r)
+        r   =   self.so.longestCommonSubsequence("abc", "def")
+        print(r)
+        r   =   self.so.longestCommonSubsequence("bl", "yby")
+        print(r)
+        r   =   self.so.longestCommonSubsequence("bsbininm", "jmjkbkjkv")
+        print(r)
+
+    def xtest_numDecodings(self):
         r   =   self.so.numDecodings("2611055971756562")
         print(r)
         r   =   self.so.numDecodings("226")
