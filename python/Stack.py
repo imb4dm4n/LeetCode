@@ -14,6 +14,31 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/daily-temperatures/
+- 739. Daily Temperatures(medium)
+- 问题:  
+输入一组温度, 返回数组, 每一个表示在 第 i 天需要等待多少天才能得到更温暖的温度.
+Input: temperatures = [73,74,75,71,69,72,76,73]
+Output: [1,1,4,2,1,1,0,0]
+73->74 等待1天
+74->75 等待1天
+75->76 等待4天 ...
+- 大神思路:
+用一个递减的栈存储 气温和对应索引, 若栈非空, 用当前的气温对比栈顶, 若高于栈顶, 那么就可以计算一次 气温升高时间间隔.
+Beats 57.29%
+    '''
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        # 思路2 根据前一轮计算结果
+        ret     =   [0] * temperatures.__len__()
+        stack   =   []  # (id, temp)
+        for i, temp in enumerate(temperatures):
+            while stack and temp > stack[-1][1]:
+                stackId, stackTemp  =   stack.pop()
+                ret[stackId]    =   i   -   stackId
+            stack.append((i,temp))
+        
+        return  ret
+    '''
 - https://leetcode.com/problems/evaluate-reverse-polish-notation/
 - 150. Evaluate Reverse Polish Notation (medium)
 - 问题:  
