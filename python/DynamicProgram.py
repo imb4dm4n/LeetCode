@@ -1,8 +1,142 @@
 '''
 动态规划问题
 '''
+from collections import Counter
+import collections
+from typing import List
+from functools import lru_cache
 
 class Solution:
+    '''
+- replace with url
+- replace with problem title
+- 问题:  
+replace with problem description
+- 思路:
+replace with your idea.
+    '''
+
+    '''
+- https://leetcode.com/problems/longest-common-subsequence/
+- 1143. Longest Common Subsequence
+- 问题:  
+输入两个字符串, 返回他们相同的最长子序列的长度. 子序列是在不改变字符相对顺序的情况下, 删除一些字符得到的子串. abcde-> ace
+- 思路1
+取出短的字符串, 生成它的所有子序列, 然后从最长到最短开始校验.
+编写生成所有子序列函数 和 子序列校验函数.
+- 大神思路
+类似之前机器人从左上角走到右下角, 有多少种走法. m j n 两个字符串长度, 构成一个 矩阵:
+i 行 j 列
+  a b c d e
+b 0 1 1 1 1
+c 0 1 2 2 2 
+e 0 1 2 2 3   => 3 
+- 大神思路2
+同样也是机器人的思路, 搜索一个路径, 若符合则返回1, 不符合则同时向两个字符串移动
+Beats 77.77%
+    '''
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        def findMax(i, j):
+            if memo[i][j] == -1:
+                if i == n1 or j == n2: 
+                    res = 0
+                else:
+                    if text1[i] == text2[j]:
+                        res =  1 + findMax(i+1, j+1)
+                    else:
+                        res =  max(findMax(i+1, j), findMax(i, j+1))
+                memo[i][j] = res
+            return memo[i][j]
+
+        n1, n2 = len(text1), len(text2)
+        memo = [[-1 for j in range(n2+1)] for i in range(n1+1)]
+        return findMax(0, 0)
+        # return matrix[text2.__len__()][text1.__len__()]
+        len_    =   max(text1.__len__(), text2.__len__())
+        matrix  =   [[0] * (len_+1)] * (len_ + 1 )
+        #-------- 矩阵大小必须取更大的那个, 因为循环的时候 长的字符串 会使得 短的字符串访问矩阵溢出 .
+        print("s1={} s2={}".format(text1, text2))
+        print("j len {}".format(len(matrix[0])))
+        print("i len {}".format(len(matrix)))
+        
+        for i in range(text2.__len__()):
+            for j in range(text1.__len__()):
+                matrix[i+1][j+1]    =  matrix[i][j] + 1 \
+                    if text1[j] == text2[i] else max(matrix[i][j+1], matrix[i+1][j])
+            print(matrix)
+        return matrix[text2.__len__()][text1.__len__()]
+        # for i in range(text1.__len__()):
+        #     for j in range(text2.__len__()):
+        #         print("\ncur: ci={} cj={}".format(text1[i], text2[j]))
+        #         if text1[i] == text2[j]:
+        #             matrix[i+1][j+1]    =  matrix[i][j] + 1
+        #             print("j={},i={} matrix[j+1][i+1]={}".format(text2[j],text1[i], matrix[j+1][i+1]))
+        #         else:
+        #             matrix[i+1][j+1]    =    max(matrix[i][j+1], matrix[i+1][j])
+        #             print("max {} {}".format(matrix[i][j+1], matrix[i+1][j]))
+        #     print(matrix)
+                # matrix[i+1][j+1]    =  matrix[i][j] + 1 \
+                #     if text1[i] == text2[j] else max(matrix[i][j+1], matrix[i+1][j])
+                    
+                # print("j={},i={} matrix[j+1][i+1]={}".format(text2[j],text1[i], matrix[j+1][i+1]))
+        # print(matrix)
+        return matrix[len_][len_]
+        # return matrix[text2.__len__()][text1.__len__()]
+    '''
+- https://leetcode.com/problems/house-robber/
+- 198. House Robber(medium)
+- 问题:  
+抢劫一个街道上的房子, 每个房子有一定的现金, 但是每个房子有警报, 若同时抢劫相邻的两个房子会报警, 问最多可以抢多少钱.
+- 思路
+和斐波那契数列有关系? 抢了第一家就不能抢第二家, 抢第二家就不能抢第1和3家.  一共n家, 找出所有的 n-1 家. 
+得出递推方程 f(n) 表示n家能抢的最多钱, house[n] 表示第 n 家有多少钱
+f(1) = house[1]
+f(2) = max( f(1), house[2])
+f(3) = max( f(2), house[3]+f(1))
+f(4) = max( f(3), house[4]+f(2))
+f(5) = max( f(4), house[5]+f(3))
+Beats 92.6%
+    '''
+    def rob(self, nums: List[int]) -> int:
+        # within 2 house, return the max one
+        if nums.__len__() < 3:
+            return max(nums)
+        f_1 =   nums[0]
+        f_2 =   max(f_1, nums[1])
+        f_cur   =   f_2
+        for i in range(2, nums.__len__()):
+            f_cur   =   max(f_2, nums[i] + f_1)
+            f_1     =   f_2
+            f_2     =   f_cur
+        return f_cur
+    '''
+- https://leetcode.com/problems/climbing-stairs/
+- 70. Climbing Stairs(easy)
+- 问题:  
+跳楼梯, 一次跳一阶或两节, 跳到 n 阶有多少种跳法
+- 思路
+青蛙跳楼梯, 若第一次跳1阶, 剩下 n-1阶的跳法为 f(n-1)+1, 若第一次跳2阶,
+剩下 n-2 阶跳法为 f(n-2) +1, 因此 n 个台阶, 是 f(n) = f(n-1) + f(n-2)
+Beats 74.57%
+'''
+    def climbStairs(self, n: int) -> int:
+        if n < 3:
+            return n
+        a,b = 1,2
+        for i in range(2, n):
+            b  = a + b
+            a  = b - a 
+        return b
+    
+    @lru_cache(1000)
+    def climbStairs(self, n):
+        if n == 1:
+            return 1
+        elif n == 2:
+            return 2
+        else:
+            return self.climbStairs(n-1) + self.climbStairs(n-2)
+
     '''
     # https://leetcode.com/problems/decode-ways/
     # 91. Decode Ways
