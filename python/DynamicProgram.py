@@ -5,6 +5,8 @@ from collections import Counter
 import collections
 from typing import List
 from functools import lru_cache
+import heapq
+import math
 
 class Solution:
     '''
@@ -15,6 +17,39 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/remove-stones-to-minimize-the-total/
+- 1962. Remove Stones to Minimize the Total (medium)
+- 问题:  
+输入一组数字, 每一个表示一堆石头的个数, 输入一个数字k, 完成以下操作k次:
+选中某一堆石头, 数量除以2(向右取整), 同一堆可以被多次除以2
+要使得最后石头总数最小, 问最小的总数是多少.
+- 思路:
+用最大堆即可解决. python 是最小堆需要转化
+Beats 71.19%
+    '''
+    def minStoneSum(self, piles: List[int], k: int) -> int:
+        piles = [-i for i in piles]
+        heapq.heapify(piles)
+        while k:
+            heapq.heappushpop(piles, piles[0] // 2)
+            k -= 1
+        return -sum(piles)
+
+        # large   =   []
+        # for q in piles:
+        #     heapq.heappush(large, -q)
+        
+        # # heapq.heapify(piles)
+        # while k > 0:
+        #     k   -=  1
+        #     quantity    =   -heapq.heappop(large)
+        #     print("pop {}".format(quantity))
+        #     quantity    =   math.ceil(quantity/2)
+        #     print("push {}".format(quantity))
+        #     heapq.heappush(large, -quantity)
+        # print(large)
+        # return  -sum(large)
 
     '''
 - https://leetcode.com/problems/jump-game/

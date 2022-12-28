@@ -355,7 +355,11 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_canJump(self):
+    def test_minStoneSum(self):
+        r   =   self.so.minStoneSum([5,4,9],2)
+        print(r)
+    
+    def xtest_canJump(self):
         r   =   self.so.canJump([2,3,1,1,4])
         print(r)
         r   =   self.so.canJump([3,2,1,0,4])
