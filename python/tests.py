@@ -286,6 +286,32 @@ class TestBinaryTree(unittest.TestCase):
         print(ret)
 
 '''
+python -m unittest  tests  -k TestGraph
+'''
+from Graph import Solution as GS
+class TestGraph(unittest.TestCase):
+    def setUp(self) -> None:
+        self.so     =   GS()
+        self.t          =   timer("Graph")
+        return super().setUp()
+    
+    def tearDown(self) -> None:
+        self.t.stop()
+        return super().tearDown()
+
+    def test_validPath(self):
+        temps   =   [[0,1],[1,2],[2,0]]
+        ret = self.so.validPath(temps.__len__(),temps,0,2)
+        print(ret)
+        temps   =   [[0,1],[0,2],[3,5],[5,4],[4,3]]
+        ret = self.so.validPath(temps.__len__(),temps,0,5)
+        print(ret)
+        temps   =   [[0,7],[0,8],[6,1],[2,0],[0,4],[5,8],[4,7],[1,3],[3,5],[6,5]]
+        ret = self.so.validPath(temps.__len__(),temps,7,5)
+        print(ret)
+        return
+
+'''
 python -m unittest  tests  -k TestStack
 '''
 from Stack import Solution as SS
@@ -329,7 +355,17 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_longestCommonSubsequence(self):
+    def test_canJump(self):
+        r   =   self.so.canJump([2,3,1,1,4])
+        print(r)
+        r   =   self.so.canJump([3,2,1,0,4])
+        print(r)
+        r   =   self.so.canJump([0])
+        print(r)
+        r   =   self.so.canJump([0,2,3])
+        print(r)
+    
+    def xtest_longestCommonSubsequence(self):
         r   =   self.so.longestCommonSubsequence("abcde", "aaace")
         print(r)
         r   =   self.so.longestCommonSubsequence("abcde", "ace")

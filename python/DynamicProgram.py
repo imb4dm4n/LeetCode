@@ -17,6 +17,37 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/jump-game/
+- 55. Jump Game(medium)
+- 问题:  
+输入一组数字, 每个数字代表从当前索引最多可以跳多少步, 问输入数组,能否跳到最后一个索引: Input: nums = [2,3,1,1,4]
+Output: true: 第0个索引跳1步, 第1个索引跳3步.
+- 思路:
+从最后一个索引往前搜索, 找出所有可以跳到最后一个索引的数字,
+把他们加入二轮搜索
+This is a very Philosophical problem: even you have the smallest jump every index (every day), you will reach the last index (destination) no matter what (need no algorithm to figure out). But once you have a zero in the way, you may have troubles.
+    '''
+    def canJump(self, nums: List[int]) -> bool:
+        if nums[0] == 0 and nums.__len__() > 1:
+            return False
+        reach_end   =   []
+        for idx, jump in enumerate(nums[:-1]):
+            if idx + jump >= len(nums) - 1:
+                reach_end.append(idx)
+                # can jump from index 0 to end
+                if idx == 0:
+                    return  True
+        for idx in reach_end:
+            print(idx, nums[idx])
+        if reach_end:
+            for idx in reach_end:
+                print("into recursive")
+                r=self.canJump(nums[:idx])
+                if r :
+                    return r
+        
+        return  False
+    '''
 - https://leetcode.com/problems/longest-common-subsequence/
 - 1143. Longest Common Subsequence
 - 问题:  

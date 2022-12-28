@@ -46,6 +46,36 @@ def list_2_tree(values:list):
 
 class Solution:
     '''
+    # https://leetcode.com/problems/binary-tree-maximum-path-sum/description/
+    # 124. Binary Tree Maximum Path Sum (hard)
+- 问题: 
+输入一颗二叉树, 每两个相邻的节点构成一个 path , 问最大的 path 的和是多少.
+- 思路:
+后序遍历, 找出左子树的最大 path 和 右子树的最大 path. 然后对比三个值:
+左子树最大 path, 右子树最大 path, 加上当前节点的最大path
+    '''
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        self.max_val    =   root.val
+        def post_order(node):
+            if node:
+                left    =   post_order(node.left)
+                right   =   post_order(node.right)
+                canditates  =   [node.val]
+                if left is not None and left > 0:
+                    canditates.append(left)
+                    canditates.append(left + node.val)
+                if right is not None and right > 0:
+                    canditates.append(right)
+                    canditates.append(right+node.val)
+                if left is not None and right is not None:
+                    canditates.append(left+right+node.val)
+                return max(canditates)
+            else:
+                return None
+        
+        return post_order(root)
+
+    '''
     # https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
     # 1026. Maximum Difference Between Node and Ancestor (medium)
 - 问题: 

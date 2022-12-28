@@ -13,6 +13,36 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/is-subsequence/?envType=study-plan&id=level-1
+- 2392. Is Subsequence(easy)
+- 问题:  
+输入 s 和 t 两个字符串, 判断 s 是不是 t 的子序列. 子序列是 目标字符串在不改变字符顺序的情况下, 删掉一些.
+s =
+"aaaaaa"
+t =
+"bbaaaa"    =》 False
+- 思路:   
+先判断字符串是不是相同.
+遍历 s 的字符, 若和 t 的一个字符相同, 则移动下一个对比, 若 t 已经为空了
+但是 s 非空, 那么不是子序列, 若 s 为空了则说明是子序列
+    '''
+    def isSubsequence(self, s: str, t: str) -> bool:
+        if s == t :
+            return True
+        if not t:
+            return False
+        
+        id_t    =   0
+        for i, c in enumerate(s):
+            # 注意下标是结束的前一个
+            while t[id_t] != c and id_t < t.__len__()-1:
+                id_t += 1
+            if t[id_t]  ==  c:
+                continue
+            return False
+        return True
+
+    '''
 - https://leetcode.com/problems/isomorphic-strings/?envType=study-plan&id=level-1
 - 205. Isomorphic Strings(easy)
 - 问题:  

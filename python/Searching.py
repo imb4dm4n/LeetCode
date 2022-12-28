@@ -45,17 +45,23 @@ Output: [1,1,4,2,1,1,0,0]
         ret     =   []
         for i, temp in enumerate(temperatures):
             has_warmmer =   False
-            size    =   temperatures.__len__()
-            if i > 0 and i < size-1 and \
-                temperatures[ret[i-1]+i-1] > temp:
-                size = ret[i-1]+i
+            count    =   temperatures.__len__()  -   i - 1
+            # 前一天的气温大于当前的, 则前一天的结果可以被复用
+            if i > 0 and \
+                temperatures[i-1] > temp:
+                count = ret[i-1] - 1
             j = i+1
-            while j < size:
-                if temperatures[j] > temp:
-                    ret.append(j)
+            # print("[+]i= {} tmpe = {} count = {}".format(i, temp,count))
+            while count > 0:
+                # print("j= {} tmp= {} cur_tmp = {}".format(j, 
+                # temperatures[j], temp))
+
+                if j<temperatures.__len__() and temperatures[j] > temp:
+                    ret.append(j-i)
                     has_warmmer =   True
                     break
-                j   +=  1
+                j       +=  1
+                count   -=  1
 
 
             # for j, temp1 in enumerate(temperatures[i+1:size]):
