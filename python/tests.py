@@ -28,9 +28,21 @@ class TestSearching(unittest.TestCase):
         from Searching import Solution as SSS
         so      =   SSS()
         
-
+'''
+python -m unittest  tests  -k TestStrings
+'''
 class TestStrings(unittest.TestCase):
-    def test_isIsomorphic(self):
+    def test_detectCapitalUse(self):
+        from Strings import Solution
+        so      =   Solution()
+        print("detectCapitalUse {}".format(so.detectCapitalUse(
+            'FlaG' 
+        )))
+        print("detectCapitalUse {}".format(so.detectCapitalUse(
+            "ffffffffffffffffffffF"
+        )))
+    
+    def xtest_isIsomorphic(self):
         from Strings import Solution
         so      =   Solution()
         print("isIsomorphic {}".format(so.isIsomorphic(

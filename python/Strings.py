@@ -13,6 +13,31 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/detect-capital/
+- 520. Detect Capital(easy)
+- 问题:  
+输入一个单词, 判断它的大写是否用对了:
+1.全是小写
+2.全是大写
+3.第一个字符是大写其余是小写
+- 思路:
+Beats 81.79%
+    '''
+    def detectCapitalUse(self, word: str) -> bool:
+        return word.isupper() or word.islower() or word.istitle()
+        # 大写开头
+        if len(word) > 1 and ord(word[0]) in range(ord('A'),ord('Z')+1):
+            if ord(word[1]) in range(ord('A'),ord('Z')+1):
+                return word == word.upper()
+            return word[1:] == word[1:].lower()
+
+        # 小写开头
+        if len(word) > 1 and ord(word[0]) in range(ord('a'),ord('z')+1):
+            # print(f"{word} {word.lower()}")
+            return word == word.lower()
+        
+        return True
+    '''
 - https://leetcode.com/problems/is-subsequence/?envType=study-plan&id=level-1
 - 2392. Is Subsequence(easy)
 - 问题:  
