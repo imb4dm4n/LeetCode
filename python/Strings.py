@@ -13,6 +13,32 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- https://leetcode.com/problems/delete-columns-to-make-sorted/
+- 944. Delete Columns to Make Sorted(easy)
+- 问题:  
+输入一组长度一样的单词, 把他们按行列出, 判断每一列是否在字母顺序上排序, 若不是, 则计数为需要删除一列.
+返回需要删除多少列. 如输入以下单词, 输出1. (bca这一列不按顺序)
+abc
+bce
+cae
+- 思路:
+遍历每个单词, 分别把他们加入对应的列. 然后对比 sorted 后的数组是否相同, 不同则返回值+1
+Beats 30.53%
+    '''
+    def minDeletionSize(self, strs: List[str]) -> int:
+        ret     =   0
+        tmp     =   ['' for i in range(strs[0].__len__())]
+        # print("tmp {}".format(tmp))
+        for s in strs:
+            for j,c in enumerate(s):
+                tmp[j] += c
+                
+        for w in tmp:
+            print("{} {}".format(w, "".join(sorted(w))))
+            if w != "".join(sorted(w)):
+                ret +=  1
+        return  ret
+    '''
 - https://leetcode.com/problems/detect-capital/
 - 520. Detect Capital(easy)
 - 问题:  

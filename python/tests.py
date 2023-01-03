@@ -32,7 +32,17 @@ class TestSearching(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_detectCapitalUse(self):
+    def test_minDeletionSize(self):
+        from Strings import Solution
+        so      =   Solution()
+        print("minDeletionSize {}".format(so.minDeletionSize(
+            ["cba","daf","ghi"]
+        )))
+        print("minDeletionSize {}".format(so.minDeletionSize(
+            ["rrjk","furt","guzm"]
+        )))
+        
+    def xtest_detectCapitalUse(self):
         from Strings import Solution
         so      =   Solution()
         print("detectCapitalUse {}".format(so.detectCapitalUse(
