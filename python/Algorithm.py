@@ -4,6 +4,7 @@
 from collections import Counter
 import collections
 from typing import List
+from functools import *
 from functools import lru_cache
 
 def guess(self, x):
@@ -17,6 +18,43 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    
+    '''
+- https://leetcode.com/problems/minimum-rounds-to-complete-all-tasks/
+- 2244. Minimum Rounds to Complete All Tasks(medium)
+- 问题:  
+输入一组数字代表任务难度, 每次可以完成相同难度的任务2个或3个, 问最少通过多少轮可以完成任务. 若无法完成, 则返回-1
+- 思路:
+统计每个难度等级的任务数量, 他们必须能够被2 或 3 整除, 尽可能用3去整除, 不行再用2, 最后如果余数为1 则返回-1
+- 思路2:
+任何一个数字都可以表达为: n >= 0
+3n + 1 = 3(n-1) + 2 + 2 = n + 1 次
+3n + 2 = n + 1 次
+因此可以表达为 (x+2) // 3
+Beats 84.92%
+    '''
+    def minimumRounds(self, tasks: List[int]) -> int:
+        m_task  =   Counter(tasks)
+        def get_min_rounds(count):
+            '''
+            count 表示任务数量, 计算最少完成 count 的轮次
+            不同方式有不同的结果: 输入8可以是两次3和一次2, 也可以是4次2.
+            '''
+            if count == 1:
+                return -1
+            if count % 3 == 0:
+                return count // 3
+            
+            return count // 3 + 1
+        
+        n   =   0
+        for k,c in m_task.items():
+            r   =   get_min_rounds(c)
+            # print("num = {} c={} r={}".format(k, c, r))
+            if r == -1 :
+                return -1
+            n   +=  r
+        return  n
     
     '''
 - https://leetcode.com/problems/find-pivot-index/?envType=study-plan&id=level-1
