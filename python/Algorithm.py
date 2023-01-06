@@ -6,6 +6,7 @@ import collections
 from typing import List
 from functools import *
 from functools import lru_cache
+import heapq
 
 def guess(self, x):
     pass
@@ -17,6 +18,62 @@ class Solution:
 replace with problem description
 - 思路:
 replace with your idea.
+    '''
+
+    '''
+- https://leetcode.com/problems/maximum-ice-cream-bars/
+- 1833. Maximum Ice Cream Bars(medium)
+- 问题:  
+输入一组数字表示每个冰激凌的价格, 男孩有 n 个硬币, 问它最多可以买多少个冰激凌.
+Input: costs = [1,3,2,4,1], coins = 7
+Output: 4 (The boy can buy ice cream bars at indices 0,1,2,4 for a total price of 1 + 3 + 2 + 1 = 7.)
+- 思路1:
+直接排序以下, 然后从头开始累加, 找到小于等于 coins 的个数即可.
+Beats 24.34%
+- 思路2:
+堆排序, 然后累加, 找到小于 coin的
+Beats 46.86%
+    '''
+    def maxIceCream(self, costs: List[int], coins: int) -> int:
+        # 思路2
+        heapq.heapify(costs)
+        total_cost  =   0
+        count   =   0
+        while costs.__len__ () > 0:
+            if total_cost  + costs[0] > coins:
+                break
+            total_cost  +=  heapq.heappop(costs)
+            count   +=  1
+        return count
+        # 思路1:
+        # costs.sort()
+        # total_cost  =   0
+        # for i, price in enumerate(costs):
+        #     if total_cost   +   price > coins:
+        #         # 因为 i 是从 0 开始计数, 因此不用再 - 1 了
+        #         return i  if i > 0 else 0
+        #     total_cost  +=  price
+
+        # # 可以买所有冰激凌
+        # return costs.__len__()
+    
+    '''
+- https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+- 452. Minimum Number of Arrows to Burst Balloons (medium)
+- 问题:  
+输入一组气球在 x 轴上的坐标范围, 找出最少的剑向y轴方向射出, 把所有气球打爆需要多少剑.
+^y
+|
+|     (气球  )
+|  (气球  )
+|--------------> x 这里只要一只剑可以射爆两个气球
+Input: points = [[10,16],[2,8],[1,6],[7,12]]
+Output: 2
+Explanation: The balloons can be burst by 2 arrows:
+- Shoot an arrow at x = 6, bursting the balloons [2,8] and [1,6].
+- Shoot an arrow at x = 11, bursting the balloons [10,16] and [7,12].
+- 思路:
+其实是求交集能够让更多的x坐标重叠.(a,b) (c,d) 若 b >= c && a <=d
     '''
     
     '''
