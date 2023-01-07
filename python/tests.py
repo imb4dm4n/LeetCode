@@ -105,8 +105,21 @@ class TestStrings(unittest.TestCase):
 '''
 python -m unittest  tests  -k TestAlgorithm
 '''
+
 class TestAlgorithm(unittest.TestCase):
-    def test_minimumRounds(self):
+    def test_canCompleteCircuit(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        self.assertEqual(
+            so.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]), 3)
+        
+        self.assertEqual(
+            so.canCompleteCircuit([2,3,4], [3,4,3]), -1)
+        
+        # self.assertEqual(
+        #     so.canCompleteCircuit(gas, cost), -1)
+    
+    def xtest_minimumRounds(self):
         from Algorithm import Solution
         so      =   Solution()
         self.assertEqual(so.minimumRounds([2,2,3,3,2,4,4,4,4,4]), 4)

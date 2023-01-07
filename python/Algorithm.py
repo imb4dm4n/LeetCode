@@ -21,6 +21,84 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/gas-station/
+- 134. Gas Station(medium)
+- 问题:  
+输入一组数表示第i个加油站的油量, 另一组数字表示从i到i+1加油站的耗油量, 问一开始没有油, 从哪个加油站开始出发, 可以完成一次旅行.
+Input: gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+Output: 3
+Explanation:
+Start at station 3 (index 3) and fill up with 4 unit of gas. Your tank = 0 + 4 = 4
+Travel to station 4. Your tank = 4 - 1 + 5 = 8
+Travel to station 0. Your tank = 8 - 2 + 1 = 7
+Travel to station 1. Your tank = 7 - 3 + 2 = 6
+Travel to station 2. Your tank = 6 - 4 + 3 = 5
+Travel to station 3. The cost is 5. Your gas is just enough to travel back to station 3.
+Therefore, return 3 as the starting index.
+- 思路:
+[1,2,3,4,5]
+[3,4,5,1,2]
+起始点的加油站油量必须大于等于它到下一个加油站的耗油量.
+gas_left 表示当前剩余油量, gas_can_fill 表示当前可以增加的油量,
+gas_2_next_station 表示到下一个加油站的耗油量, start_station 表示出发点,
+cur_station 表示当前所处的坐标
+其实题目已经是答案了, 只要顺着把代码实现, 找出所有可能的出发点, 并对每一个可能都进行验证即可. 超时了 ... 
+
+- 思路2 (其实一轮trip没必要想到环, 因为可以想象把前面的移动到后面 )
+其实存在冗余的计算, 比如从 i 到 j 的加油站, 是无法到达的, 那么 其实从 i+1 到 j 都是不用去计算的. 
+因为 j-1 到 j 肯定是需要额外的油, 但是从 i 到 j-1 剩余的油 加上j-1的油是过不到j的. 
+虽然 i 到 j-1 有额外剩余, 但是 j-1 到 j 就不够了, 所以从 i+1 开始到 j 剩余的油肯定也是不够的. 
+Beats 71.32%
+    '''
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        total_surplus, surplus, start_pos  =   0,0,0
+        for i in range(gas.__len__()):
+            total_surplus   +=  gas[i]  -   cost[i]
+            surplus +=  gas[i]  -   cost[i]
+            # 盈余为小于 0 , 说明 从 0 到当前是无法完成的, 因此 移动起始偏移
+            if surplus  < 0:
+                start_pos   =   i   +   1
+                surplus     =   0
+        
+        return -1 if total_surplus < 0 else start_pos
+        
+        # start_poss   =   []  # 保存所有可以作为出发点的起始偏移
+        # for pos, cur_gas in enumerate(gas):
+        #     # 油量大于等于到下一站的耗油量
+        #     if cur_gas and cur_gas >= cost[pos]:
+        #         start_poss.append((pos, cur_gas))
+        
+        # start_poss.sort(key= lambda x:(-x[1]))
+        
+        # def can_travel_around(start_pos):
+        #     '''
+        #     验证能否从 start_pos 旅游一圈
+        #     '''
+        #     # 先移动到下一个加油站
+        #     gas_left, cur_station   =   gas[start_pos] - cost[start_pos], (start_pos + 1) % gas.__len__()
+        #     while cur_station != start_pos and gas_left >=0:
+        #         # 加满油
+        #         gas_left    +=  gas[cur_station]
+        #         # 尝试移动到下一个加油站
+        #         if gas_left >= cost[cur_station]:
+        #             gas_left    -=  (cost[cur_station])
+        #             cur_station =   (cur_station+1) % gas.__len__()
+        #             continue
+        #         break
+            
+        #     if cur_station == start_pos:
+        #         return  True
+            
+        #     return False
+
+        # for pos in start_poss:
+        #     # print("can travel from post {} ?".format(pos))
+        #     if can_travel_around(pos[0]):
+        #         return pos[0]
+        
+        # return -1
+
+    '''
 - https://leetcode.com/problems/maximum-ice-cream-bars/
 - 1833. Maximum Ice Cream Bars(medium)
 - 问题:  
