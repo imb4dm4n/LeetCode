@@ -46,6 +46,46 @@ def list_2_tree(values:list):
 
 class Solution:
     '''
+- replace with url
+- replace with problem title
+- 问题:  
+replace with problem description
+- 思路:
+replace with your idea.
+    '''
+
+    '''
+- https://leetcode.com/problems/binary-tree-preorder-traversal/
+- 144. Binary Tree Preorder Traversal(easy)
+- 问题:  
+二叉树的前序遍历
+- 思路1:
+递归Beats 69.37%
+- 思路2
+队列 Beats 95.77%
+    '''
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        stack       =   [root]
+        node_vals   =   []
+        while stack.__len__() > 0:
+            node    =   stack.pop()
+            if node:
+                node_vals.append(node.val)
+                stack.append(node.right)
+                stack.append(node.left)
+        return  node_vals
+
+        # node_vals   =   []
+        # def preorder(node:Optional[TreeNode]):
+        #     if node:
+        #         node_vals.append(node.val)
+        #         preorder(node.left)
+        #         preorder(node.right)
+        # preorder(root)
+        # return  node_vals
+
+
+    '''
     # https://leetcode.com/problems/binary-tree-maximum-path-sum/description/
     # 124. Binary Tree Maximum Path Sum (hard)
 - 问题: 
