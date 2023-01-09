@@ -21,6 +21,22 @@ class timer():
         return (stop - self.create)*1000
 
 '''
+python -m unittest  tests  -k TestArray
+'''
+class TestArray(unittest.TestCase):
+    def test_NumArray(self):
+        from Array import Solution as SA
+        so      =   SA()
+        arr     =   so.NumArray([-2,0,3,-5,2,-1])
+        self.assertEqual( arr.sumRange(0, 2), 1)
+        self.assertEqual( arr.sumRange(2, 5), -1)
+        self.assertEqual( arr.sumRange(0, 5), -3)
+
+        arr     =   so.NumArray([-1])
+        self.assertEqual( arr.sumRange(0, 0), -1)
+        
+
+'''
 python -m unittest  tests  -k TestSearching
 '''
 class TestSearching(unittest.TestCase):
