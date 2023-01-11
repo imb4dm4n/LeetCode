@@ -18,6 +18,54 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/range-sum-query-2d-immutable/
+- 304. Range Sum Query 2D - Immutable (medium)
+- 问题:  
+输入一个二维矩阵, 实现函数计算 由 (row1, col1) 为左上角坐标 (row2, col2).为右下角坐标构成的矩阵内, 所有的数字的和.
+- 思路:
+二维前缀和: 用大的矩阵减去小的矩阵, 补上丢失的矩阵, 即可得到结果.
+(row2,col2) - (row2,col1) - (row1,col2) + (row1,col1)
+xxxxxx  xxxxxx
+xxxxxx  xxyyyx 
+xxxxxx  xxyyyx
+xxxxxx  xxyyyx
+===>
+aaaaxx   bbxxxx   ccccxx   ddxxxx
+aaaaxx - bbxxxx - ccccxx + ddxxxx
+aaaaxx   bbxxxx   xxxxxx   xxxxxx
+aaaaxx   bbxxxx   xxxxxx   xxxxxx
+用一个更大的二维矩阵保存每个坐标到(0,0)构成的矩阵的数字的和.
+area(x,y) = area(x-1,y) + area(x,y-1) - area(x-1,y-1)
+    '''
+    class NumMatrix:
+    
+        def __init__(self, matrix: List[List[int]]):
+            # 初始化二维矩阵: 不能直接 * 10, 否则相当于是对同一个矩阵的 10 次引用
+            self.pre_sum_matrix =   [ [0] * (len(matrix[0]) +1) for _ in range((len(matrix) +1)) ]
+            for row in range(1, len(matrix)+1):
+                for col in range(1, len(matrix[0])+1):
+                    # matrix[row-1][col-1] 因为矩阵被扩大了
+                    # - self.pre_sum_matrix[row - 1][col - 1] 是因为 加上两个矩阵时, 重复加了 area(row-1, col-1) 这个矩阵, 因此要减去一次
+                    self.pre_sum_matrix[row][col]   =   matrix[row-1][col-1] + \
+                        self.pre_sum_matrix[row][col - 1] + \
+                        self.pre_sum_matrix[row-1][col] - \
+                        self.pre_sum_matrix[row - 1][col - 1]
+
+                    print("r {} c {} d {} sum {}".format(row, col, matrix[row-1][col-1], self.pre_sum_matrix[row][col]  ))
+            
+        def _get_region(self, row, col):
+            if row < 0 or col < 0:
+                return 0
+            return self.pre_sum_matrix[row][col]
+
+        def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+            # (row2,col2) - (row2,col1) - (row1,col2) + (row1,col1)
+            return self._get_region(row2-1,col2-1) -\
+                    self._get_region(row1,col2-1) - \
+                        self._get_region(row2-1,col1) + \
+                            self._get_region(row1,col1)
+
+    '''
 - https://leetcode.com/problems/range-sum-query-immutable/
 - 303. Range Sum Query - Immutable (easy)
 - 问题:  

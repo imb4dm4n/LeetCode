@@ -53,6 +53,16 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/
+- 1443. Minimum Time to Collect All Apples in a Tree(medium)
+- 问题:  
+有n个节点的无向树, 其中一些节点包含苹果, 返回从0节点出发并返回到0节点, 最小需要的步数能够摘所有苹果. 其中 edge[i] = [ai,bi] 表示有一条 ai 到 bi的边. hasApple[i] = true 表示 i节点有苹果. ie: 7个节点, 边由 edges 表示, 苹果所在节点由 hasApple数组表示
+Input: n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], hasApple = [false,false,true,false,true,true,false]
+Output: 8 
+- 思路:
+replace with your idea.
+    '''
 
     '''
 - https://leetcode.com/problems/binary-tree-preorder-traversal/

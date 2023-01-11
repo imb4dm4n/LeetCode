@@ -24,7 +24,19 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_NumArray(self):
+    def test_NumMatrix(self):
+        from Array import Solution as SA
+        so      =   SA()
+        arr     =   so.NumMatrix([[1,2,3],[2,3,4],[3,4,5],[4,5,6]])
+        print(arr.pre_sum_matrix)
+        print(arr.sumRegion(1, 1, 2, 2))
+        # arr     =   so.NumMatrix([[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]])
+        # print(arr.pre_sum_matrix)
+        # print(arr.sumRegion(2, 1, 4, 3))
+        # print(arr.sumRegion(1, 1, 2, 2))
+        # print(arr.sumRegion(1, 2, 2, 4))
+    
+    def xtest_NumArray(self):
         from Array import Solution as SA
         so      =   SA()
         arr     =   so.NumArray([-2,0,3,-5,2,-1])
