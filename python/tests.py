@@ -27,14 +27,17 @@ class TestArray(unittest.TestCase):
     def test_NumMatrix(self):
         from Array import Solution as SA
         so      =   SA()
-        arr     =   so.NumMatrix([[1,2,3],[2,3,4],[3,4,5],[4,5,6]])
-        print(arr.pre_sum_matrix)
-        print(arr.sumRegion(1, 1, 2, 2))
-        # arr     =   so.NumMatrix([[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]])
+        # arr     =   so.NumMatrix([[1,2,3],[2,3,4],[3,4,5],[4,5,6]])
+        arr     =   so.NumMatrix([[1,2,3],[4,5,6],[7,8,9]])
         # print(arr.pre_sum_matrix)
+        arr.print_pre_sum_matrix()
+        print(arr.sumRegion(1, 1, 2, 2))
         # print(arr.sumRegion(2, 1, 4, 3))
-        # print(arr.sumRegion(1, 1, 2, 2))
-        # print(arr.sumRegion(1, 2, 2, 4))
+        arr     =   so.NumMatrix([[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]])
+        arr.print_pre_sum_matrix()
+        print(arr.sumRegion(2, 1, 4, 3))
+        print(arr.sumRegion(1, 1, 2, 2))
+        print(arr.sumRegion(1, 2, 2, 4))
     
     def xtest_NumArray(self):
         from Array import Solution as SA
@@ -360,7 +363,7 @@ class TestBinaryTree(unittest.TestCase):
 '''
 python -m unittest  tests  -k TestGraph
 '''
-from Graph import Solution as GS
+# from Graph import Solution as GS
 class TestGraph(unittest.TestCase):
     def setUp(self) -> None:
         self.so     =   GS()
