@@ -54,6 +54,45 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/number-of-nodes-in-the-sub-tree-with-the-same-label/
+- 1519. Number of Nodes in the Sub-Tree With the Same Label (medium)
+- 问题:  
+输入一个没有方向的树， 包含 n 个 节点. 0 是根节点, 每个节点有一个 label 用 labels 数组表示. edges 数组表示节点之间有一条边.
+返回 ans 数组, 每一项表示 node-i 的所有子树中 和 node-i 有相同 label 的节点个数, 包括 node-i 自身.
+Input: n = 7, edges = [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]], labels = "abaedcd"
+Output: [2,1,1,1,1,1,1]
+- 思路:
+遍历所有节点, 给每个节点找出他们的子树节点列表, 遍历子树节点列表统计相同 label节点个数.
+    '''
+    def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+        ans     =   [0] * n
+        
+        def get_sub_tree_nodes(node_i):
+            '''
+            获取输入节点构成的子树 的 节点列表, 返回节点的id
+            :param      node_i      节点id值
+            :returns    []      子树的节点id列表
+            '''
+            ret         =   []
+            begin_nodes =   [node_i]
+            while begin_nodes.__len__() > 0:
+                begin   =   begin_nodes.pop()
+                for edge in edges:
+                    if edge[0] == begin:
+                        ret.append(edge[1])
+                        begin_nodes.append(edge[1])
+            return ret
+
+        for i in range(n):
+            ans[i] +=   1       # 至少一个相同的节点, 即自身
+            nodes   =   get_sub_tree_nodes(i)
+            for node_id in nodes:
+                if labels[node_id] == labels[i]:
+                    ans[i] +=   1
+        
+        return ans
+        
+    '''
 - https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/
 - 1443. Minimum Time to Collect All Apples in a Tree(medium)
 - 问题:  

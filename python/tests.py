@@ -318,7 +318,21 @@ Output: ["the","is","sunny","day"]
 python -m unittest  tests  -k TestBinaryTree
 '''
 class TestBinaryTree(unittest.TestCase):
-    def test_maxPathSum(self):
+    def test_countSubTrees(self):
+        so  =   SBT()
+        inp     =   [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]]
+        r=so.countSubTrees(7,
+            inp,
+            "abaedcd")
+        print(r)
+        inp     =   [[0,2],[0,3],[1,2]]
+        r=so.countSubTrees(4,
+            inp,
+            "aeed")
+        print(r)
+        self.assertEqual([1,1,2,1], r)
+        
+    def xtest_maxPathSum(self):
         so  =   SBT()
         inp     =   [-10,9,20,null,null,15,7]
         self.assertEqual(
