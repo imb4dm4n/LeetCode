@@ -13,15 +13,121 @@ class Solution:
 - replace with problem title
 - 问题:  
 replace with problem description
+- tag: 前缀和
 - 思路:
 replace with your idea.
     '''
+
+    '''
+- https://leetcode.com/problems/product-of-the-last-k-numbers/?show=1
+- 1352. Product of the Last K Numbers(medium)
+- 问题:  
+实现一个类, 可以动态增加数字 并实现一个函数获取最后 k 个数的乘积, 可以确保至少有 k 个数.
+productOfNumbers.add(3);        // [3]
+productOfNumbers.add(0);        // [3,0]
+productOfNumbers.add(2);        // [3,0,2]
+productOfNumbers.add(5);        // [3,0,2,5]
+productOfNumbers.add(4);        // [3,0,2,5,4]
+productOfNumbers.getProduct(2); // return 20. The product of the last 2 numbers is 5 * 4 = 20
+productOfNumbers.getProduct(3); // return 40. The product of the last 3 numbers is 2 * 5 * 4 = 40
+productOfNumbers.getProduct(4); // return 0. The product of the last 4 numbers is 0 * 2 * 5 * 4 = 0
+- tag: 前缀和
+- 大神思路:
+若出现一个0, 那么0之前的数的结果都是0, 因此直接更新数组为 [1]. 只记录 0 之后出现的数字结果.
+假设输入 (a,b,c)
+那么得到的 A = (a,a*b,a*b*c) 最大的乘积在栈顶
+假设 k = 2, 那么结果便是
+b * c = a*b*c / a = P[-1] // P[-2-1]
+----------> 说白了就是前缀和, 第一部分 a 表示前一个区间的数字,
+第二部分 b 表示k后半部分的数字的乘积, a * b = c(所有数字乘积), 因此 b = c / a
+
+- 思路(超时, 太多没必要的计算):
+前缀和的不变的数组, 这个是动态的数组. think in a reverse maner.
+reserve a list for storing product of last k elements. 
+以下算法会超时, 确实是缺乏一些洞见. 
+1. 若在索引 i 加入一个 0 , 那么只要 k 个数大于 0 索引, 就一定为0, 因为乘数一定包含0. 因此记录 0 的最后一次索引 last_zero, 数据长度 n, 若 k >= n-last_zero, 那便可以直接返回 0
+input_nums  =   []
+surfix_product  =   []
+---->
+input_nums  =   [3]
+surfix_product  =   [3]
+---->
+input_nums  =   [0,3]
+surfix_product  =   [0,0]
+---->
+input_nums  =   [2,0,3]
+surfix_product  =   [2,0,0]
+---->
+input_nums  =   [5,2,0,3]
+surfix_product  =   [5,10,0,0]
+---->
+input_nums  =   [4,5,2,0,3]
+surfix_product  =   [4,20,40,0,0] get(2) = surfix_product[2-1]
+---->
+input_nums  =   [8,4,5,2,0,3]
+surfix_product  =   [8,32,160,320,0,0] get(2) = surfix_product[2-1]
+    '''
+    class ProductOfNumbers:
+        def __init__(self):
+            self.A = [1]
+
+        def add(self, a):
+            if a == 0:
+                # 出现一个 0 则前面一切计算结果都没用了
+                self.A = [1]
+                print("add zero A = {}".format(self.A))
+            else:
+                # 和栈顶 前一个结果相乘
+                self.A.append(self.A[-1] * a)
+                print("add {} A = {}".format(a, self.A))
+
+        def getProduct(self, k):
+            # k 超过了最后一个 0 出现的位置, 因此结果一定为 0
+            if k >= len(self.A): return 0
+            # 用栈顶 除以 -k-1 的结果 得到 最后 k 个数字的结果
+            # 栈顶是所有数字的乘积 因此是最大的, 作为 被除数
+            # -k - 1 是最后 k 个数之前的所有数的乘积
+            #
+            return self.A[-1] // self.A[-k - 1]
+
+        # def __init__(self):
+        #     # self.input_nums =   []
+        #     self.surfix_product =   []
+        #     self.last_zero  =   -1
+            
+
+        # def add(self, num: int) -> None:
+        #     # self.input_nums.insert(0, num)
+        #     self.surfix_product.insert(0, num)
+            
+        #     if num == 0:
+        #         self.last_zero  =   self.surfix_product.__len__() - 1
+        #         print("lase_zero @ {}".format(self.last_zero))
+        #     elif self.last_zero != -1:
+        #         self.last_zero +=   1
+        #         print("lase_zero @ {}".format(self.last_zero))
+            
+        #     for i in range(1,self.surfix_product.__len__()):
+        #         # 若 乘积为0 , 则后续都没有必要计算了
+        #         if not self.surfix_product[i]:
+        #             break
+        #         self.surfix_product[i]  *=   num
+            
+        #     print("add {} surfix {}".format(num, self.surfix_product))
+            
+
+        # def getProduct(self, k: int) -> int:
+        #     if self.last_zero != -1 and k > self.last_zero:
+        #         return 0
+        #     return self.surfix_product[k-1]
+            
 
     '''
 - https://leetcode.com/problems/range-sum-query-2d-immutable/
 - 304. Range Sum Query 2D - Immutable (medium)
 - 问题:  
 输入一个二维矩阵, 实现函数计算 由 (row1, col1) 为左上角坐标 (row2, col2).为右下角坐标构成的矩阵内, 所有的数字的和.
+- tag: 前缀和
 - 思路:
 二维前缀和: 用大的矩阵减去小的矩阵, 补上丢失的矩阵, 即可得到结果.
 (row2,col2) - (row2,col1) - (row1,col2) + (row1,col1)
@@ -81,6 +187,7 @@ Input
 [[[-2, 0, 3, -5, 2, -1]], [0, 2], [2, 5], [0, 5]]
 Output
 [null, 1, -1, -3]
+- tag: 前缀和
 - 思路:
 前缀和思路: 用额外的空间 pre_sum, 在第i位, 存储从 0到i-1 的数字的和, 当需要计算 [i,j] 的和的时候,只需要用 pre_sum[j+1] - pre_sum[i] 即可.
 可以理解为:

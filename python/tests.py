@@ -24,7 +24,36 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_NumMatrix(self):
+    def test_ProductOfNumbers(self):
+        from Array import Solution as SA
+        so      =   SA()
+        arr     =   so.ProductOfNumbers()
+        arr.add(3)
+        arr.add(0)
+        arr.add(2)
+        arr.add(5)
+        arr.add(4)
+        print(arr.getProduct(2))
+        print(arr.getProduct(3))
+        print(arr.getProduct(4))
+        arr.add(8)
+        print(arr.getProduct(2))
+        print(arr.getProduct(1))
+        print(arr.getProduct(3))
+        print(arr.getProduct(4))
+        print("-------test 2\n")
+        #
+        arr     =   so.ProductOfNumbers()
+        arr.add(0)
+        arr.add(5)
+        arr.add(6)
+        print(arr.getProduct(2))
+        print(arr.getProduct(2))
+        arr.add(8)
+        print(arr.getProduct(4))
+        arr.add(2)
+
+    def xtest_NumMatrix(self):
         from Array import Solution as SA
         so      =   SA()
         # arr     =   so.NumMatrix([[1,2,3],[2,3,4],[3,4,5],[4,5,6]])
