@@ -179,9 +179,17 @@ void test_bst()
     else
         printf("it's null\n");*/
 }
+using namespace Array;
 int main()
 {
-    uniquePaths2(1, 2);
+    ProductOfNumbers pon;
+    pon.add(3);
+    pon.add(0);
+    pon.add(2);
+    pon.add(5);
+    pon.add(4);
+    pon.getProduct(2);
+    //uniquePaths2(1, 2);
     /*auto ret = generateParenthesis(3);
     for(auto s : ret)
         printf("%s\n", s.c_str());*/

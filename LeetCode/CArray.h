@@ -5,6 +5,40 @@
 using namespace std;
 namespace Array
 {
+    /**
+     * @brief 1352. Product of the Last K Numbers
+     * https://leetcode.com/problems/product-of-the-last-k-numbers/submissions/
+     * 最后 k 个数字的乘积
+     * Beats 94.1%
+     */
+    class ProductOfNumbers {
+    
+    vector<int> m_products;
+    public:
+        ProductOfNumbers() {
+            m_products = { 1 };	// 初始化 一个1 否则第一次计算时会出问题
+        }
+        
+        void add(int num) {
+            if(num == 0)
+                m_products  =   {1};
+            else {
+                // a*b*c*d
+                m_products.push_back(
+                    m_products.back() * num
+                );
+            }
+        }
+        
+        int getProduct(int k) {
+            if(k >= m_products.size())
+                return 0;
+            else {
+                return m_products.back() / m_products[m_products.size() -k -1];
+            }
+            
+        }
+    };
     // https://leetcode.com/problems/container-with-most-water/
     // 11. Container With Most Water
     /*
