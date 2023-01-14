@@ -123,6 +123,43 @@ surfix_product  =   [8,32,160,320,0,0] get(2) = surfix_product[2-1]
             
 
     '''
+- https://leetcode.com/problems/matrix-block-sum/
+- 1314. Matrix Block Sum(medium)
+- 问题:  
+输入一个 m x n 的矩阵 mat 和整数 k , 返回矩阵 answer 其中 answer[i][j] 是 所有在 mat[r][c] 矩阵中的元素的和.:
+i-k <= r <= i+k
+j-k <= c <= j+k
+(r,c)是矩阵中有效的位置.
+- tag: 前缀和
+- 思路:
+说白了, 就是以每个坐标 (i,j)向外扩张 k 行 和 k列, 得到的矩阵, 里面所有元素的和, 写到 answer[i][j].
+应该是可以复用 304 题的代码. 画一张图就知道了. 其实就是复用 304 的代码, 计算出向外扩张后的矩阵的左上角坐标和右下角坐标, 然后求矩阵内所有元素的和即可.
+Beats 66.3%
+    '''
+    def matrixBlockSum(self, mat: List[List[int]], k: int) -> List[List[int]]:
+        matrix  =   self.NumMatrix(mat)
+        matrix.print_pre_sum_matrix()
+        ans     =   [[0] * mat[0].__len__() for _ in range(mat.__len__())]
+
+        for i in range(mat.__len__()):
+            for j in range(mat[0].__len__()):
+                left_up     =   [i-k, j-k]
+                if left_up[0] < 0:
+                    left_up[0]  =   0
+                if left_up[1] < 0:
+                    left_up[1]  =   0
+                
+                right_down  =   [i+k, j+k]
+                if right_down[0] >= len(mat):
+                    right_down[0]   =   len(mat) -1
+                if right_down[1] >= len(mat[0]):
+                    right_down[1]   =   len(mat[0]) - 1
+                ans[i][j]   =   matrix.sumRegion(left_up[0], left_up[1], right_down[0], right_down[1])
+
+        # print("ans {}".format(ans))
+        return ans
+
+    '''
 - https://leetcode.com/problems/range-sum-query-2d-immutable/
 - 304. Range Sum Query 2D - Immutable (medium)
 - 问题:  

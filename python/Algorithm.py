@@ -111,8 +111,18 @@ Beats 24.34%
 - 思路2:
 堆排序, 然后累加, 找到小于 coin的
 Beats 46.86%
+- 思路3:
+排序, 做减法. Beats 75.24%
     '''
     def maxIceCream(self, costs: List[int], coins: int) -> int:
+        costs.sort()
+        n = 0
+        for cost in costs:
+            if cost > coins:
+                return n 
+            n += 1
+            coins -= cost
+        return n
         # 思路2
         heapq.heapify(costs)
         total_cost  =   0

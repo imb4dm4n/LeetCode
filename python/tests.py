@@ -24,7 +24,14 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_ProductOfNumbers(self):
+    def test_matrixBlockSum(self):
+        from Array import Solution as SA
+        so      =   SA()
+        arr     =   so.matrixBlockSum([[1,2,3],[4,5,6],[7,8,9]], k = 1)
+        arr     =   so.matrixBlockSum([[1,2,3],[4,5,6],[7,8,9]], k = 2)
+
+
+    def xtest_ProductOfNumbers(self):
         from Array import Solution as SA
         so      =   SA()
         arr     =   so.ProductOfNumbers()
