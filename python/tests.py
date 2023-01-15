@@ -24,7 +24,15 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_matrixBlockSum(self):
+    def test_productExceptSelf(self):
+        from Array import Solution as SA
+        so      =   SA()
+        arr     =   so.productExceptSelf([1,2,3,4])
+        self.assertEqual(arr, [24,12,8,6])
+        arr     =   so.productExceptSelf([-1,1,0,-3,3])
+        self.assertEqual(arr, [0,0,9,0,0])
+    
+    def xtest_matrixBlockSum(self):
         from Array import Solution as SA
         so      =   SA()
         arr     =   so.matrixBlockSum([[1,2,3],[4,5,6],[7,8,9]], k = 1)

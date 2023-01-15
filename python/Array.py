@@ -2,10 +2,14 @@
 数组操作的相关算法
 '''
 
+from operator import mul
 from typing import Optional, List
 import heapq
 import queue
 import itertools
+from collections import *
+from itertools import *
+from math import *
 
 class Solution:
     '''
@@ -17,6 +21,103 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+
+    '''
+- https://leetcode.com/problems/product-of-array-except-self/
+- 238. Product of Array Except Self (medium)
+- 问题:  
+输入一个数组 nums, 返回一个数组, ans[i] 表示除了 nums[i] 外所有数字的乘积.
+可否用 O(1) 的空间解决问题.
+- tag: 前缀和
+- 思路:
+朴素的想法, 除开0,求所有数字的乘积, 然后再一个一个除过去.
+1. 包含 1 个 0, 那么只有0所在的索引有结果, 其他都是0
+2. 包含 2 个 0, 那么结果都是0
+3. 不包含 0, 用总的乘积除以每一个
+Beats 99.22%
+- 大神思路
+前缀和与后缀和的思路. 用一个前缀乘积pre[] 和 后缀乘积sur[] 保存 [0, i-1]的乘积 和
+[i+1, -1] 的乘积. 这样计算 ans[i] = pre[i-1] * sur[i+1]. 比如
+[1,2,3,   4,  5,6,7] => ans[3] = pre[2] * sur[4] = (1*2*3)  * (5*6*7).
+优化空间:
+直接把前缀乘积存储到输出ans, 然后第二次遍历后缀乘积时, 再对 输出数组ans进行更新.
+    '''
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # 进一步优化成一次遍历
+        n,pre,sur   =   len(nums), 1, 1
+        ans     =   [1] * len(nums)
+
+        for i in range(n):
+            ans[i] *=   pre
+            pre    *=   nums[i]
+
+            ans[-1-i]   *=  sur
+            sur     *=  nums[-1-i]
+        
+        return ans
+
+        # 大神优化空间
+        ans     =   [1] * len(nums)
+        sur_product =   1
+        n       =   len(nums)
+        for i in range(1, n):
+            ans[i]  =   ans[i-1] * nums[i-1]
+        
+        print(ans)
+        for i in range(n-1, -1, -1):
+            print("i={} num={}".format(i, nums[i]))
+            ans[i]      *=  sur_product
+            sur_product *=  nums[i]
+        
+        print(ans)
+        return ans
+
+
+        # 大神思路
+        pre     =   list(accumulate(nums, mul))
+        sur     =   list(accumulate(nums[::-1], mul))[::-1]     # 内部的反转是为了从尾部开始计算, 第二次反转是为了可以直接使用 sur[i+1] 进行索引
+        n       =   len(nums)
+        
+        ans     =   []
+        for i in range(len(nums)):
+            ret = (pre[i-1] if i > 0 else 1) * (sur[i+1] if i+1 < n else 1)
+            ans.append(  ret )
+            print("i={} ret = {} x= {} y = {}".format(i, ret, (pre[i-1] if i > 0 else 1) , (sur[i+1] if i+1 < n else 1)))
+            
+        print("num = {} ".format(nums))
+        print("pre = {} {}".format(pre, list(accumulate(nums, mul))))
+        print("sur = {} {}".format(sur, list(accumulate(nums[::-1], mul))))
+        print("ans = {}".format(ans))
+        
+        return ans
+
+        # 思路1
+        count_num   =   Counter(nums)
+        # 2 个 0 直接返回
+        if count_num.get(0) and count_num.get(0) > 1:
+            return [0]  * len(nums)
+
+        # 1 个0 或 没有 0
+        product     =   1
+        zero_pos    =   -1
+        ret     =   [0] * len(nums)
+
+        for i, n in enumerate(nums):
+            if n :
+                product    *=   n
+            else:
+                zero_pos    =   i
+        
+        # 存在 1 个 0
+        if zero_pos != -1:
+            ret[zero_pos]   =   product
+            return ret
+        
+        # 没有 0
+        for i,n in enumerate(nums):
+            ret[i] = product // n
+        
+        return ret
 
     '''
 - https://leetcode.com/problems/product-of-the-last-k-numbers/?show=1
