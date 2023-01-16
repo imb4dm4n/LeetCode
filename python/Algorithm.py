@@ -21,6 +21,74 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/insert-interval/
+- 57. Insert Interval(medium)
+- 问题:  
+输入一个数组 intervals , 每一项是不重叠的任务开始和结束时间intervals[i] = [starti, endi] . 并且以开始时间排序了, 再输入一个 开始时间和结束时间, 插入到 intervals 中, 若发生了重叠, 那么合并他们为一个:
+Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+Output: [[1,2],[3,10],[12,16]]
+Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+- 思路:
+一维数组的重叠判断: (a,b) & (c,d) 如何判断重叠? 
+1.(a,b) <= (c,d): c <= b && b <= d
+2.(a,b) >= (c,d): a <= d && d <= b
+3.本质就是, 一个范围 X(a,b) 的上界必须大于等于另一个范围 Y(c,d) 的下界 : b >= c. 这样就能保证重叠. 但是具体是怎样的覆盖情况, 还需要判断.
+    1. b >= c && b >= d : 那么 X 范围完全覆盖 Y
+    2. b >= c && b < d  : 那么 X 范围和 Y 存在交集, 上界是 Y的d
+Beats 87.16%
+    '''
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        c, d            =     newInterval
+        merge_offsets   =     []        # 存储需要合并的 时间区间 下标 列表
+        insert_index    =   -1
+        for i,(a, b) in enumerate(intervals):
+            # 情况 1
+            if c <= b and b <= d:
+                merge_offsets.append(i)
+                print("情况1 ",a,b)
+            
+            # 情况 2
+            elif a <= d and d <= b:
+                merge_offsets.append(i)
+                print("情况2 ", a,b)
+            
+            # 没有重叠
+            elif b < c:
+                insert_index    =   i + 1
+        
+        # 1. 不需要合并, 找个合适的位置插入
+        if merge_offsets.__len__() == 0:
+            # print("insert {} {}".format(insert_index, newInterval))
+            # 小于第一个
+            if insert_index == -1:
+                intervals.insert(0, newInterval)
+            else:
+                intervals.insert(insert_index, newInterval)
+            return  intervals
+        
+        # 2. 需要合并
+        lower   =   min(c, intervals[merge_offsets[0]][0])
+        higher  =   max(d, intervals[merge_offsets[-1]][1])
+        to_merge    =   [lower, higher]
+        
+        # 若不修改原始数组
+        # r       =   []
+        # for i , p in enumerate(intervals):
+        #     if i in merge_offsets:
+        #         continue
+        #     r.append(p)
+        # r.insert(merge_offsets[0], to_merge)
+
+        # 删掉需要合并的
+        for i in range(len(merge_offsets)):
+            intervals.pop(merge_offsets[0])
+        intervals.insert(merge_offsets[0], to_merge)
+
+        # print(merge_offsets, " to merge ", to_merge)
+        return intervals
+
+
+    '''
 - https://leetcode.com/problems/gas-station/
 - 134. Gas Station(medium)
 - 问题:  

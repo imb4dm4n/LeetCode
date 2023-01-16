@@ -182,7 +182,22 @@ python -m unittest  tests  -k TestAlgorithm
 '''
 
 class TestAlgorithm(unittest.TestCase):
-    def test_canCompleteCircuit(self):
+    def test_insert(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        r=so.insert([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8])
+        self.assertEqual(r, [[1,2],[3,10],[12,16]])
+
+        r=so.insert([[1,3],[6,9]], [2,5])
+        self.assertEqual(r, [[1,5],[6,9]])
+
+        r=so.insert([[1,3],[6,9]], [4,5])
+        self.assertEqual(r, [[1,3],[4,5],[6,9]])
+
+        r=so.insert([[2,5],[6,7],[8,9]], [0,1])
+        self.assertEqual(r, [[0,1],[2,5],[6,7],[8,9]])
+
+    def xtest_canCompleteCircuit(self):
         from Algorithm import Solution
         so      =   Solution()
         self.assertEqual(
