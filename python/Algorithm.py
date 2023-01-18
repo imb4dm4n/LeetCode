@@ -19,6 +19,79 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/flip-string-to-monotone-increasing/
+- 926. Flip String to Monotone Increasing (medium)
+- 问题:  
+输入一个字符串包含0和1, 要求用最小的变化次数, 让字符串成为单调递增的.
+可以把0 变成1 也可以把1变成0, 
+Input: s = "00110"
+Output: 1
+Explanation: We flip the last digit to get 00111.
+Input: s = "00011000"
+Output: 2
+Explanation: We flip to get 00000000.
+- 思路:
+贪心算法:
+    1. 把1后面的0全变成1, 把前面的1变成0
+    2. 把所有1变成0
+    3. 把所有0变成1
+    找出最小的那个
+    4. 可能输入的本身就是单调递增呢
+    '''
+    def minFlipsMonoIncr(self, s: str) -> int:
+        def is_mono_incr(inp:str):
+            t   =   0
+            for c in inp:
+                if ord(c) - t < 0:
+                    return False
+                t   =   ord(c)
+            return True
+        if is_mono_incr(s):
+            print("{} is_mono_incr".format(s))
+            return 0
+        # 统计字符串中的 0 和 1 的个数, 这样可以快速知道 贪心算法后两个的结果
+        count_zero, count_one,count_flip   =   0,0,0
+        def min_flip(inp:str):
+            raw     =   [ord(c) for c in inp]
+            mut     =   sorted(raw)
+            count       =   0
+            for i, x in enumerate(mut):
+                if x != raw[i]:
+                    count   +=  1
+            print("{} need {}".format(s, count))
+            return count
+
+        replace_zero    =   True
+        replace_one     =   False
+        # search_zero     =   False
+        # search_one      =   True
+        for c in s:
+            if c == '0':
+                count_zero  +=  1
+            elif c == '1':
+                count_one   +=  1
+            # if replace_zero and c == '1':
+            #     replace_zero    =   False
+            #     replace_one     =   True
+            # elif replace_zero and c =='0':
+            #     count_flip  +=  1
+
+            # if replace_one and c == '1':
+            #     pass
+            # elif replace_one and c == '0':
+            #     count_flip  +=  1
+
+        t   =   []
+        if count_zero:
+            t.append(count_zero)
+        if count_one:
+            t.append(count_one)
+        count_flip  =   min_flip(s)
+        if count_flip:
+            t.append(count_flip)
+        print("{} find min in {}".format(s, t))
+        return min(t)
 
     '''
 - https://leetcode.com/problems/insert-interval/

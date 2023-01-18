@@ -23,6 +23,50 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/maximum-sum-circular-subarray/
+- 918. Maximum Sum Circular Subarray (medium)
+- 问题:  
+输入一个可以循环使用的数组, 返回 非空子数组的和 的最大值. 
+循环使用意思是 数组结尾可以连接到数组头, the next element of nums[i] is nums((i+1)%n) and previous element is nums[(i-1+n)%n]. 非空子数组元素不能重复使用.
+- tag: 
+- 思路:
+这也是前缀和吧, 不过是可以循环出去
+    '''
+
+    '''
+- https://leetcode.com/problems/count-of-range-sum/
+- 327. Count of Range Sum(hard)
+- 问题:  
+输入一组数字和两个整数 lower 和 upper, 返回所有 和能够在 lower & upper 区间的 子数组个数.
+Input: nums = [-2,5,-1], lower = -2, upper = 2
+Output: 3
+Explanation: The three ranges are: [0,0], [2,2], and [0,2] and their respective sums are: -2, -1, 2.
+- tag: 前缀和
+- 思路:
+难道是枚举范围列表, 然后每个查询一次前缀和?  肯定得超时, 这个枚举的数量太大了.
+
+    '''
+    def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
+        pre_sum     =   [0] * (len(nums) + 1)
+        count       =   0
+        for i in range(1, len(nums)+1):
+            pre_sum[i]  =   pre_sum[i-1]    +   nums[i-1]
+        
+        # print("pre sum {}".format(pre_sum))
+
+        def get_range_sum(begin, end):
+            return pre_sum[end+1] - pre_sum[begin]
+        
+        # for i,j in combinations(range(len(nums)),2):
+        for i,j in combinations_with_replacement(range(len(nums)),2):
+            range_sum   =   get_range_sum(i, j)
+            if lower <= range_sum and range_sum <= upper:
+                count   +=  1
+            # print(i, j, get_range_sum(i, j))
+        
+        return count
+
+    '''
 - https://leetcode.com/problems/product-of-array-except-self/
 - 238. Product of Array Except Self (medium)
 - 问题:  

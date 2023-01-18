@@ -24,7 +24,13 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_productExceptSelf(self):
+    def test_countRangeSum(self):
+        from Array import Solution as SA
+        so      =   SA()
+        arr     =   so.countRangeSum([-2,5,-1], -2, 2)
+        
+
+    def xtest_productExceptSelf(self):
         from Array import Solution as SA
         so      =   SA()
         arr     =   so.productExceptSelf([1,2,3,4])
@@ -182,7 +188,17 @@ python -m unittest  tests  -k TestAlgorithm
 '''
 
 class TestAlgorithm(unittest.TestCase):
-    def test_insert(self):
+    def test_minFlipsMonoIncr(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        print(so.minFlipsMonoIncr('00110'), 'expect 1')
+        print(so.minFlipsMonoIncr('010110'), 'expect 2')
+        print(so.minFlipsMonoIncr('00011000'), 'expect 2')
+        print(so.minFlipsMonoIncr('0011'))
+        print(so.minFlipsMonoIncr('00101'))
+        print(so.minFlipsMonoIncr('001010'))
+    
+    def xtest_insert(self):
         from Algorithm import Solution
         so      =   Solution()
         r=so.insert([[1,2],[3,5],[6,7],[8,10],[12,16]], [4,8])
