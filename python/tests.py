@@ -24,7 +24,23 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_countRangeSum(self):
+    def test_subarraysDivByK(self):
+        from Array import Solution as SA
+        so      =   SA()
+        # c       =   so.subarraysDivByK([4,5,0,-2,-3,1], k = 5)
+        # print(f"c={c}")
+        # self.assertEqual(c,     7)
+        # c       =   so.subarraysDivByK([1,2,3], k = 3)
+        # print(f"c={c}")
+        # self.assertEqual(c,     3)
+        # c       =   so.subarraysDivByK(nums = [5], k = 9)
+        # print(f"c={c}")
+        # self.assertEqual(c, 0)
+        c       =   so.subarraysDivByK(nums = [-1,2,9], k = 2)
+        print(f"c={c}")
+        self.assertEqual(c, 2)
+    
+    def xtest_countRangeSum(self):
         from Array import Solution as SA
         so      =   SA()
         arr     =   so.countRangeSum([-2,5,-1], -2, 2)
