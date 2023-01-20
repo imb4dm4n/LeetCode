@@ -21,6 +21,81 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+
+    '''
+- https://leetcode.com/problems/non-decreasing-subsequences/
+- 491. Non-decreasing Subsequences (medium)
+- 问题:  
+输入一个数组, 返回所有能够组成升序数组的子数组列表, 至少要两个元素.
+- tag: 前缀和 差分数组
+- 思路:
+    常规思路:
+有点像dp问题, 一个数组保存所有的结果, 另一个保存当前数组 cur_arr, 遇到一个数的时候, 若 cur_arr 不空, 对比最大值, 大于则加入, 否则递归进入下一个值; 同时也产生另一个递归函数, 不加入当前更大的.
+Beats 5.1%  预料超时 竟然没有 ...
+    差分数组思路
+通过差分数组知道前一个数是不是比当前的数更小，如果更小，那么 diff[i] > 0,
+    dp 从后往前计算
+
+    ''' 
+
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]: 
+        res     =   set()
+
+        def dp_bottom_up(cur_index, sub_seq:list):
+            # 递增子序列个数大于1, 镜像一次加入结果
+            if sub_seq.__len__() > 1:
+                res.add(tuple(sub_seq))
+            
+            # dp 到末尾了
+            if cur_index == len(nums):
+                return
+
+            # 子序列初始化为空 或者 当前的数字 可以被加入子序列
+            if not sub_seq or nums[cur_index] >= sub_seq[-1]:
+                dp_bottom_up(cur_index+1, sub_seq + [nums[cur_index]])
+            
+            # 不把当前数字加入子序列
+            dp_bottom_up(cur_index+1, sub_seq )
+                 
+        
+        dp_bottom_up(0,[]) 
+        print("res = {}".format(res)) 
+        return res
+
+        def dp_find_sub_seq(cur_arr:list, cur_index):
+            '''
+            cur_arr 是保存当前的结果
+            cur_index 是当前遍历的索引
+            '''
+            if cur_index < nums.__len__():
+                if cur_arr.__len__() == 0:
+                    cur_arr.append(nums[cur_index])
+                    dp_find_sub_seq(cur_arr, cur_index+1)
+                    # dp_find_sub_seq([], cur_index+1)
+                else:
+                    cur_max     =   cur_arr[-1]
+                    if cur_max <= nums[cur_index]:
+                        # 一种是不加入 当前遍历的
+                        dp_find_sub_seq(list(cur_arr), cur_index+1)
+                        # 另一种是加入 当前遍历的
+                        cur_arr.append(nums[cur_index])
+                        dp_find_sub_seq(cur_arr, cur_index+1) 
+                    else:
+                        dp_find_sub_seq(cur_arr, cur_index+1)
+            else:
+                # 遍历到结尾了, 把结果加入最终结果
+                if cur_arr.__len__() > 1 and cur_arr not in res:
+                    res.append(cur_arr)
+                # else:
+                #     print("不加入结果 {}".format(res))
+        
+        for i in range(0, len(nums)):
+            tmp     =   []
+            dp_find_sub_seq(tmp, i)
+        
+        print(res)
+        return res
+
     '''
 - https://leetcode.com/problems/subarray-sums-divisible-by-k/
 - 974. Subarray Sums Divisible by K (medium)

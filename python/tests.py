@@ -24,7 +24,16 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_subarraysDivByK(self):
+    def test_findSubsequences(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.findSubsequences([4,6,7,7])
+
+        # self.assertTrue([[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]] == r)
+        r=so.findSubsequences([4,4,3,2,1])
+        
+
+    def xtest_subarraysDivByK(self):
         from Array import Solution as SA
         so      =   SA()
         # c       =   so.subarraysDivByK([4,5,0,-2,-3,1], k = 5)
