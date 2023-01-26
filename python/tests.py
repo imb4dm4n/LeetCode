@@ -31,6 +31,24 @@ class TestArray(unittest.TestCase):
 
         # self.assertTrue([[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]] == r)
         r=so.findSubsequences([4,4,3,2,1])
+
+'''
+python -m unittest  tests  -k Graph
+'''
+class TestGraph(unittest.TestCase):
+    def test_findJudge(self):
+        from Graph import Solution as GS
+        so  =   GS()
+        r=so.findJudge(n = 2, trust = [[1,2]])
+        print("r={} exp {}".format(r,2))
+        r=so.findJudge( n = 3, trust = [[1,3],[2,3]])
+        print("r={} exp {}".format(r,3))
+        r=so.findJudge(n = 3, trust = [[1,3],[2,3],[3,1]])
+        print("r={} exp {}".format(r,-1))
+        r=so.findJudge(n = 4, trust = [[1,3],[1,4],[2,3],[2,4],[4,3]])
+        print("r={} exp {}".format(r,3))
+        r=so.findJudge(n = 2, trust = [])
+        print("r={} exp {}".format(r,-1))
         
 
     def xtest_subarraysDivByK(self):
@@ -478,27 +496,27 @@ class TestBinaryTree(unittest.TestCase):
 python -m unittest  tests  -k TestGraph
 '''
 # from Graph import Solution as GS
-class TestGraph(unittest.TestCase):
-    def setUp(self) -> None:
-        self.so     =   GS()
-        self.t          =   timer("Graph")
-        return super().setUp()
+# class TestGraph(unittest.TestCase):
+#     def setUp(self) -> None:
+#         self.so     =   GS()
+#         self.t          =   timer("Graph")
+#         return super().setUp()
     
-    def tearDown(self) -> None:
-        self.t.stop()
-        return super().tearDown()
+#     def tearDown(self) -> None:
+#         self.t.stop()
+#         return super().tearDown()
 
-    def test_validPath(self):
-        temps   =   [[0,1],[1,2],[2,0]]
-        ret = self.so.validPath(temps.__len__(),temps,0,2)
-        print(ret)
-        temps   =   [[0,1],[0,2],[3,5],[5,4],[4,3]]
-        ret = self.so.validPath(temps.__len__(),temps,0,5)
-        print(ret)
-        temps   =   [[0,7],[0,8],[6,1],[2,0],[0,4],[5,8],[4,7],[1,3],[3,5],[6,5]]
-        ret = self.so.validPath(temps.__len__(),temps,7,5)
-        print(ret)
-        return
+#     def test_validPath(self):
+#         temps   =   [[0,1],[1,2],[2,0]]
+#         ret = self.so.validPath(temps.__len__(),temps,0,2)
+#         print(ret)
+#         temps   =   [[0,1],[0,2],[3,5],[5,4],[4,3]]
+#         ret = self.so.validPath(temps.__len__(),temps,0,5)
+#         print(ret)
+#         temps   =   [[0,7],[0,8],[6,1],[2,0],[0,4],[5,8],[4,7],[1,3],[3,5],[6,5]]
+#         ret = self.so.validPath(temps.__len__(),temps,7,5)
+#         print(ret)
+#         return
 
 '''
 python -m unittest  tests  -k TestStack
