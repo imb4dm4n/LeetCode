@@ -182,13 +182,31 @@ void test_bst()
 using namespace Array;
 int main()
 {
-    ProductOfNumbers pon;
+    printf("-7 mod 7 = %d\n", -7 % 7);
+    printf("-7 mod 4 = %d\n", -7 % 4);
+    vector<int> test = { 1,2,3 };
+    int r = subarraysDivByK(test, 3);
+    printf("r= %d\n", r);
+
+    test = { -2 };
+    r = subarraysDivByK(test, 6);
+    printf("r= %d\n", r);
+
+    test = { -1,2,9 };
+    printf("-1 \% 2= %d", -1 % 2);
+    r = subarraysDivByK(test, 2);
+    printf("r= %d == 2\n", r);
+
+    test = { 2,-2,2,-4 }; 
+    r = subarraysDivByK(test, 6);
+    printf("r= %d == 2\n", r);
+    /*ProductOfNumbers pon;
     pon.add(3);
     pon.add(0);
     pon.add(2);
     pon.add(5);
     pon.add(4);
-    pon.getProduct(2);
+    pon.getProduct(2);*/
     //uniquePaths2(1, 2);
     /*auto ret = generateParenthesis(3);
     for(auto s : ret)

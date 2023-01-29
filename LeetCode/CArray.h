@@ -6,6 +6,38 @@ using namespace std;
 namespace Array
 {
     /**
+     * @brief 974. Subarray Sums Divisible by K
+     * 
+     * @param nums 
+     * @param k 
+     * @return int 
+     */
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int res=0,pre_sum =0;
+        map<int, int> counter;  // 余数为  -(k-1),.. 0, .. k-1
+        counter[0]  =   1;
+        for(auto n : nums) {
+            pre_sum +=  n;
+            int remainder = 0;
+            if(pre_sum % k  == 0) {
+                // 整除的情况
+            }
+            else if (pre_sum < 0) {
+                remainder   =   (pre_sum%k +k) %k  ;
+                printf("pre_sum = %d remainder= %d\n",pre_sum, remainder);
+            } 
+            
+            if(counter.find(remainder) != counter.end())
+                res     +=  counter[remainder];
+            else
+                counter[remainder]  =   0;
+            counter[remainder] += 1;
+        }
+
+        return res;
+    }
+
+    /**
      * @brief 1352. Product of the Last K Numbers
      * https://leetcode.com/problems/product-of-the-last-k-numbers/submissions/
      * 最后 k 个数字的乘积

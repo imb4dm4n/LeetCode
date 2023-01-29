@@ -56,7 +56,7 @@ replace with your idea.
     '''
     '''
 - https://leetcode.com/problems/path-sum-iii/   
-- 437. Path Sum III (medium)
+- 437. Path Sum III
 - 问题:  
 输入一棵二叉树, 找出所有子路径上节点的和 为 targetSum 的路径个数.
 路径只能是上下结构, 不用拐外.
