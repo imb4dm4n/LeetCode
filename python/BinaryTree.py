@@ -4,6 +4,7 @@
 from typing import Optional, List
 import heapq
 import queue
+from collections import *
 # Definition for a binary tree node.
 null,Null    =   None,None    # 对 null 进行转义
 class TreeNode:
@@ -53,6 +54,48 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/path-sum-iii/   
+- 437. Path Sum III (medium)
+- 问题:  
+输入一棵二叉树, 找出所有子路径上节点的和 为 targetSum 的路径个数.
+路径只能是上下结构, 不用拐外.
+- tag: 前缀和
+- 他人思路:
+一个字典存储当前走过的所有路径的和, 用 cur_sum - targetSum 得出需要的前缀路径 pre_sum ,
+从字典获取 pre_sum 的个数, 即可得到由当前节点构成的子路径和为targetSum的个数.
+------> pre_sum
+--------------> cur_sum
+*******-------> targetSum
+Beats 98.65%
+    '''
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        res_count       =   0
+        path_sums       =   defaultdict(int)
+        
+        def dfs_prefix_path_sum(node:Optional[TreeNode], cur_sum):
+            nonlocal res_count, path_sums
+            if node:
+                cur_sum     +=  node.val
+                # 当前路径构成的 和 等于 target 则结果+1, 因为初始 cur_sum 没有根节点
+                if cur_sum == targetSum:
+                    res_count   +=  1
+                # 计算需要的前缀和是多少
+                pre_sum     =   cur_sum -   targetSum
+                # 获取能够组成目标前缀和的路径数量
+                res_count   +=  path_sums.get(pre_sum, 0)
+                
+                # 路径数量+1
+                path_sums[cur_sum]  +=  1
+                dfs_prefix_path_sum(node.left, cur_sum)
+                dfs_prefix_path_sum(node.right, cur_sum)
+                # 递归返回, 移除当前节点, 路径数量-1
+                path_sums[cur_sum]  -=  1
+        
+        dfs_prefix_path_sum(root, 0)
+        return res_count
+
+
     '''
 - https://leetcode.com/problems/number-of-nodes-in-the-sub-tree-with-the-same-label/
 - 1519. Number of Nodes in the Sub-Tree With the Same Label (medium)

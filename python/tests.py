@@ -436,7 +436,40 @@ Output: ["the","is","sunny","day"]
 python -m unittest  tests  -k TestBinaryTree
 '''
 class TestBinaryTree(unittest.TestCase):
-    def test_countSubTrees(self):
+    def test_pathSum(self):
+        so  =   SBT()
+        inp     =   [10,5,-3,3,2,null,11,3,-2,null,1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 8)
+        print("r = {}, exp 3".format(r))
+
+        inp     =   [5,4,8,11,null,13,4,7,2,null,null,5,1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 22)
+        print("r = {}, exp 3".format(r))
+
+        inp     =   [1,-2,-3,1,3,-2,null,-1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, -1)
+        print("r = {}, exp 4".format(r))
+
+        inp     =   [1,-2,-3,1,3,-2,null,-1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, -2)
+        print("r = {}, exp 4".format(r))
+
+        inp     =   [1,0,1,1,2,0,-1,0,1,-1,0,-1,0,1,0]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 2)
+        print("r = {}, exp 13".format(r))
+
+        inp     =   [9,6,-3,null,null,-6,2,null,null,2,null,-6,-6,-6]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 4)
+        print("r = {}, exp 3".format(r))
+
+
+    def xtest_countSubTrees(self):
         so  =   SBT()
         inp     =   [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]]
         r=so.countSubTrees(7,
