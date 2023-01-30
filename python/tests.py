@@ -188,7 +188,13 @@ python -m unittest  tests  -k TestAlgorithm
 '''
 
 class TestAlgorithm(unittest.TestCase):
-    def test_minFlipsMonoIncr(self):
+    def test_tribonacci(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        x=so.tribonacci(25)
+        print("x={}".format(x))
+        self.assertEqual(x, 1389537)
+    def xtest_minFlipsMonoIncr(self):
         from Algorithm import Solution
         so      =   Solution()
         print(so.minFlipsMonoIncr('00110'), 'expect 1')

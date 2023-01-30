@@ -20,6 +20,29 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/n-th-tribonacci-number/
+- 1137. N-th Tribonacci Number (easy)
+- 问题:  
+三波纳气数列的定义:T0=0,T1=1,T2=1, T(n+3)=T(n) + T(n+1) + T(n+2) 其中n>=0.
+输入 n 返回 T(n) 的值
+- 思路:
+斐波那契数列的累加 T(3)=T(0)+T(1)+T(2); T(4)=T(1)+T(2)+T(3);
+变量传播
+Beats 95.85%
+    '''
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1 or n == 2:
+            return 1
+        a,b,c,d = 0,1,1,0
+        for i in range(n-2):
+            d = a + b + c
+            a = b
+            b = c
+            c = d
+        return d
+    '''
 - https://leetcode.com/problems/flip-string-to-monotone-increasing/
 - 926. Flip String to Monotone Increasing (medium)
 - 问题:  
