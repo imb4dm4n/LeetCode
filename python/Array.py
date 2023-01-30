@@ -44,9 +44,9 @@ class Difference():
         if start > -1 and start < len(self.diff):
             self.diff[start]    +=  num
         
-        if end > -1 and end < (len(self.diff) - 1) and start != end:
-            # self.diff[end + 1]      -=  num
-            self.diff[end]      -=  num     # 1094. Car Pooling : 存在上车和下车问题, 若有乘客在第 i 站下车 和 上车, 那么差分数组其实只能在 i-1 处做计算
+        if end > -1 and end < (len(self.diff) - 1):
+            self.diff[end + 1]      -=  num     # 1109. Corporate Flight Bookings 需要用这行
+            # self.diff[end]      -=  num     # 1094. Car Pooling : 存在上车和下车问题, 若有乘客在第 i 站下车 和 上车, 那么差分数组其实只能在 i-1 处做计算
         
 
     def get_data(self):
@@ -73,8 +73,27 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/corporate-flight-bookings/description/
+- 1109. Corporate Flight Bookings (Medium)
+- 问题:  
+有 n 个航班, 输入一组订票序列, 其中 booking[i] = [first_i, last_i, seats_i] 表示从 first_i 航班到 last_i 航班, 预定 seats_i 个座位. 返回最终每个航班预定的座位数量.
+- tag: 差分数组
+- 思路:
+直接差分数组操作后, 返回结果即可. (批量对特定区间的数据进行加法操作)
+Beats 75%
+    '''
+    def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
+        # 注意, 航班是从 1 开始计数的
+        diffs   =   Difference([], n+1)
+        for first_i, last_i, seats_i in bookings:
+            diffs.increment(first_i, last_i, seats_i)
+        
+        return diffs.get_data()[1:]
+
+    '''
 - https://leetcode.com/problems/car-pooling/
 - 1094. Car Pooling (Medium)
+- tag: 差分数组
 - 问题:  
 一辆空车, 可以承载 capacity 个客人. 输入一组数字, 第i组(passenger_i,from_i,to_i)表示有 passenger_i 个乘客从 from_i 坐到 to_i. 问能否完成这趟旅行.
 限制: 至少一趟旅行, 乘客至少1人, 站点数量在 1000 内(含1000)
@@ -110,7 +129,7 @@ Beats 67.19%
 
 
         # 差分数组思路
-        diffs   =   Difference([], capacity)
+        diffs   =   Difference([])
         for pair in trips:
             passenger_i,    from_i, to_i    =   pair
             # print(diffs.get_data())

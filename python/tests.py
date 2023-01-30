@@ -24,6 +24,19 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
+    def test_corpFlightBookings(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.corpFlightBookings([[1,2,10],[2,3,20],[2,5,25]], 5)
+        print(r)
+        self.assertEqual(r, [10,55,45,25,25])
+        r=so.corpFlightBookings([[1,2,10],[2,2,15]], n = 2)
+        print(r)
+        self.assertEqual(r,[10,25])
+        r=so.corpFlightBookings([[2,2,30],[3,3,25],[3,3,20]], n = 3)
+        print(r)
+        self.assertEqual(r,[0,30,45])
+    
     def test_carPooling(self):
         from Array import Solution as SA
         so      =   SA()
