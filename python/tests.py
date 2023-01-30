@@ -24,7 +24,45 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_findSubsequences(self):
+    def test_carPooling(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.carPooling(trips = [[2,1,5],[3,3,7]], capacity = 4)
+        print(r)
+        self.assertEqual(r, False)
+        r=so.carPooling(trips = [[2,1,5],[3,3,7]], capacity = 5)
+        print(r)
+        self.assertEqual(r, True)
+        r=so.carPooling(trips = [[2,1,5],[3,5,7]], capacity = 3)
+        print(r)
+        self.assertEqual(r, True)
+        r=so.carPooling(trips = [[3,2,7],[3,7,9],[8,3,9]], capacity = 11)
+        print(r)
+        self.assertEqual(r, True)
+        r=so.carPooling(trips = [[2,1,5]], capacity = 1)
+        print(r)
+        self.assertEqual(r, False)
+    
+    def xtest_Difference(self):
+        '''
+        差分数组测试
+        '''
+        from Array import Solution as SA
+        so      =   SA()
+        from Array import Difference as df 
+        diff=df([1,2,3])
+        diff.increment(1,2,3)
+        print(diff.get_data())
+        diff.increment(1,2,-3)
+        print(diff.get_data())
+        diff.increment(1,1,3)
+        print(diff.get_data())
+        diff.increment(0,2,3)
+        print(diff.get_data())
+        diff.increment(2,2,3)
+        print(diff.get_data())
+
+    def xtest_findSubsequences(self):
         from Array import Solution as SA
         so      =   SA()
         r=so.findSubsequences([4,6,7,7])
