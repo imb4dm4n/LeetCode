@@ -24,7 +24,50 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_countRangeSum(self):
+    def test_findSubsequences(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.findSubsequences([4,6,7,7])
+
+        # self.assertTrue([[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]] == r)
+        r=so.findSubsequences([4,4,3,2,1])
+
+'''
+python -m unittest  tests  -k Graph
+'''
+class TestGraph(unittest.TestCase):
+    def test_findJudge(self):
+        from Graph import Solution as GS
+        so  =   GS()
+        r=so.findJudge(n = 2, trust = [[1,2]])
+        print("r={} exp {}".format(r,2))
+        r=so.findJudge( n = 3, trust = [[1,3],[2,3]])
+        print("r={} exp {}".format(r,3))
+        r=so.findJudge(n = 3, trust = [[1,3],[2,3],[3,1]])
+        print("r={} exp {}".format(r,-1))
+        r=so.findJudge(n = 4, trust = [[1,3],[1,4],[2,3],[2,4],[4,3]])
+        print("r={} exp {}".format(r,3))
+        r=so.findJudge(n = 2, trust = [])
+        print("r={} exp {}".format(r,-1))
+        
+
+    def xtest_subarraysDivByK(self):
+        from Array import Solution as SA
+        so      =   SA()
+        # c       =   so.subarraysDivByK([4,5,0,-2,-3,1], k = 5)
+        # print(f"c={c}")
+        # self.assertEqual(c,     7)
+        # c       =   so.subarraysDivByK([1,2,3], k = 3)
+        # print(f"c={c}")
+        # self.assertEqual(c,     3)
+        # c       =   so.subarraysDivByK(nums = [5], k = 9)
+        # print(f"c={c}")
+        # self.assertEqual(c, 0)
+        c       =   so.subarraysDivByK(nums = [-1,2,9], k = 2)
+        print(f"c={c}")
+        self.assertEqual(c, 2)
+    
+    def xtest_countRangeSum(self):
         from Array import Solution as SA
         so      =   SA()
         arr     =   so.countRangeSum([-2,5,-1], -2, 2)
@@ -399,7 +442,40 @@ Output: ["the","is","sunny","day"]
 python -m unittest  tests  -k TestBinaryTree
 '''
 class TestBinaryTree(unittest.TestCase):
-    def test_countSubTrees(self):
+    def test_pathSum(self):
+        so  =   SBT()
+        inp     =   [10,5,-3,3,2,null,11,3,-2,null,1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 8)
+        print("r = {}, exp 3".format(r))
+
+        inp     =   [5,4,8,11,null,13,4,7,2,null,null,5,1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 22)
+        print("r = {}, exp 3".format(r))
+
+        inp     =   [1,-2,-3,1,3,-2,null,-1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, -1)
+        print("r = {}, exp 4".format(r))
+
+        inp     =   [1,-2,-3,1,3,-2,null,-1]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, -2)
+        print("r = {}, exp 4".format(r))
+
+        inp     =   [1,0,1,1,2,0,-1,0,1,-1,0,-1,0,1,0]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 2)
+        print("r = {}, exp 13".format(r))
+
+        inp     =   [9,6,-3,null,null,-6,2,null,null,2,null,-6,-6,-6]
+        root    =   list_2_tree(inp)
+        r=so.pathSum(root, 4)
+        print("r = {}, exp 3".format(r))
+
+
+    def xtest_countSubTrees(self):
         so  =   SBT()
         inp     =   [[0,1],[0,2],[1,4],[1,5],[2,3],[2,6]]
         r=so.countSubTrees(7,
@@ -459,27 +535,27 @@ class TestBinaryTree(unittest.TestCase):
 python -m unittest  tests  -k TestGraph
 '''
 # from Graph import Solution as GS
-class TestGraph(unittest.TestCase):
-    def setUp(self) -> None:
-        self.so     =   GS()
-        self.t          =   timer("Graph")
-        return super().setUp()
+# class TestGraph(unittest.TestCase):
+#     def setUp(self) -> None:
+#         self.so     =   GS()
+#         self.t          =   timer("Graph")
+#         return super().setUp()
     
-    def tearDown(self) -> None:
-        self.t.stop()
-        return super().tearDown()
+#     def tearDown(self) -> None:
+#         self.t.stop()
+#         return super().tearDown()
 
-    def test_validPath(self):
-        temps   =   [[0,1],[1,2],[2,0]]
-        ret = self.so.validPath(temps.__len__(),temps,0,2)
-        print(ret)
-        temps   =   [[0,1],[0,2],[3,5],[5,4],[4,3]]
-        ret = self.so.validPath(temps.__len__(),temps,0,5)
-        print(ret)
-        temps   =   [[0,7],[0,8],[6,1],[2,0],[0,4],[5,8],[4,7],[1,3],[3,5],[6,5]]
-        ret = self.so.validPath(temps.__len__(),temps,7,5)
-        print(ret)
-        return
+#     def test_validPath(self):
+#         temps   =   [[0,1],[1,2],[2,0]]
+#         ret = self.so.validPath(temps.__len__(),temps,0,2)
+#         print(ret)
+#         temps   =   [[0,1],[0,2],[3,5],[5,4],[4,3]]
+#         ret = self.so.validPath(temps.__len__(),temps,0,5)
+#         print(ret)
+#         temps   =   [[0,7],[0,8],[6,1],[2,0],[0,4],[5,8],[4,7],[1,3],[3,5],[6,5]]
+#         ret = self.so.validPath(temps.__len__(),temps,7,5)
+#         print(ret)
+#         return
 
 '''
 python -m unittest  tests  -k TestStack

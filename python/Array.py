@@ -23,6 +23,118 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/non-decreasing-subsequences/
+- 491. Non-decreasing Subsequences (medium)
+- 问题:  
+输入一个数组, 返回所有能够组成升序数组的子数组列表, 至少要两个元素.
+- tag: 前缀和 差分数组
+- 思路:
+    常规思路:
+有点像dp问题, 一个数组保存所有的结果, 另一个保存当前数组 cur_arr, 遇到一个数的时候, 若 cur_arr 不空, 对比最大值, 大于则加入, 否则递归进入下一个值; 同时也产生另一个递归函数, 不加入当前更大的.
+Beats 5.1%  预料超时 竟然没有 ...
+    差分数组思路
+通过差分数组知道前一个数是不是比当前的数更小，如果更小，那么 diff[i] > 0,
+    dp 从后往前计算
+
+    ''' 
+
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]: 
+        res     =   set()
+
+        def dp_bottom_up(cur_index, sub_seq:list):
+            # 递增子序列个数大于1, 镜像一次加入结果
+            if sub_seq.__len__() > 1:
+                res.add(tuple(sub_seq))
+            
+            # dp 到末尾了
+            if cur_index == len(nums):
+                return
+
+            # 子序列初始化为空 或者 当前的数字 可以被加入子序列
+            if not sub_seq or nums[cur_index] >= sub_seq[-1]:
+                dp_bottom_up(cur_index+1, sub_seq + [nums[cur_index]])
+            
+            # 不把当前数字加入子序列
+            dp_bottom_up(cur_index+1, sub_seq )
+                 
+        
+        dp_bottom_up(0,[]) 
+        print("res = {}".format(res)) 
+        return res
+
+        def dp_find_sub_seq(cur_arr:list, cur_index):
+            '''
+            cur_arr 是保存当前的结果
+            cur_index 是当前遍历的索引
+            '''
+            if cur_index < nums.__len__():
+                if cur_arr.__len__() == 0:
+                    cur_arr.append(nums[cur_index])
+                    dp_find_sub_seq(cur_arr, cur_index+1)
+                    # dp_find_sub_seq([], cur_index+1)
+                else:
+                    cur_max     =   cur_arr[-1]
+                    if cur_max <= nums[cur_index]:
+                        # 一种是不加入 当前遍历的
+                        dp_find_sub_seq(list(cur_arr), cur_index+1)
+                        # 另一种是加入 当前遍历的
+                        cur_arr.append(nums[cur_index])
+                        dp_find_sub_seq(cur_arr, cur_index+1) 
+                    else:
+                        dp_find_sub_seq(cur_arr, cur_index+1)
+            else:
+                # 遍历到结尾了, 把结果加入最终结果
+                if cur_arr.__len__() > 1 and cur_arr not in res:
+                    res.append(cur_arr)
+                # else:
+                #     print("不加入结果 {}".format(res))
+        
+        for i in range(0, len(nums)):
+            tmp     =   []
+            dp_find_sub_seq(tmp, i)
+        
+        print(res)
+        return res
+
+    '''
+- https://leetcode.com/problems/subarray-sums-divisible-by-k/
+- 974. Subarray Sums Divisible by K (medium)
+- 问题:  
+输入一组数字 nums 和 k, 返回有多少个 子数组的和能够被k 整除.
+- tag: 前缀和
+- 思路:
+前缀和 结合 频率计数器. 其实是想知道从任意 i 开始的 n 个子数组, 有几个的和可以被 k 整除.
+假设 sum(0,i) = n * k + r, 然后有 sum(0, j) = m * k + r, 那么其实 sum(i,j) = m * k + r - (n * k + r) = (m-n) * k 一定是可以被 k 整除的. 这说明, 有相同余数的子数组, 由他们的差集组成的子数组, 是可以被 k 整除的. 
+这样, 问题就转化成计算有相同余数的子数组的个数. 
+进一步假设, 余数为 r 的子数组有1个时 [记作 Counter(r)=1], 能被 k 整除的 个数为0 [记作res=0], 
+Counter(r)=2时, res=1, 因为两个子数组只能构成一个子区间;
+Counter(r)=3时, res=3, 因为前面有两个子数组, 可以分别和当前数组构成新的子区间, 在加上之前两个子数组的结果 1 + 2 = 3; res = Counter(r) + 1
+Counter(r)=4时, res=6, 因为前面有3个子数组, 分别鱼当前子数组构成新子区间, 加上之前的结果 3 + 3=6; res = Counter(r) + 3
+Beats 72.20%
+- 注意:
+C++/python 对 % 符号的解释不一样. python 是取模mod运算 , x%y 结果和 y 的符号一致, c++ 是取余运算, x%y 结果和 x 的符号一致. 
+c=x/y
+r=x - cy, 取余的时候, x/y 向0取整数, 取模的时候, x/y 向负无穷取整.
+-7/4 取余 = -1, 取模=-2.
+进一步在 r = x- cy 时, 由于取余 c=-1, 取模 c=-2, 导致结果不同.
+总结: 当x/y符号一致时, 取余和取模的余数都是正数, 因此得到的c是一样的.
+符号不同时, 
+    '''
+    def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        counter         =   defaultdict(int)
+        pre_sum,res     =   0,0
+        counter[0]      =   1       # 因为余数为0是比较特殊的, 如果所有子数组只有一个 可以余数为0, 那么 res 只加了一次 counter(0)=0 是错误的, 因此要初始化为 1
+        for n in nums:
+            pre_sum     +=  n                   # 计算前缀和
+            remainder   =   pre_sum % k         # 计算余数
+            res         +=  counter[remainder]  # 余数目前出现的次数
+            print("pre_sum={} remainder={} count(r)={} n={} res={}".\
+                format(pre_sum,remainder, counter[remainder],n, res))
+            counter[remainder]  +=  1           # 余数出现的次数 + 1
+        
+        return res
+
+    '''
 - https://leetcode.com/problems/maximum-sum-circular-subarray/
 - 918. Maximum Sum Circular Subarray (medium)
 - 问题:  
