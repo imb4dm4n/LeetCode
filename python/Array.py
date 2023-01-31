@@ -73,6 +73,46 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/meeting-rooms-iii/
+- 2402. Meeting Rooms III (hard)
+- 问题:  
+有n个房间(编号0..n-1), 输入一组 数字对, meeting[i] = [start_i, end_i) 表示会议在该区间进行, 所有的 start_i 是唯一的. 会议室的分配算法为:
+    1.  每个会议尽可能使用房间号小的 会议室;
+    2.  如果没有空闲会议室, 则延迟会议直到有空闲的, 并且会议时长不会变
+    3.  若有多个延迟会议, 优先安排 start_i 小的
+返回进行会议最多的 房间编号, 若存在多个, 返回房间号最小的.
+
+- tag: 差分数组, 堆排序
+- 思路:
+貌似简单的计算就可以得到了? 用一个map保存房间编号和对应的会议信息,
+map_room_info   =   {
+    'room_id': {
+        last_end_time: x,   # 最后一个会议结束时间
+        meeting_ids:    [0,1,3] # 分配的会议号
+    }
+}
+加入新会议时, 根据 last_end_time 降序排序, 根据新会议耗时, 更新 last_end_time
+    '''
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        room_info   =   []
+        if n == 1:
+            return 0
+        for i in range(n):
+            room_info.append(   {
+                'last_end_time': 0,
+                'meeting_ids':  [],
+                'root_id': i,
+            })
+        
+        def allocate_meeting(start, end):
+            meeting_elapses     =   end     -   start
+            
+
+        for start,end in meetings:
+            meeting_elapses     =   end     -   start
+
+
+    '''
 - https://leetcode.com/problems/corporate-flight-bookings/description/
 - 1109. Corporate Flight Bookings (Medium)
 - 问题:  
