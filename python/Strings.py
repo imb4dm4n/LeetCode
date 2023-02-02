@@ -20,6 +20,54 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+
+    '''
+- https://leetcode.com/problems/verifying-an-alien-dictionary/
+- 953. Verifying an Alien Dictionary (Easy)
+- 问题:  
+输入一个外星人字典的字母顺序 和 一组 外星人的单词, 若单词组是按字符序列排序的, 则返回 true. 类似 strcmp 函数, 只是字符表不一样.
+- 思路:
+按照字典顺序, 生成每个字符的编号, 
+考虑到如果是顺序的, 那么两两单词之间的关系, 一定也是排序的. 因此可以两两单词进行检查.
+把每个单词, 拆分重新拼接, 然后验证新生成的单词组, 是否按顺序排序.
+ie: order = "worldabcefghijkmnpqstuvxyz", ["word","world","row"] => 生成 'wwr', 'ooo', 'rrw', 'dl ',
+由于 l 是小于 d 的, 因此不符合, 返回 false
+- 注意:
+    空字符需要做初始化, 否则取不到对应的 值
+
+Beats 93.63%
+    '''
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        dic_alphabet    =   {}
+        # 注意
+        dic_alphabet['']=   -1
+
+        for i, c in enumerate(order):
+            dic_alphabet[c] =   i
+        
+        def alien_strcmp(word1:str, word2:str):
+            '''
+            对比两个外星单词是否排序, 排序则返回 true
+            '''
+            c1  =   word1[0] if len(word1) else ''
+            c2  =   word2[0] if len(word2) else ''
+            # print("c1={} c2={}".format(c1, c2))
+            if not c1 and not c2:
+                return True
+            # 若两个字符不同, 且小于, 则说明顺序是ok的
+            if c1 != c2 and dic_alphabet[c1] <= dic_alphabet[c2]:
+                return True
+            return dic_alphabet[c1] <= dic_alphabet[c2] and \
+                alien_strcmp(word1[1:], word2[1:])
+
+        for i in range(len(words)-1):
+            if not alien_strcmp(
+                words[i],
+                words[i+1],
+                ):
+                return False
+        return True
+
     
     '''
 - https://leetcode.com/problems/greatest-common-divisor-of-strings/

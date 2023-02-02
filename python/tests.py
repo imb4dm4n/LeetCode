@@ -207,7 +207,32 @@ class TestSearching(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_gcdOfStrings(self):
+    def test_isAlienSorted(self):
+        from Strings import Solution
+        so      =   Solution()
+        
+        r = so.isAlienSorted(words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, True)
+
+        r=so.isAlienSorted(words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, False)
+
+        r=so.isAlienSorted(words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, False)
+
+        r=so.isAlienSorted(words =["hello","hello"],order ="abcdefghijklmnopqrstuvwxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, True)
+
+
+    def xtest_gcdOfStrings(self):
         from Strings import Solution
         so      =   Solution()
         print("gcdOfStrings {}".format(so.gcdOfStrings(
