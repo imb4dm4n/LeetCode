@@ -13,6 +13,68 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- replace with url
+- replace with problem title
+- 问题:  
+replace with problem description
+- 思路:
+replace with your idea.
+    '''
+    
+    '''
+- https://leetcode.com/problems/greatest-common-divisor-of-strings/
+- 1071. Greatest Common Divisor of Strings (Easy)
+- 问题:  
+输入两个字符串, 寻找最大能够把他们两个都整除的字符串. gcd 算法.
+s1='ABABAB' s2='AB' res='AB'
+- 思路:
+找出短的字符串的最大 common divisor 即可. 
+由于字符串是由 t 拼接得到的, 因此只需要从一半的位置开始寻找即可.
+从第一个字符遍历到字符串个数的一半, 
+Beats 43.70%
+- 他人思路
+Beats 81.93%
+    '''
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        # 别人思路
+        if not str1 or not str2:
+            return str1 if str1 else str2
+        elif len(str1) < len(str2):
+            return self.gcdOfStrings(str2, str1)
+        elif str1[: len(str2)] == str2:
+            return self.gcdOfStrings(str1[len(str2) :], str2)
+        else:
+            return ''
+
+        # 自己的思路
+        short   =   ''
+        long    =   ''
+        gcd     =   ''
+        tmp     =   ''
+
+        if len(str1) <= len(str2):
+            short   =   str1
+            long    =   str2
+        else:
+            long    =   str1
+            short   =   str2
+        half    =   len(short)//2
+        len_short   =   len(short)
+        len_long    =   len(long)
+        for i,c in enumerate(short):
+            if i == half:
+                break
+            tmp     +=  c
+            n       =   len_short   //  len(tmp)
+            m       =   len_long    //  len(tmp)
+            if tmp*n == short and tmp*m == long:
+                gcd = tmp
+        x   =   len_long // len_short
+        if x*short == long:
+            gcd = short
+        return gcd
+
+    '''
 - https://leetcode.com/problems/delete-columns-to-make-sorted/
 - 944. Delete Columns to Make Sorted(easy)
 - 问题:  

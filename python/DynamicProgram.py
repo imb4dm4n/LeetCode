@@ -18,6 +18,53 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/best-team-with-no-conflicts/
+- 1626. Best Team With No Conflicts (Medium)
+- 问题:  
+你是一个球队教练, 要举行一个比赛, 需要召集一批得高分的球员.
+输入两组数据, 分别代表球员的分数和年纪数组, 选出能够得到最高分的组合.
+不能有冲突: 年纪小的球员分数大于年纪大的球员分数
+- 思路:
+应该是个动态规划, 根据 年纪做个排序, 得出分数和年纪的关系数据. 然后从年纪低的开始累加分数, 若当前年纪大于前一个年纪, 且分数大于等于前一个球员分数, 则累加到结果,
+若当前年纪大于前一个球员年纪, 但是分数更小, 展开一个新的分支, 从当前球员开始累加
+
+    '''
+    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
+        age_score   =   sorted(zip(ages, scores), key= lambda x: x[0])
+        max_score   =   -1
+        print(age_score, len(age_score))
+        
+        def make_best_team(cur_score:int, player_id:int, pre_age, pre_score):
+            nonlocal age_score, max_score
+            
+            if player_id < len(age_score):
+                # print(f"cur id = {player_id}")
+                player_age, player_score    =   age_score[player_id]
+                
+                # 前一个队员年纪小 且分数小于等于
+                if pre_age <= player_age and pre_score <= player_score:
+                    make_best_team(cur_score+player_score, player_id+1,
+                        player_age, player_score)
+                    # cur_score   +=  player_score
+                    # max_score   =   max(max_score, cur_score)
+                # 前一个队员年纪小 但是分数确大于当前的, 这两种情况
+                elif pre_age < player_age and pre_score > player_score:
+                    make_best_team(cur_score, player_id+1,
+                        pre_age, pre_score)
+                    make_best_team(player_score, player_id+1,
+                        player_age, player_score)
+                else:
+                    make_best_team(cur_score+player_score, player_id+1,
+                        player_age, player_score)
+            
+            else:
+                # print("id = {} 计算最大分数 {} {}",player_id, max_score, cur_score)
+                max_score   =   max(max_score, cur_score)
+        
+        make_best_team(0,0,0,0)
+        return max_score
+
+    '''
 - https://leetcode.com/problems/remove-stones-to-minimize-the-total/
 - 1962. Remove Stones to Minimize the Total (medium)
 - 问题:  

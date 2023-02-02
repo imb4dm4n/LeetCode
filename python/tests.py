@@ -207,7 +207,15 @@ class TestSearching(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_minDeletionSize(self):
+    def test_gcdOfStrings(self):
+        from Strings import Solution
+        so      =   Solution()
+        print("gcdOfStrings {}".format(so.gcdOfStrings(
+            str1 = "ABCABC", str2 = "ABC"
+        )))
+        
+    
+    def xtest_minDeletionSize(self):
         from Strings import Solution
         so      =   Solution()
         print("minDeletionSize {}".format(so.minDeletionSize(
@@ -652,7 +660,28 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_minStoneSum(self):
+    def test_bestTeamScore(self):
+        # r   =   self.so.bestTeamScore(scores = [4,5,6,5], ages = [2,1,2,1])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r,16)
+
+        # r   =   self.so.bestTeamScore(scores = [1,3,5,10,15], ages = [1,2,3,4,5])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r,34)
+
+        # r   =   self.so.bestTeamScore(scores = [1,2,3,5], ages = [8,9,10,1])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r,6)
+
+        # r   =   self.so.bestTeamScore(scores = [319776,611683,835240,602298,430007,574,142444,858606,734364,896074], ages = [1,1,1,1,1,1,1,1,1,1])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r, 5431066)
+
+        r   =   self.so.bestTeamScore(scores = [1,3,7,3,2,4,10,7,5], ages = [4,5,2,1,1,2,4,1,4])
+        print("最优分数 {}".format(r))
+        self.assertEqual(r, 29)
+    
+    def xtest_minStoneSum(self):
         r   =   self.so.minStoneSum([5,4,9],2)
         print(r)
     
