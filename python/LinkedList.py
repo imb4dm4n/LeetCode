@@ -113,6 +113,88 @@ class MedianFinder:
 
 class Solution:
     '''
+- replace with url
+- replace with problem title
+- 问题:  
+replace with problem description
+- 思路:
+replace with your idea.
+    '''
+    
+    '''
+- https://leetcode.com/problems/linked-list-cycle-ii/
+- 142. Linked List Cycle II Medium
+- 问题:  
+判断一个链表是否有环, 若有环, 则返回环的头节点
+- 思路:
+先判断是否有环, 然后返回环的一个节点, 计算环的长度.
+让一个指针先移动环的长度, 然后另一个指针一起移动, 直到这两个指针相交,这时候就是指向环的入口节点.
+Beats 72.41%
+    '''
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        def get_cycle_head(head: Optional[ListNode]) -> bool:
+            '''
+            获取环的头结点, 若不存在环, 则返回 None
+            '''
+            if not head or not head.next:
+                return None
+            
+            slow,fast = head, head.next
+            while fast and fast.next:
+                if slow == fast:
+                    return slow
+                slow    =   slow.next
+                fast    =   fast.next.next
+            return None
+        
+        node    =   get_cycle_head(head)
+        # 若没有环, 则直接返回 None
+        if not node:
+            return None
+        
+        # 计算环的长度
+        cycle_len   =   1
+        tmp     =   node
+        while tmp and tmp.next != node:
+            cycle_len   +=  1
+            tmp     =   tmp.next
+        
+        # 先移动环的长度
+        tmp     =   head
+        while cycle_len > 0:
+            tmp         =   tmp.next
+            cycle_len   -=  1
+        
+        # 两个指针相遇时, 就是环的入口
+        node    =   head
+        while node != tmp:
+            node    =   node.next
+            tmp     =   tmp.next
+        
+        return node
+
+    '''
+- https://leetcode.com/problems/linked-list-cycle/description/
+- 141. Linked List Cycle Easy
+- 问题:  
+检测链表是否有环
+- 思路:
+快慢双指针Beats 92.24%
+    '''
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return False
+        
+        slow,fast = head, head.next
+        while fast and fast.next:
+            if slow == fast:
+                return True
+            slow    =   slow.next
+            fast    =   fast.next.next
+        return False
+        
+
+    '''
 - https://leetcode.com/problems/middle-of-the-linked-list/
 - 876. Middle of the Linked List(easy)
 - 问题:  

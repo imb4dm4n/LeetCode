@@ -20,6 +20,30 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/zigzag-conversion/
+- 6. Zigzag Conversion (Medium)
+- 问题:  
+输入一个字符串和行数n, 把它转为 n行拉链式 字符串, 按行范围结果. ie 
+输入字符串 PAY PALISH IRING 和 行数3, 转为 3行 拉链式字符串.
+P   A   H   N
+A P L S I I G
+Y   I   R
+返回结果 PAHNAPLSIIGYIR 读作( PAHN APLSIIG YIR )
+- 思路:
+看起来需要一个二维数组, 然后替换里面的数据, 最后按行拼接成结果字符串.
+一组 zigzag 存储 2n -2 个字符, 如3行, 得到一组存储 4个, 4行得到一组存6个.
+一个 zigzag 有 n - 1 列.
+输入 x 长的字符串, 需要 (x // (2n -2) + 1) * (n-1) 的列数? 
+P    
+A P  
+Y  
+    '''
+    def convert(self, s: str, numRows: int) -> str:
+        n           =   numRows
+        column      =   (len(s) // (2*n -2) + 1) * (n-1)
+        matrix      =   [''] 
+        pass
 
     '''
 - https://leetcode.com/problems/verifying-an-alien-dictionary/
