@@ -5,6 +5,8 @@
 # Definition for singly-linked list.
 from typing import Optional, List
 from heapq import *
+from queue import *
+import types
 
 class ListNode:
     pass
@@ -13,6 +15,9 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+
+    # def __lt__(self, other):
+    #     return self.val < other.val
 
     @staticmethod
     def list_to_ListNode(li:list):
@@ -36,7 +41,7 @@ class ListNode:
         '''
         输出node
         '''
-        print("")
+        print("dump list:")
         l       =   ""
         while node:
             tmp = "->" if node.next else ""
@@ -120,6 +125,47 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/merge-k-sorted-lists/
+- 23. Merge k Sorted Lists Hard
+- 问题:  
+输入 k 条升序排序的链表, 合并他们为一个升序链表
+- 思路:
+一个链表头存储结果, 用最小堆存储链表头, 然后开始 heappop 弹出最小值, 并加入被弹出的那个节点的下一个节点, 直到堆为空.
+Beats 88.77%
+    '''
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if not lists:
+            return None
+        
+        def lt(*args):
+            pass
+        ListNode.__lt__ =   types.MethodType(lt, ListNode)
+        
+        small_heap  =   []
+        res     =   ListNode()
+        ret     =   res
+        
+        for list_head in lists:
+            if list_head:
+                heappush(small_heap,
+                    (list_head.val, list_head)
+                    )
+        
+
+        while len(small_heap) > 0:
+            top_val,top_node     =   heappop(small_heap)
+            # print("cur top val {}".format(top_val))
+            if top_node and top_node.next:
+                heappush(small_heap, (top_node.next.val,top_node.next))
+            res.next    =   top_node
+            res         =   res.next
+  
+        # for i in range(len(small_heap)):
+        #     print("heap ",heappop(small_heap))
+                
+        return ret.next
+
     
     '''
 - https://leetcode.com/problems/linked-list-cycle-ii/
@@ -525,6 +571,23 @@ Memory Usage: 15.5 MB, less than 66.20% of Python3 online submissions for Remove
     Memory Usage: 14 MB, less than 32.77% of Python3 online submissions for Merge Two Sorted Lists.
     '''
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        # 迭代方式更快 Beats 84.31%
+        ret     =   ListNode()
+        res     =   ret
+        p1 , p2 =   list1, list2
+        while p1 and p2:
+            if p1.val < p2.val:
+                ret.next    =   p1
+                p1          =   p1.next
+            else:
+                ret.next    =   p2
+                p2          =   p2.next
+            ret         =   ret.next
+        if p1:
+            ret.next    =   p1
+        if p2:
+            ret.next    =   p2
+        return  res.next
         ret         =   None
         if not list1:
             return list2

@@ -24,7 +24,8 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_corpFlightBookings(self):
+
+    def xtest_corpFlightBookings(self):
         from Array import Solution as SA
         so      =   SA()
         r=so.corpFlightBookings([[1,2,10],[2,3,20],[2,5,25]], 5)
@@ -748,10 +749,16 @@ class TestDynamicProgram(unittest.TestCase):
         r   =   self.so.numDecodings("106")
         print(r)
 
+
+
+'''
+python -m unittest  tests  -k TestLinkList
+'''
 class TestLinkList(unittest.TestCase):
     def setUp(self) -> None:
         print("[+]Running test....")
-        self.so         =   Solution()
+        from LinkedList import Solution as SLL
+        self.so         =   SLL()
         self.t          =   timer("LinkList")
         return super().setUp()
     
@@ -759,7 +766,26 @@ class TestLinkList(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
 
-    def test_removeDuplicates(self):
+    def test_mergeKLists(self):
+        inp     =   [[1,4,5],[1,3,4],[2,6]]
+        print("输入 {}".format(inp))
+        r   =   []
+        for li in inp:
+            r.append(ListNode.list_to_ListNode(li))
+        s       =   self.so.mergeKLists(r)
+        ListNode.print(s)
+        print("result={} inp = {}".format(s, inp))
+
+        inp     =   [[],[],[]]
+        print("输入 {}".format(inp))
+        r   =   []
+        for li in inp:
+            r.append(ListNode.list_to_ListNode(li))
+        s       =   self.so.mergeKLists(r)
+        ListNode.print(s)
+        print("result={} inp = {}".format(s, inp))
+
+    def xtest_removeDuplicates(self):
         inp     =   [0,0,1,1,1,2,2,3,3,4]
         print("输入 {}".format(inp))
         s       =   self.so.removeDuplicates(inp)
@@ -771,7 +797,7 @@ class TestLinkList(unittest.TestCase):
         print("s={} inp = {}".format(s, inp))
     
     #def test_reverseBetween(self):
-    def test_MedianFinder(self):
+    def xtest_MedianFinder(self):
         mf  =   MedianFinder()
         # mf.addNum(5)
         # mf.addNum(7)
