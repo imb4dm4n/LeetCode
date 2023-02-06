@@ -25,6 +25,25 @@ python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
 
+    def test_shuffle(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r       =   so.shuffle(nums = [2,5,1,3,4,7], n = 3)
+        print("r={}".format(r))
+        r       =   so.shuffle(nums = [1,2,3,4,4,3,2,1], n = 4)
+        print("r={}".format(r))
+        r       =   so.shuffle(nums = [1,1,2,2], n = 2)
+        print("r={}".format(r))
+
+    def xtest_vowelStrings(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.vowelStrings(words = ["aba","bcb","ece","aa","e"], queries = [[0,2],[1,4],[1,1]])
+        print("vowel = {}\n\n".format(r))
+
+        r=so.vowelStrings(words = ["a","e","i"], queries = [[0,2],[0,1],[2,2]])
+        print("vowel = {}".format(r))
+
     def xtest_corpFlightBookings(self):
         from Array import Solution as SA
         so      =   SA()
@@ -687,6 +706,12 @@ class TestDynamicProgram(unittest.TestCase):
         return super().tearDown()
     
     def test_bestTeamScore(self):
+        r=self.so.minCapability(nums = [2,3,5,9], k = 2)
+        print("r={}".format(r))
+        r=self.so.minCapability(nums = [2,7,9,3,1], k = 2)
+        print("r={}".format(r))
+        
+    def xtest_bestTeamScore(self):
         # r   =   self.so.bestTeamScore(scores = [4,5,6,5], ages = [2,1,2,1])
         # print("最优分数 {}".format(r))
         # self.assertEqual(r,16)

@@ -129,7 +129,7 @@ Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
 1.(a,b) <= (c,d): c <= b && b <= d
 2.(a,b) >= (c,d): a <= d && d <= b
 3.本质就是, 一个范围 X(a,b) 的上界必须大于等于另一个范围 Y(c,d) 的下界 : b >= c. 这样就能保证重叠. 但是具体是怎样的覆盖情况, 还需要判断.
-    1. b >= c && b >= d : 那么 X 范围完全覆盖 Y
+    1. b >= c && b >= d and a <= c: 那么 X 范围完全覆盖 Y
     2. b >= c && b < d  : 那么 X 范围和 Y 存在交集, 上界是 Y的d
 Beats 87.16%
     '''

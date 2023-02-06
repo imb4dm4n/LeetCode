@@ -10,6 +10,7 @@ import itertools
 from collections import *
 from itertools import *
 from math import *
+import cmath
 
 class Difference():
     '''
@@ -72,6 +73,80 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/shuffle-the-array/
+- 1470. Shuffle the Array (Easy)
+- 问题:  
+输入一个 2n 长度的数组 a,b,c, d,e,f; 返回 ad, be ,cf 序列;
+- 思路:
+额外分配一个数组, 然后从 0 和中间点开始迭代 写入返回的数组
+Beats 84.21%
+    '''
+    def shuffle(self, nums: List[int], n: int) -> List[int]:
+        res     =   [0] * len(nums)
+        for i in range(n):
+            res[2*i]    =   nums[i]
+            res[2*i+1]  =   nums[n+i]
+        return res
+
+    '''
+- https://leetcode.com/contest/weekly-contest-331/problems/count-vowel-strings-in-ranges/
+- 6347. Count Vowel Strings in Ranges
+- 问题:  
+输入一组单词, 一组查询范围, 返回每一个查询中的结果.
+查询特定范围内的单词, 所有用元音开头和结尾的单词的个数.
+- tag: 
+- 思路:
+这也是个前缀和
+
+    '''
+    def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
+        vowels  =   ['a','e','i','o','u']
+        words_vowel =   [0] * len(words)
+        
+        for i,word in enumerate(words):
+            if word[0] in vowels and word[-1] in vowels:
+                words_vowel[i]  =   1
+        
+        # print("word vowel {}".format(words_vowel))
+        arr = self.NumArray(words_vowel)
+        # print("word vowel {}".format(words_vowel))
+        
+        res     =   [0] *   len(queries)
+        
+        for i,(a,b) in enumerate(queries):
+            res[i]  =   arr.sumRange(a,b)
+
+        return res
+    
+    '''
+- https://leetcode.com/contest/weekly-contest-331/problems/take-gifts-from-the-richest-pile/
+- 6348. Take Gifts From the Richest Pile
+- 问题:  
+输入一组礼物的个数, 每一秒可以获取拥有最多礼物的那组, 留下 平方根个,
+求 k 秒后 还有多少个礼物
+- tag: 前缀和
+- 思路:
+k 次循环，每次从最大堆获取一个数字，平方根后放回去.
+限制条件:
+    k >= 1
+    数组长度至少为1
+边界处理:
+    
+    '''
+    import cmath
+    def pickGifts(self, gifts: List[int], k: int) -> int:
+        big_heap    =   []
+        for i in gifts:
+            heapq.heappush(big_heap, -i)
+        
+        for i in range(k):
+            # largest =   big_heap[0]
+            
+            heapq.heappushpop(big_heap, -int((-big_heap[0])**0.5))
+        
+        return -sum(big_heap)
+
     '''
 - https://leetcode.com/problems/meeting-rooms-iii/
 - 2402. Meeting Rooms III (hard)
@@ -652,6 +727,9 @@ Beats 76.4%
 用内置迭代器 Beats 97.85%
     '''
     class NumArray:
+        '''
+        前缀和序列, 常用于频繁计算静态数组 不同范围内数字的和.
+        '''
     
         def __init__(self, nums: List[int]):
             self.pre_sum    =   list(itertools.accumulate(nums))
@@ -667,8 +745,15 @@ Beats 76.4%
             
 
         def sumRange(self, left: int, right: int) -> int:
+            '''
+            计算从 [left, right] 这个闭区间内, 所有数字的和.
+            :param      left    左界
+            :param      right   右界
+            :returns    res     区间内数字的和
+            '''
             if left == 0: return self.pre_sum[right]
             return self.pre_sum[right] - self.pre_sum[left-1]
 
             # return self.pre_sum[right+1] - self.pre_sum[left]
 
+    PrefixSum   =   NumArray
