@@ -125,6 +125,39 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+
+    '''
+- https://leetcode.com/problems/intersection-of-two-linked-lists/
+- 160. Intersection of Two Linked Lists (Easy)
+- 问题:  
+输入两个链表头, 返回这两个链表相交的节点, 若不相交, 返回 null.
+- 思路:
+双指针, 拼接两个链表, 当其中一个指针为空时切换到另一个指针,
+直到两个指针的值相同( 为 null 或 相交点), 返回即可.
+Python的指针对比总有问题, 算法不懂咋改
+    '''
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        if not headA or not headB:
+            return None
+        
+        if headA == headB:
+            return headA
+        
+        p1, p2  = ListNode(), ListNode()
+        p1.next = headA
+        p2.next = headB
+        while p1.next != p2.next:
+            if p1.next:
+                p1 = p1.next
+            else:
+                p1 = headB
+            
+            if p2.next:
+                p2 = p2.next
+            else:
+                p2 = headA
+
+        return p1.next
     '''
 - https://leetcode.com/problems/merge-k-sorted-lists/
 - 23. Merge k Sorted Lists Hard

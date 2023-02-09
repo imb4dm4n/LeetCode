@@ -74,6 +74,44 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/jump-game-ii/
+- 45. Jump Game II (Medium)
+- 问题:  
+输入一组数字, 每个 nums[i] 是从 索引i可以跳的最远的距离. 比如在 nums[i] 最多跳到 nums[i+j],
+0<=j<= nums[i].
+返回最小需要跳的次数到nums[n-1]
+- tag:  
+- 思路:
+根据当前索引, 列出跳转的目标列表, 选择可以跳的更远的？
+    '''
+    def jump(self, nums: List[int]) -> int:
+        jump_pos    =   [0]
+        n       =   len(nums) - 1
+
+        def far_jump(cur_pos):
+            tmp =   nums[cur_pos]
+
+    '''
+- https://leetcode.com/problems/fruit-into-baskets/
+- 904. Fruit Into Baskets (Medium)
+- 问题:  
+一个数组 fruits 其中 fruits[i] 表示 第i个的果树类型id, 然后开始采摘,
+你有两个篮子,每个篮子只能装一种果子,且是无限大的, 每一种类型只能采摘一次,问最多可以采摘多少个果子
+- 思路:
+这不就是一个 counter 再一个 sort 就结束了？
+    '''
+    def totalFruit(self, fruits: List[int]) -> int:
+        type_fruit  =   Counter(fruits)
+        sorted_type =   list(sorted(type_fruit.items(), key=lambda x:-x[1]))
+        print(sorted_type)
+        n   =   0
+        for i,item in enumerate(sorted_type):
+            if i==2:
+                break
+            n += item[1]
+
+        return n
+    '''
 - https://leetcode.com/problems/shuffle-the-array/
 - 1470. Shuffle the Array (Easy)
 - 问题:  

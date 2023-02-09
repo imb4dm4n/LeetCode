@@ -196,6 +196,58 @@ Beats 77.77%
         return matrix[len_][len_]
         # return matrix[text2.__len__()][text1.__len__()]
     '''
+- https://leetcode.com/contest/weekly-contest-331/problems/house-robber-iv/
+- 6346. House Robber IV
+- 问题:  
+抢劫一个街道上的房子, 每个房子有一定的现金, 劫匪只会从相邻的房子偷，小偷的能力
+是所有可以偷的选项的最大值， 返回小偷的所有选项中的，最小能力。k 表示小偷最多偷的房子数量
+- 思路
+先获取当前数字的 max, 然后递归往下 把 k -1, 并移除 max,
+最后把他们合并起来, 求 min ?
+用一个最小堆保存 小偷的最小实力, 然后 dp 递归下去, 加入到这个最小堆
+
+    '''
+    def minCapability(self, nums: List[int], k: int) -> int:
+        small_capability    =   []
+
+        def dp_find_max(idx, cur_max, x, rob_cur):
+            '''
+            :param      x   还要抢几个
+            '''
+            nonlocal nums
+            
+            
+            if x == 0 and cur_max != -1 and rob_cur:
+                # print("[@] x==0 add max {}".format(cur_max))
+                heapq.heappush(small_capability, cur_max)
+                return
+            
+            if idx >= len(nums):
+                # print("reach end  max {} x {} rob {}".format(cur_max,x,rob_cur))
+                return
+            
+            # print("num {} max= {} x= {} rob {}".format(nums[idx], cur_max,x,rob_cur))
+            # 抢这一间
+            if rob_cur:
+                cur_max =   max(nums[idx], cur_max)
+                # print("加入第一个 cur_max={}".format(cur_max))
+                dp_find_max(idx+2, cur_max, x-1, True) 
+                dp_find_max(idx+2, cur_max, x-1, False) 
+            # 不抢这个 则抢下一个
+            else:
+                dp_find_max(idx+1, cur_max, x, True)
+                dp_find_max(idx+1, cur_max, x, False)
+
+            # 加入当前第一个
+            
+        dp_find_max(0, -1, k, True)
+        dp_find_max(0, -1, k, False)
+        if small_capability[0] == -1:
+            heapq.heappop(small_capability)
+        # print("heap {}".format(small_capability))
+        return small_capability[0]
+
+    '''
 - https://leetcode.com/problems/house-robber/
 - 198. House Robber(medium)
 - 问题:  

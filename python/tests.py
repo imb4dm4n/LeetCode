@@ -25,7 +25,18 @@ python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
 
-    def test_shuffle(self):
+    def test_totalFruit(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r       =   so.totalFruit([1,2,3,2,2])
+        print("r={}".format(r))
+        r       =   so.totalFruit([0,1,2,2])
+        print("r={}".format(r))
+        r       =   so.totalFruit([3,3,3,1,2,1,1,2,3,3,4])
+        print("r={}".format(r))
+        self.assertEqual(r, 5)
+
+    def xtest_shuffle(self):
         from Array import Solution as SA
         so      =   SA()
         r       =   so.shuffle(nums = [2,5,1,3,4,7], n = 3)
@@ -705,11 +716,13 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_bestTeamScore(self):
+    def test_minCapability(self):
         r=self.so.minCapability(nums = [2,3,5,9], k = 2)
-        print("r={}".format(r))
+        print("r={} == 5".format(r))
         r=self.so.minCapability(nums = [2,7,9,3,1], k = 2)
-        print("r={}".format(r))
+        print("r={} ==2".format(r))
+        r=self.so.minCapability(nums = [5038,3053,2825,3638,4648,3259,4948,4248,4940,2834,109,5224,5097,4708,2162,3438,4152,4134,551,3961,2294,3961,1327,2395,1002,763,4296,3147,5069,2156,572,1261,4272,4158,5186,2543,5055,4735,2325,1206,1019,1257,5048,1563,3507,4269,5328,173,5007,2392,967,2768,86,3401,3667,4406,4487,876,1530,819,1320,883,1101,5317,2305,89,788,1603,3456,5221,1910,3343,4597], k = 28)
+        print("r={} ==2".format(r))
         
     def xtest_bestTeamScore(self):
         # r   =   self.so.bestTeamScore(scores = [4,5,6,5], ages = [2,1,2,1])
@@ -791,7 +804,15 @@ class TestLinkList(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
 
-    def test_mergeKLists(self):
+    def test_getIntersectionNode(self):
+        listA = ListNode.list_to_ListNode([4,1,8,4,5])
+        listB = ListNode.list_to_ListNode([5,6,1,8,4,5])
+        r=self.so.getIntersectionNode(listA, listB)
+        if  r :
+            print("node val {}".format(r.val))
+        else:
+            print("没有交集")
+    def xtest_mergeKLists(self):
         inp     =   [[1,4,5],[1,3,4],[2,6]]
         print("输入 {}".format(inp))
         r   =   []
