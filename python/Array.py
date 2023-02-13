@@ -74,6 +74,180 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/contest/weekly-contest-332/problems/count-the-number-of-fair-pairs/
+- replace with problem title
+- 问题:  
+replace with problem description
+- tag: 前缀和
+- 思路:
+replace with your idea.
+    '''
+    def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
+        # prefix_sum  =   self.NumArray(nums)
+        c = 0 
+        n = len(nums)
+        nums  =   sorted(nums)
+        # 二分搜索找到第一个大于 upper 的索引, 就是上届
+        # print(nums)
+        left,right,mid = 0,n, 0
+        the_low = lower // 2
+
+        while left < right:
+            # print("left = {} right = {} {}".format(left, right, (left+right)//2))
+            mid  = (left+right)//2
+            if nums[mid] > upper:
+                right = mid 
+            elif nums[mid] < upper:
+                left = mid +1
+            else:
+                break
+
+        up_bound    =   right
+        # print("n= {} up_bound = {}".format(n, up_bound))
+        left,right,mid = 0,n, 0
+        the_low = lower // 2
+        
+        while left < right:
+            mid  = (left+right)//2
+            if nums[mid] > the_low:
+                right = mid 
+            elif nums[mid] < the_low:
+                left = mid +1
+            else:
+                break
+        
+        # print("lower = {}".format(left))
+        # print("{} - {} - {}".format(nums,left, up_bound))
+        if n < 1000:
+            left=0
+            up_bound = n
+
+        for i in range(left, up_bound):
+            for j in range(i+1, up_bound):
+                rs = nums[i] + nums[j]
+                # rs  =   prefix_sum.sumRange(i,j)
+                # print("{} {} rs {}".format(i,j,rs))
+                if rs > upper:
+                    break
+                if rs >= lower and rs <= upper:
+                    c += 1
+                    # print("[+]   {} {} rs {}".format(i,j,rs))
+        # print("\n\n")
+        return c
+
+        # 超时了, 应该可以做个排序?
+        print("--------------")
+        c = 0 
+        n = len(nums)
+        for i in range(n):
+            for j in range(i+1,n):
+                rs = nums[i] + nums[j]
+                # rs  =   prefix_sum.sumRange(i,j)
+                # print("{} {} rs {}".format(i,j,rs))
+                if rs >= lower and rs <= upper:
+                    c += 1
+                    print("[+]   {} {} rs {}".format(i,j,rs))
+        return c
+        pass
+    '''
+- https://leetcode.com/contest/weekly-contest-332/problems/find-the-array-concatenation-value/  
+- replace with problem title
+- 问题:  
+replace with problem description
+- tag: 前缀和
+- 思路:
+replace with your idea.
+    '''
+    def findTheArrayConcVal(self, nums: List[int]) -> int:
+        res     =   0
+        while nums.__len__() > 0:
+            left = str(nums[0])
+            right = str(nums[-1])
+            if nums.__len__() ==1:
+                right = ""
+            # print(left+right)
+            res +=  int(left+right)
+            # print("res = {}".format(res))
+            nums.pop(0)
+            if nums.__len__() > 0:
+                nums.pop(-1)
+        
+        return res
+
+    '''
+- https://leetcode.com/problems/as-far-from-land-as-possible/
+- 1162. As Far from Land as Possible (Medium)
+- 问题:  
+输入一个 nxn 的矩阵包含0和1, 0 表示海洋 1 表示大陆,
+寻找海洋和任意大陆间最大的距离, 距离用 名汉距离 计算:
+ |x0-x1| + |y0-y1|
+- tag: Manhattan distance, 名汗距离 , 
+- 思路:
+获取所有水和陆地的坐标, 找出他们在四个方向上的最大值,
+然后以对角线相减, 找出最大距离.
+    '''
+    def maxDistance(self, grid: List[List[int]]) -> int:
+        waters  ,   lands   =   [], []
+        n       =   len(grid)
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    lands.append((i,j))
+                else:
+                    waters.append((i,j))
+        
+        left_up, right_up, left_down, right_down =None,None,None,None
+        # print(waters)
+        # print( lands)
+        # 基于 x,y 轴从小到大排序
+        w1  =   sorted(waters,key= lambda x:(x[0], x[1]))
+        left_up =   w1[0]
+        w1  =   sorted(waters,key= lambda x:(x[0], -x[1]))
+        right_up  =   w1[0]
+        # print(w1, right_down)
+        w2  =   sorted(waters, key=lambda x:(-x[0], x[1]))
+        left_down   =   w2[0]
+        w2  =   sorted(waters, key=lambda x:(-x[0], -x[1]))
+        right_down    =   w2[0]
+        print("water left_up {} right_up {} left_down {} right_down {}".format(
+            left_up, right_up, left_down, right_down
+        ))
+        w_index =   [left_up, right_up, left_down, right_down]
+        
+        
+        lleft_up, lright_up, lleft_down, lright_down =None,None,None,None
+        # print(waters)
+        # print( lands)
+        # 基于 x,y 轴从小到大排序
+        w1  =   sorted(lands,key= lambda x:(x[0], x[1]))
+        lleft_up =   w1[0]
+        w1  =   sorted(lands,key= lambda x:(x[0], -x[1]))
+        lright_up  =   w1[0]
+        # print(w1, right_down)
+        w2  =   sorted(lands, key=lambda x:(-x[0], x[1]))
+        lleft_down   =   w2[0]
+        w2  =   sorted(lands, key=lambda x:(-x[0], -x[1]))
+        lright_down    =   w2[0]
+        print("land: left_up {} right_up {} left_down {} right_down {}".format(
+            lleft_up, lright_up, lleft_down, lright_down
+        ))
+        l_index =   [ lleft_up, lright_up, lleft_down, lright_down]
+        distances   =   []
+        for i in range(4):
+            water   =   w_index[i]
+            for j in range(4):
+                land    =   l_index[j]
+                dis     =   abs(water[0]-land[0]) + abs(water[1]-land[1]) 
+                print("{} {} dis = {}".format(water, land, dis))
+                distances.append(dis)
+        print(distances)
+        return max(distances)
+        
+
+
+
+
+    '''
 - https://leetcode.com/problems/jump-game-ii/
 - 45. Jump Game II (Medium)
 - 问题:  

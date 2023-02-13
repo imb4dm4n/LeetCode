@@ -20,6 +20,50 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/count-odd-numbers-in-an-interval-range/
+- 1523. Count Odd Numbers in an Interval Range (Easy)
+- 问题:  
+输入 lower 和 upper , 返回他们之间奇数的个数 包含 lower 和 upper
+- 思路:
+奇数-偶数 axb+1 - cxd
+偶数-奇数 axb - cxd-1
+奇数-奇数 axb+1 - cxd -1
+偶数-偶数 axb - cxd
+减法除以2？再判断 两个边界是否为奇数?
+若两个都是偶数, 那么奇数个数为 (upper-lower) // 2 + (upper-lower) % 2
+distance = a x b - c x d 
+若两个都是奇数， (upper-lower) // 2 + 1
+(upper-lower) % 2 == 0
+距离是 (a x b + 1 - c x d - 1) // 2 
+Beats 65.45%
+    '''
+    def countOdds(self, low: int, high: int) -> int:
+        # 大神一句话 Beats 99.61%
+        '''
+        the count of odd numbers between 1 and low - 1 is low / 2
+        the count of odd numbers between 1 and high is (high + 1 ) / 2
+        '''
+        return (high + 1) // 2 - low // 2
+
+        distance    =   high - low 
+        if distance == 0:
+            return int(low % 2 != 0)
+        elif distance == 1:
+            return 1
+        elif distance == 2:
+            return 1 + int(low % 2 != 0)
+        else:
+            if low % 2 == 1 and high % 2 == 1:
+                return distance//2 + 1
+            elif low % 2 == 0 and high % 2 == 0:
+                return distance//2
+            elif low % 2 == 1 and high % 2 == 0:
+                return distance//2 + 1
+            elif low % 2 == 0 and high % 2 == 1:
+                return distance//2 + 1
+       
+       
+    '''
 - https://leetcode.com/problems/n-th-tribonacci-number/
 - 1137. N-th Tribonacci Number (easy)
 - 问题:  

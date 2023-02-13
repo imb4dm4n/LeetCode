@@ -25,7 +25,42 @@ python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
 
-    def test_totalFruit(self):
+    def test_countFairPairs(self):
+        from Array import Solution as SA
+        so      =   SA()
+        print("countFairPairs ")
+        # so.findTheArrayConcVal
+        r=so.countFairPairs(nums = [0,1,7,4,4,5], lower = 3, upper = 6)
+        print("countFairPairs = {}".format(r))
+
+        r=so.countFairPairs(nums = [1,7,9,2,5], lower = 11, upper = 11)
+        print("countFairPairs = {}".format(r))
+
+        
+        r=so.countFairPairs([0,0,0,0,0,0],0,0)
+        print("countFairPairs = {} == 15".format(r))
+        
+        r=so.countFairPairs([5,7,5,7,5],12,12)
+        print("countFairPairs = {} == 6".format(r))
+        # exit(0)
+
+    def xtest_findTheArrayConcVal(self):
+        from Array import Solution as SA
+        so      =   SA()
+        print("test_findTheArrayConcVal ")
+        # so.findTheArrayConcVal
+        r=so.findTheArrayConcVal([5,14,13,8,12])
+        print("test_findTheArrayConcVal = {}".format(r))
+        r=so.findTheArrayConcVal([7,52,2,4])
+        print("test_findTheArrayConcVal = {}".format(r))
+    
+    def xtest_maxDistance(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.maxDistance(grid = [[1,0,1],[0,0,0],[1,0,1]])
+        print("最大距离 = {}".format(r))
+
+    def xtest_totalFruit(self):
         from Array import Solution as SA
         so      =   SA()
         r       =   so.totalFruit([1,2,3,2,2])
@@ -346,7 +381,14 @@ python -m unittest  tests  -k TestAlgorithm
 '''
 
 class TestAlgorithm(unittest.TestCase):
-    def test_tribonacci(self):
+    
+    def test_countOdds(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        x=so.countOdds(8,10)
+        print("x = {}".format(x))
+
+    def xtest_tribonacci(self):
         from Algorithm import Solution
         so      =   Solution()
         x=so.tribonacci(25)
