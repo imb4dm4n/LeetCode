@@ -24,7 +24,59 @@ class timer():
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
-    def test_findSubsequences(self):
+
+    def xtest_corpFlightBookings(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.corpFlightBookings([[1,2,10],[2,3,20],[2,5,25]], 5)
+        print(r)
+        self.assertEqual(r, [10,55,45,25,25])
+        r=so.corpFlightBookings([[1,2,10],[2,2,15]], n = 2)
+        print(r)
+        self.assertEqual(r,[10,25])
+        r=so.corpFlightBookings([[2,2,30],[3,3,25],[3,3,20]], n = 3)
+        print(r)
+        self.assertEqual(r,[0,30,45])
+    
+    def test_carPooling(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.carPooling(trips = [[2,1,5],[3,3,7]], capacity = 4)
+        print(r)
+        self.assertEqual(r, False)
+        r=so.carPooling(trips = [[2,1,5],[3,3,7]], capacity = 5)
+        print(r)
+        self.assertEqual(r, True)
+        r=so.carPooling(trips = [[2,1,5],[3,5,7]], capacity = 3)
+        print(r)
+        self.assertEqual(r, True)
+        r=so.carPooling(trips = [[3,2,7],[3,7,9],[8,3,9]], capacity = 11)
+        print(r)
+        self.assertEqual(r, True)
+        r=so.carPooling(trips = [[2,1,5]], capacity = 1)
+        print(r)
+        self.assertEqual(r, False)
+    
+    def xtest_Difference(self):
+        '''
+        差分数组测试
+        '''
+        from Array import Solution as SA
+        so      =   SA()
+        from Array import Difference as df 
+        diff=df([1,2,3])
+        diff.increment(1,2,3)
+        print(diff.get_data())
+        diff.increment(1,2,-3)
+        print(diff.get_data())
+        diff.increment(1,1,3)
+        print(diff.get_data())
+        diff.increment(0,2,3)
+        print(diff.get_data())
+        diff.increment(2,2,3)
+        print(diff.get_data())
+
+    def xtest_findSubsequences(self):
         from Array import Solution as SA
         so      =   SA()
         r=so.findSubsequences([4,6,7,7])
@@ -156,7 +208,40 @@ class TestSearching(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_minDeletionSize(self):
+    def test_isAlienSorted(self):
+        from Strings import Solution
+        so      =   Solution()
+        
+        r = so.isAlienSorted(words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, True)
+
+        r=so.isAlienSorted(words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, False)
+
+        r=so.isAlienSorted(words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, False)
+
+        r=so.isAlienSorted(words =["hello","hello"],order ="abcdefghijklmnopqrstuvwxyz"
+        )
+        print("isAlienSorted {}".format(r))
+        self.assertEqual(r, True)
+
+
+    def xtest_gcdOfStrings(self):
+        from Strings import Solution
+        so      =   Solution()
+        print("gcdOfStrings {}".format(so.gcdOfStrings(
+            str1 = "ABCABC", str2 = "ABC"
+        )))
+        
+    
+    def xtest_minDeletionSize(self):
         from Strings import Solution
         so      =   Solution()
         print("minDeletionSize {}".format(so.minDeletionSize(
@@ -234,11 +319,23 @@ class TestAlgorithm(unittest.TestCase):
     def test_addBinary(self):
         from Algorithm import Solution
         so      =   Solution()
+
+
+
         r=so.addBinary(a = "11", b = "1")
         print(f"100 = {r}\n")
         r=so.addBinary(a = "1010", b = "1011")
         print(f"10101 = {r}")
     
+    def xtest_minFlipsMonoIncr(self):
+        from Algorithm import Solution
+        so      =   Solution()
+    def test_minFlipsMonoIncr(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        x=so.tribonacci(25)
+        print("x={}".format(x))
+        self.assertEqual(x, 1389537)
     def xtest_minFlipsMonoIncr(self):
         from Algorithm import Solution
         so      =   Solution()
@@ -603,7 +700,28 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_minStoneSum(self):
+    def test_bestTeamScore(self):
+        # r   =   self.so.bestTeamScore(scores = [4,5,6,5], ages = [2,1,2,1])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r,16)
+
+        # r   =   self.so.bestTeamScore(scores = [1,3,5,10,15], ages = [1,2,3,4,5])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r,34)
+
+        # r   =   self.so.bestTeamScore(scores = [1,2,3,5], ages = [8,9,10,1])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r,6)
+
+        # r   =   self.so.bestTeamScore(scores = [319776,611683,835240,602298,430007,574,142444,858606,734364,896074], ages = [1,1,1,1,1,1,1,1,1,1])
+        # print("最优分数 {}".format(r))
+        # self.assertEqual(r, 5431066)
+
+        r   =   self.so.bestTeamScore(scores = [1,3,7,3,2,4,10,7,5], ages = [4,5,2,1,1,2,4,1,4])
+        print("最优分数 {}".format(r))
+        self.assertEqual(r, 29)
+    
+    def xtest_minStoneSum(self):
         r   =   self.so.minStoneSum([5,4,9],2)
         print(r)
     
@@ -645,10 +763,16 @@ class TestDynamicProgram(unittest.TestCase):
         r   =   self.so.numDecodings("106")
         print(r)
 
+
+
+'''
+python -m unittest  tests  -k TestLinkList
+'''
 class TestLinkList(unittest.TestCase):
     def setUp(self) -> None:
         print("[+]Running test....")
-        self.so         =   Solution()
+        from LinkedList import Solution as SLL
+        self.so         =   SLL()
         self.t          =   timer("LinkList")
         return super().setUp()
     
@@ -656,7 +780,26 @@ class TestLinkList(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
 
-    def test_removeDuplicates(self):
+    def test_mergeKLists(self):
+        inp     =   [[1,4,5],[1,3,4],[2,6]]
+        print("输入 {}".format(inp))
+        r   =   []
+        for li in inp:
+            r.append(ListNode.list_to_ListNode(li))
+        s       =   self.so.mergeKLists(r)
+        ListNode.print(s)
+        print("result={} inp = {}".format(s, inp))
+
+        inp     =   [[],[],[]]
+        print("输入 {}".format(inp))
+        r   =   []
+        for li in inp:
+            r.append(ListNode.list_to_ListNode(li))
+        s       =   self.so.mergeKLists(r)
+        ListNode.print(s)
+        print("result={} inp = {}".format(s, inp))
+
+    def xtest_removeDuplicates(self):
         inp     =   [0,0,1,1,1,2,2,3,3,4]
         print("输入 {}".format(inp))
         s       =   self.so.removeDuplicates(inp)
@@ -668,7 +811,7 @@ class TestLinkList(unittest.TestCase):
         print("s={} inp = {}".format(s, inp))
     
     #def test_reverseBetween(self):
-    def test_MedianFinder(self):
+    def xtest_MedianFinder(self):
         mf  =   MedianFinder()
         # mf.addNum(5)
         # mf.addNum(7)

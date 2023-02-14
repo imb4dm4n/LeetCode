@@ -11,6 +11,57 @@ from collections import *
 from itertools import *
 from math import *
 
+class Difference():
+    '''
+    实现了差分数组, 动态的对特定区间的数字进行 加减操作.
+    nums    =   [1,2,3]
+    diff    =   [1,1,1]
+    => 推导原始  [1,1+1,1+1+1]
+    => 累加 (1,2,3) diff    =   [1,4,1]
+    => 新结果   [1,5,6]
+    '''
+    def __init__(self, nums:list = [], n=100) -> None:
+        '''
+        :param  n   差分数组原始数据
+        :param  n   差分数组的大小
+        '''
+        if len(nums):
+            n   =   len(nums)
+        self.diff   =   [0] * n
+        self.diff[0]=   nums[0] if nums else 0
+
+        for i in range(1, len(nums)):
+            self.diff[i]    =   nums[i] -   nums[i-1]
+    
+
+    def increment(self, start, end, num):
+        '''
+        增加指定区间的数据的值. 闭区间 [start, end]
+        :param      start       起始索引, 从0 开始计算
+        :param      end         结束索引
+        :param      num         增加的数值,可以为负数
+        '''
+        if start > -1 and start < len(self.diff):
+            self.diff[start]    +=  num
+        
+        if end > -1 and end < (len(self.diff) - 1):
+            self.diff[end + 1]      -=  num     # 1109. Corporate Flight Bookings 需要用这行
+            # self.diff[end]      -=  num     # 1094. Car Pooling : 存在上车和下车问题, 若有乘客在第 i 站下车 和 上车, 那么差分数组其实只能在 i-1 处做计算
+        
+
+    def get_data(self):
+        '''
+        获取原始数据
+        '''
+        res     =   [0] *   len(self.diff)
+        res[0]  =   self.diff[0]
+        
+        for i in range(1, len(self.diff)):
+            res[i]    =   res[i-1]  +   self.diff[i]
+        
+        return res
+
+
 class Solution:
     '''
 - replace with url
@@ -21,6 +72,114 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/meeting-rooms-iii/
+- 2402. Meeting Rooms III (hard)
+- 问题:  
+有n个房间(编号0..n-1), 输入一组 数字对, meeting[i] = [start_i, end_i) 表示会议在该区间进行, 所有的 start_i 是唯一的. 会议室的分配算法为:
+    1.  每个会议尽可能使用房间号小的 会议室;
+    2.  如果没有空闲会议室, 则延迟会议直到有空闲的, 并且会议时长不会变
+    3.  若有多个延迟会议, 优先安排 start_i 小的
+返回进行会议最多的 房间编号, 若存在多个, 返回房间号最小的.
+
+- tag: 差分数组, 堆排序
+- 思路:
+貌似简单的计算就可以得到了? 用一个map保存房间编号和对应的会议信息,
+map_room_info   =   {
+    'room_id': {
+        last_end_time: x,   # 最后一个会议结束时间
+        meeting_ids:    [0,1,3] # 分配的会议号
+    }
+}
+加入新会议时, 根据 last_end_time 降序排序, 根据新会议耗时, 更新 last_end_time
+    '''
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        room_info   =   []
+        if n == 1:
+            return 0
+        for i in range(n):
+            room_info.append(   {
+                'last_end_time': 0,
+                'meeting_ids':  [],
+                'root_id': i,
+            })
+        
+        def allocate_meeting(start, end):
+            meeting_elapses     =   end     -   start
+            
+
+        for start,end in meetings:
+            meeting_elapses     =   end     -   start
+
+
+    '''
+- https://leetcode.com/problems/corporate-flight-bookings/description/
+- 1109. Corporate Flight Bookings (Medium)
+- 问题:  
+有 n 个航班, 输入一组订票序列, 其中 booking[i] = [first_i, last_i, seats_i] 表示从 first_i 航班到 last_i 航班, 预定 seats_i 个座位. 返回最终每个航班预定的座位数量.
+- tag: 差分数组
+- 思路:
+直接差分数组操作后, 返回结果即可. (批量对特定区间的数据进行加法操作)
+Beats 75%
+    '''
+    def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
+        # 注意, 航班是从 1 开始计数的
+        diffs   =   Difference([], n+1)
+        for first_i, last_i, seats_i in bookings:
+            diffs.increment(first_i, last_i, seats_i)
+        
+        return diffs.get_data()[1:]
+
+    '''
+- https://leetcode.com/problems/car-pooling/
+- 1094. Car Pooling (Medium)
+- tag: 差分数组
+- 问题:  
+一辆空车, 可以承载 capacity 个客人. 输入一组数字, 第i组(passenger_i,from_i,to_i)表示有 passenger_i 个乘客从 from_i 坐到 to_i. 问能否完成这趟旅行.
+限制: 至少一趟旅行, 乘客至少1人, 站点数量在 1000 内(含1000)
+- tag: 差分数组
+- 思路:
+变化的是什么? 每经过一个站点, 可能存在乘客人数的增加. 
+这是一个差分数组, 经过每个站点时, 汽车都有一个状态变量, 即乘客数. 每一组输入
+表示对特定区间的站点进行增加操作, 不需要做下车操作, 因为只会对特定区间做加法.
+把输入的数据全部操作完毕后, 寻找所有站点中汽车人数状态的最大值, 若大于 capacity 则返回 false
+- 边界处理
+如果正好在一个站下车了, 然后又上车一波人塞满了, 那么这个差分数组会有问题. 需要在 下车的前一站做减法.
+Beats 48.31%
+- 大神思路
+由于车站限制了1000个, 因此可以计算出每个车站的上车人数和下车人数, 然后遍历每个车站,
+对 capacity 进行操作, 最后判断 capacity 是否大于等于0
+Beats 67.19%
+    '''
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        # 大神思路
+        stops   =   [0] * 1001
+        # 每个车站的上车使得 capacity 减小, 每个车站的下车使得 capacity 增大
+        for pair in trips:
+            passenger_i,    from_i, to_i    =   pair
+            stops[from_i]   +=  passenger_i
+            stops[to_i]     -=  passenger_i
+        
+        for change in stops:
+            capacity    -=  change
+            if capacity < 0:
+                return False
+        
+        return True
+
+
+        # 差分数组思路
+        diffs   =   Difference([])
+        for pair in trips:
+            passenger_i,    from_i, to_i    =   pair
+            # print(diffs.get_data())
+            if passenger_i > capacity:
+                return False
+            diffs.increment(from_i, to_i, passenger_i)
+        print(diffs.get_data())
+        res     =   diffs.get_data()
+        print("max = {}".format(max(res)))
+        return max(res) <= capacity
 
     '''
 - https://leetcode.com/problems/non-decreasing-subsequences/

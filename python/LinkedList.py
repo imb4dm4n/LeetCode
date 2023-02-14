@@ -5,6 +5,8 @@
 # Definition for singly-linked list.
 from typing import Optional, List
 from heapq import *
+from queue import *
+import types
 
 class ListNode:
     pass
@@ -13,6 +15,9 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+
+    # def __lt__(self, other):
+    #     return self.val < other.val
 
     @staticmethod
     def list_to_ListNode(li:list):
@@ -36,7 +41,7 @@ class ListNode:
         '''
         输出node
         '''
-        print("")
+        print("dump list:")
         l       =   ""
         while node:
             tmp = "->" if node.next else ""
@@ -112,6 +117,129 @@ class MedianFinder:
         #     return self.data[int(self.data.__len__() / 2)]
 
 class Solution:
+    '''
+- replace with url
+- replace with problem title
+- 问题:  
+replace with problem description
+- 思路:
+replace with your idea.
+    '''
+    '''
+- https://leetcode.com/problems/merge-k-sorted-lists/
+- 23. Merge k Sorted Lists Hard
+- 问题:  
+输入 k 条升序排序的链表, 合并他们为一个升序链表
+- 思路:
+一个链表头存储结果, 用最小堆存储链表头, 然后开始 heappop 弹出最小值, 并加入被弹出的那个节点的下一个节点, 直到堆为空.
+Beats 88.77%
+    '''
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if not lists:
+            return None
+        
+        def lt(*args):
+            pass
+        ListNode.__lt__ =   types.MethodType(lt, ListNode)
+        
+        small_heap  =   []
+        res     =   ListNode()
+        ret     =   res
+        
+        for list_head in lists:
+            if list_head:
+                heappush(small_heap,
+                    (list_head.val, list_head)
+                    )
+        
+
+        while len(small_heap) > 0:
+            top_val,top_node     =   heappop(small_heap)
+            # print("cur top val {}".format(top_val))
+            if top_node and top_node.next:
+                heappush(small_heap, (top_node.next.val,top_node.next))
+            res.next    =   top_node
+            res         =   res.next
+  
+        # for i in range(len(small_heap)):
+        #     print("heap ",heappop(small_heap))
+                
+        return ret.next
+
+    
+    '''
+- https://leetcode.com/problems/linked-list-cycle-ii/
+- 142. Linked List Cycle II Medium
+- 问题:  
+判断一个链表是否有环, 若有环, 则返回环的头节点
+- 思路:
+先判断是否有环, 然后返回环的一个节点, 计算环的长度.
+让一个指针先移动环的长度, 然后另一个指针一起移动, 直到这两个指针相交,这时候就是指向环的入口节点.
+Beats 72.41%
+    '''
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        def get_cycle_head(head: Optional[ListNode]) -> bool:
+            '''
+            获取环的头结点, 若不存在环, 则返回 None
+            '''
+            if not head or not head.next:
+                return None
+            
+            slow,fast = head, head.next
+            while fast and fast.next:
+                if slow == fast:
+                    return slow
+                slow    =   slow.next
+                fast    =   fast.next.next
+            return None
+        
+        node    =   get_cycle_head(head)
+        # 若没有环, 则直接返回 None
+        if not node:
+            return None
+        
+        # 计算环的长度
+        cycle_len   =   1
+        tmp     =   node
+        while tmp and tmp.next != node:
+            cycle_len   +=  1
+            tmp     =   tmp.next
+        
+        # 先移动环的长度
+        tmp     =   head
+        while cycle_len > 0:
+            tmp         =   tmp.next
+            cycle_len   -=  1
+        
+        # 两个指针相遇时, 就是环的入口
+        node    =   head
+        while node != tmp:
+            node    =   node.next
+            tmp     =   tmp.next
+        
+        return node
+
+    '''
+- https://leetcode.com/problems/linked-list-cycle/description/
+- 141. Linked List Cycle Easy
+- 问题:  
+检测链表是否有环
+- 思路:
+快慢双指针Beats 92.24%
+    '''
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return False
+        
+        slow,fast = head, head.next
+        while fast and fast.next:
+            if slow == fast:
+                return True
+            slow    =   slow.next
+            fast    =   fast.next.next
+        return False
+        
+
     '''
 - https://leetcode.com/problems/middle-of-the-linked-list/
 - 876. Middle of the Linked List(easy)
@@ -443,6 +571,23 @@ Memory Usage: 15.5 MB, less than 66.20% of Python3 online submissions for Remove
     Memory Usage: 14 MB, less than 32.77% of Python3 online submissions for Merge Two Sorted Lists.
     '''
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        # 迭代方式更快 Beats 84.31%
+        ret     =   ListNode()
+        res     =   ret
+        p1 , p2 =   list1, list2
+        while p1 and p2:
+            if p1.val < p2.val:
+                ret.next    =   p1
+                p1          =   p1.next
+            else:
+                ret.next    =   p2
+                p2          =   p2.next
+            ret         =   ret.next
+        if p1:
+            ret.next    =   p1
+        if p2:
+            ret.next    =   p2
+        return  res.next
         ret         =   None
         if not list1:
             return list2

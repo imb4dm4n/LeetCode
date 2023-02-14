@@ -13,6 +13,140 @@ set('zxc').intersection(set('cxz'))
 
 class Solution:
     '''
+- replace with url
+- replace with problem title
+- 问题:  
+replace with problem description
+- 思路:
+replace with your idea.
+    '''
+    '''
+- https://leetcode.com/problems/zigzag-conversion/
+- 6. Zigzag Conversion (Medium)
+- 问题:  
+输入一个字符串和行数n, 把它转为 n行拉链式 字符串, 按行范围结果. ie 
+输入字符串 PAY PALISH IRING 和 行数3, 转为 3行 拉链式字符串.
+P   A   H   N
+A P L S I I G
+Y   I   R
+返回结果 PAHNAPLSIIGYIR 读作( PAHN APLSIIG YIR )
+- 思路:
+看起来需要一个二维数组, 然后替换里面的数据, 最后按行拼接成结果字符串.
+一组 zigzag 存储 2n -2 个字符, 如3行, 得到一组存储 4个, 4行得到一组存6个.
+一个 zigzag 有 n - 1 列.
+输入 x 长的字符串, 需要 (x // (2n -2) + 1) * (n-1) 的列数? 
+P    
+A P  
+Y  
+    '''
+    def convert(self, s: str, numRows: int) -> str:
+        n           =   numRows
+        column      =   (len(s) // (2*n -2) + 1) * (n-1)
+        matrix      =   [''] 
+        pass
+
+    '''
+- https://leetcode.com/problems/verifying-an-alien-dictionary/
+- 953. Verifying an Alien Dictionary (Easy)
+- 问题:  
+输入一个外星人字典的字母顺序 和 一组 外星人的单词, 若单词组是按字符序列排序的, 则返回 true. 类似 strcmp 函数, 只是字符表不一样.
+- 思路:
+按照字典顺序, 生成每个字符的编号, 
+考虑到如果是顺序的, 那么两两单词之间的关系, 一定也是排序的. 因此可以两两单词进行检查.
+把每个单词, 拆分重新拼接, 然后验证新生成的单词组, 是否按顺序排序.
+ie: order = "worldabcefghijkmnpqstuvxyz", ["word","world","row"] => 生成 'wwr', 'ooo', 'rrw', 'dl ',
+由于 l 是小于 d 的, 因此不符合, 返回 false
+- 注意:
+    空字符需要做初始化, 否则取不到对应的 值
+
+Beats 93.63%
+    '''
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        dic_alphabet    =   {}
+        # 注意
+        dic_alphabet['']=   -1
+
+        for i, c in enumerate(order):
+            dic_alphabet[c] =   i
+        
+        def alien_strcmp(word1:str, word2:str):
+            '''
+            对比两个外星单词是否排序, 排序则返回 true
+            '''
+            c1  =   word1[0] if len(word1) else ''
+            c2  =   word2[0] if len(word2) else ''
+            # print("c1={} c2={}".format(c1, c2))
+            if not c1 and not c2:
+                return True
+            # 若两个字符不同, 且小于, 则说明顺序是ok的
+            if c1 != c2 and dic_alphabet[c1] <= dic_alphabet[c2]:
+                return True
+            return dic_alphabet[c1] <= dic_alphabet[c2] and \
+                alien_strcmp(word1[1:], word2[1:])
+
+        for i in range(len(words)-1):
+            if not alien_strcmp(
+                words[i],
+                words[i+1],
+                ):
+                return False
+        return True
+
+    
+    '''
+- https://leetcode.com/problems/greatest-common-divisor-of-strings/
+- 1071. Greatest Common Divisor of Strings (Easy)
+- 问题:  
+输入两个字符串, 寻找最大能够把他们两个都整除的字符串. gcd 算法.
+s1='ABABAB' s2='AB' res='AB'
+- 思路:
+找出短的字符串的最大 common divisor 即可. 
+由于字符串是由 t 拼接得到的, 因此只需要从一半的位置开始寻找即可.
+从第一个字符遍历到字符串个数的一半, 
+Beats 43.70%
+- 他人思路
+Beats 81.93%
+    '''
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        # 别人思路
+        if not str1 or not str2:
+            return str1 if str1 else str2
+        elif len(str1) < len(str2):
+            return self.gcdOfStrings(str2, str1)
+        elif str1[: len(str2)] == str2:
+            return self.gcdOfStrings(str1[len(str2) :], str2)
+        else:
+            return ''
+
+        # 自己的思路
+        short   =   ''
+        long    =   ''
+        gcd     =   ''
+        tmp     =   ''
+
+        if len(str1) <= len(str2):
+            short   =   str1
+            long    =   str2
+        else:
+            long    =   str1
+            short   =   str2
+        half    =   len(short)//2
+        len_short   =   len(short)
+        len_long    =   len(long)
+        for i,c in enumerate(short):
+            if i == half:
+                break
+            tmp     +=  c
+            n       =   len_short   //  len(tmp)
+            m       =   len_long    //  len(tmp)
+            if tmp*n == short and tmp*m == long:
+                gcd = tmp
+        x   =   len_long // len_short
+        if x*short == long:
+            gcd = short
+        return gcd
+
+    '''
 - https://leetcode.com/problems/delete-columns-to-make-sorted/
 - 944. Delete Columns to Make Sorted(easy)
 - 问题:  
