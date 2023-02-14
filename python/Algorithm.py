@@ -20,9 +20,6 @@ replace with problem description
 replace with your idea.
     '''
     '''
-    '''
-
-
 - https://leetcode.com/problems/add-binary/
 - 67. Add Binary (Easy)
 - 问题:  
