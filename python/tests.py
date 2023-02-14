@@ -231,7 +231,15 @@ python -m unittest  tests  -k TestAlgorithm
 '''
 
 class TestAlgorithm(unittest.TestCase):
-    def test_minFlipsMonoIncr(self):
+    def test_addBinary(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        r=so.addBinary(a = "11", b = "1")
+        print(f"100 = {r}\n")
+        r=so.addBinary(a = "1010", b = "1011")
+        print(f"10101 = {r}")
+    
+    def xtest_minFlipsMonoIncr(self):
         from Algorithm import Solution
         so      =   Solution()
         print(so.minFlipsMonoIncr('00110'), 'expect 1')

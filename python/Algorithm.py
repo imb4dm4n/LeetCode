@@ -20,6 +20,40 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/add-binary/
+- 67. Add Binary (Easy)
+- 问题:  
+输入两个二进制字符串，返回他们和的字符串
+- 思路:
+主要是加法的进位 Beats 63.95%
+    '''
+    def addBinary(self, a: str, b: str) -> str:
+        # 多少进制 可以这里修改
+        RADIX       =   2
+        i,j =len(a)-1, len(b)-1
+        overflow    =   0
+        r=''
+        while i>=0 or j>=0:
+            if i >= 0:
+                overflow    +=  ord(a[i])   -   48
+                i   -=  1
+            if j >= 0:
+                overflow    +=  ord(b[j])   -   48
+                j   -=  1
+            
+            r += str(overflow    %   RADIX)
+            # print("overflow = {} r = {}".format(overflow, r))
+            overflow    //= RADIX
+        
+        if overflow:
+            # print("overflow = {} r = {}".format(overflow, r))
+            r += str(overflow    % RADIX)
+        
+        # print("r= ",r)
+        return r[::-1]
+
+        
+    '''
 - https://leetcode.com/problems/flip-string-to-monotone-increasing/
 - 926. Flip String to Monotone Increasing (medium)
 - 问题:  
