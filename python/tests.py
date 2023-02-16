@@ -391,6 +391,20 @@ class TestAlgorithm(unittest.TestCase):
     def xtest_tribonacci(self):
         from Algorithm import Solution
         so      =   Solution()
+
+
+
+        r=so.addBinary(a = "11", b = "1")
+        print(f"100 = {r}\n")
+        r=so.addBinary(a = "1010", b = "1011")
+        print(f"10101 = {r}")
+    
+    def xtest_minFlipsMonoIncr(self):
+        from Algorithm import Solution
+        so      =   Solution()
+    def test_minFlipsMonoIncr(self):
+        from Algorithm import Solution
+        so      =   Solution()
         x=so.tribonacci(25)
         print("x={}".format(x))
         self.assertEqual(x, 1389537)

@@ -55,6 +55,19 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+- 104. Maximum Depth of Binary Tree (Easy)
+- 问题:  
+求树的最大深度
+- 思路:
+递归即可
+    '''
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
+        
+    '''
 - https://leetcode.com/problems/path-sum-iii/   
 - 437. Path Sum III
 - 问题:  

@@ -344,9 +344,17 @@ Memory Usage: 25 MB, less than 57.21% of C++ online submissions for Add One Row 
 	}
 	// https://leetcode.com/problems/maximum-depth-of-binary-tree/
 	int maxDepth(TreeNode* root) {
-        int dep = 0, max_dep = 0;
-		DFS(root, dep, max_dep);
-		return max_dep;
+		if (!root)
+            return 0;
+        int left=0,right=0;
+        if (root->left)
+            left    =   maxDepth(root->left);
+        if (root->right)
+            right    =   maxDepth(root->right);
+        return 1 + (left > right? left:right);
+        // int dep = 0, max_dep = 0;
+		// DFS(root, dep, max_dep);
+		// return max_dep;
     }
 	// https://leetcode.com/problems/binary-tree-level-order-traversal/
 	// traverse binary tree by level order from left to right
