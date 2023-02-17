@@ -125,6 +125,97 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/palindrome-linked-list/
+- 234. Palindrome Linked List (Easy)
+- 问题:  
+输入一个链表, 判断它是不是回文.
+- 思路:
+快慢双指针递归对比...?
+- 思路2:
+快慢指针, 颠倒慢指针的指向 1->2->2->1 => 2->1 ; 2->1 然后再对比...
+快指针到结尾时, 用慢指针的下一个开始, 和反转链表对比
+    '''
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return True
+        
+        slow,fast   =   head,head
+        ListNode.print(head)
+        prev    =   None
+        while fast and fast.next:
+            tmp     =   slow.next
+            slow.next   =   prev
+            prev    =   slow
+            slow    =   tmp
+            print("fast {} val {} {} fast.next {}".format(fast,fast.val, dir(fast),fast.next))
+            fast    =   fast.next.next
+
+        def is_same(node1, node2):
+            while node1 and node2:
+                if node1.val != node2.val:
+                    return False
+                node1   =   node1.next
+                node2   =   node2.next
+            if not node1 and not node2:
+                return True
+            return False
+
+        ListNode.print(slow)
+        ListNode.print(prev)
+        return True
+
+        # beats 12.37%
+        if not head or not head.next:
+            return True
+        h2  =   ListNode()
+        tmp =   head
+        # 1221
+        while tmp:
+            n   =   ListNode(tmp.val)
+            if h2.next:
+                n.next  =   h2.next
+            h2.next =   n
+            # else:
+            #     h2.next =   n
+            tmp     =   tmp.next
+        
+        tmp     =   h2.next
+        # ListNode.print(h2.next)
+        # ListNode.print(head)
+        while tmp:
+            if tmp.val != head.val:
+                return False
+            tmp  =   tmp.next
+            head=   head.next
+        return True
+
+        # l1 = []
+        # slow,fast = head, head
+        # while fast and fast.next:
+        #     l1.append(slow.val)
+        #     slow    =   slow.next
+        #     fast    =   fast.next.next
+        # while slow:
+        #     if not l1:
+        #         return False
+        #     if slow.val != l1.pop():
+        #         return False
+        #     slow    =   slow.next
+        # return True
+        # def rec_slow_fast(slow, fast):
+        #     if not fast.next:
+        #         return  fast.val == slow.val
+        #     return rec_slow_fast(slow.next, fast.next.next)
+            
+        # 超时
+        l1,l2 = [], []
+        while head:
+            l1.append(head.val)
+            l2.insert(0, head.val)
+            head=head.next
+        
+        return l1 == l2
 
     '''
 - https://leetcode.com/problems/intersection-of-two-linked-lists/

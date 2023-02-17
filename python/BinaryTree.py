@@ -55,6 +55,31 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/minimum-distance-between-bst-nodes/
+- 783. Minimum Distance Between BST Nodes (Easy)
+- 问题:  
+二叉搜索树上任意两节点的最小差值.... 没理解到位, 任意节点
+- 思路:
+二叉搜索左边小右边大, 因此搜索深度不能超过子节点, 其实就是中序遍历即可
+Beats 81.58%
+    '''
+    def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+        prev    =   None
+        min_diff    =   0x1ffffff
+
+        def inorder(node):
+            nonlocal prev,min_diff 
+            
+            if node:
+                inorder(node.left)
+                if prev:
+                    min_diff    =   min(min_diff, (abs(node.val - prev.val)))
+                prev    =   node
+                inorder(node.right)
+        inorder(root)
+        return min_diff
+
+    '''
 - https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
 - 104. Maximum Depth of Binary Tree (Easy)
 - 问题:  

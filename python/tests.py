@@ -860,7 +860,12 @@ class TestLinkList(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
 
-    def test_getIntersectionNode(self):
+    def test_isPalindrome(self):
+        listA = ListNode.list_to_ListNode([1,2,3,2,1])
+        # ListNode.print(listA)
+        print(self.so.isPalindrome(listA))
+
+    def xtest_getIntersectionNode(self):
         listA = ListNode.list_to_ListNode([4,1,8,4,5])
         listB = ListNode.list_to_ListNode([5,6,1,8,4,5])
         r=self.so.getIntersectionNode(listA, listB)
