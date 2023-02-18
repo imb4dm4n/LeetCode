@@ -134,23 +134,28 @@ replace with your idea.
 快慢双指针递归对比...?
 - 思路2:
 快慢指针, 颠倒慢指针的指向 1->2->2->1 => 2->1 ; 2->1 然后再对比...
-快指针到结尾时, 用慢指针的下一个开始, 和反转链表对比
+快指针到结尾时, 用慢指针的下一个开始, 和反转链表对比.
+Beats 93.44%
     '''
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
         if not head or not head.next:
             return True
         
         slow,fast   =   head,head
-        ListNode.print(head)
         prev    =   None
-        while fast and fast.next:
+        is_even =   False   # 节点个数是否偶数个 
+
+        while fast and fast.next: 
+            fast    =   fast.next.next
+            # 偶数个节点, 那么 fast 直接移动到 None
+            if not fast:
+                is_even =   True
             tmp     =   slow.next
             slow.next   =   prev
             prev    =   slow
             slow    =   tmp
-            print("fast {} val {} {} fast.next {}".format(fast,fast.val, dir(fast),fast.next))
-            fast    =   fast.next.next
-
+            
+        # print("is_even=", is_even)
         def is_same(node1, node2):
             while node1 and node2:
                 if node1.val != node2.val:
@@ -161,9 +166,13 @@ replace with your idea.
                 return True
             return False
 
-        ListNode.print(slow)
-        ListNode.print(prev)
-        return True
+        # print("prev= {} slow= {}".format(prev, slow))
+        if is_even:
+            return is_same(slow, prev)
+        
+        # ListNode.print(slow.next, 'slow')
+        # ListNode.print(prev, 'prev')
+        return is_same(prev, slow.next) 
 
         # beats 12.37%
         if not head or not head.next:
