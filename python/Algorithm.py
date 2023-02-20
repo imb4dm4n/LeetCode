@@ -7,6 +7,7 @@ from typing import List
 from functools import *
 from functools import lru_cache
 import heapq
+from collections import *
 
 def guess(self, x):
     pass
@@ -19,6 +20,37 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/contest/weekly-contest-333/problems/minimum-operations-to-reduce-an-integer-to-0/
+- 6365. Minimum Operations to Reduce an Integer to 0
+- 问题:  
+可以对一个数字任意加减 2的x次方, 问最少的操作次数使得 输入的数字n变成0
+- 思路:
+replace with your idea.
+    '''
+    def minOperations(self, n: int) -> int:
+        
+        pass
+    '''
+- https://leetcode.com/contest/weekly-contest-333/problems/merge-two-2d-arrays-by-summing-values/
+- 6362. Merge Two 2D Arrays by Summing Values
+- 问题:  
+每个数组是一对 (id,num); 合并两个数组, 以id排序
+- 思路:
+replace with your idea.
+    '''
+    def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+        num_map =   defaultdict(int)
+        for id,num in nums1:
+            num_map[id] += num
+        for id,num in nums2:
+            num_map[id] += num
+        res     =   []
+        keys    =   list(num_map.keys())
+        keys.sort()
+        for id in keys:
+            res.append((id, num_map[id]))
+        return res
     '''
 - https://leetcode.com/problems/add-binary/
 - 67. Add Binary (Easy)

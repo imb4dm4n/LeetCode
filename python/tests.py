@@ -846,6 +846,24 @@ class TestDynamicProgram(unittest.TestCase):
 
 
 '''
+python -m unittest  tests  -k TestBinarySearch
+'''
+class TestBinarySearch(unittest.TestCase):
+    def test_bi(self):
+        from BinarySearch import Solution as sbs
+        so  =   sbs()
+        r=  so.searchInsert(nums = [1,3,5,6], target = 5)
+        print(r, "==2")
+        r=  so.searchInsert(nums = [1,3,5,6], target = 2)
+        print(r, "==1")
+        r=  so.searchInsert(nums = [1,3,5,6], target = 7)
+        print(r, "==4")
+        r=  so.searchInsert(nums = [1 ], target = 1 )
+        print(r)
+        r=  so.searchInsert(nums = [1,3 ], target = 1 )
+        print("0==",r)
+
+'''
 python -m unittest  tests  -k TestLinkList
 '''
 class TestLinkList(unittest.TestCase):

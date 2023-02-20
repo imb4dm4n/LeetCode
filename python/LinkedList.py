@@ -143,31 +143,25 @@ Beats 93.44%
         
         slow,fast   =   head,head
         prev    =   None
-        is_even =   False   # 节点个数是否偶数个 
 
         while fast and fast.next: 
             fast    =   fast.next.next
-            # 偶数个节点, 那么 fast 直接移动到 None
-            if not fast:
-                is_even =   True
-            tmp     =   slow.next
-            slow.next   =   prev
-            prev    =   slow
-            slow    =   tmp
-            
-        # print("is_even=", is_even)
-        def is_same(node1, node2):
-            while node1 and node2:
-                if node1.val != node2.val:
-                    return False
-                node1   =   node1.next
-                node2   =   node2.next
-            if not node1 and not node2:
-                return True
-            return False
+            # tuple 赋值, 右边其实是静态的数值
+            prev,slow.next,slow = slow, prev, slow.next 
 
-        # print("prev= {} slow= {}".format(prev, slow))
-        if is_even:
+        # 若节点个数为奇数个, 则break时, slow指向中间那个 [1,2,3] -> 2
+        # 因此在对比的时候, slow 需要移动到下一个位置
+        if fast:
+            slow    =   slow.next
+        while slow and slow.val == prev.val:
+            slow    =   slow.next
+            prev    =   prev.next
+        
+        return not slow
+
+        
+        # 节点个数若为偶数个, 则break循环时, fast 指向None
+        if not fast:
             return is_same(slow, prev)
         
         # ListNode.print(slow.next, 'slow')
