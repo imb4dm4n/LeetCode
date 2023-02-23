@@ -849,7 +849,18 @@ class TestDynamicProgram(unittest.TestCase):
 python -m unittest  tests  -k TestBinarySearch
 '''
 class TestBinarySearch(unittest.TestCase):
-    def test_bi(self):
+    def test_singleNonDuplicate(self):
+        from BinarySearch import Solution as sbs
+        so  =   sbs()
+        r=so.singleNonDuplicate([1,1,2,3,3,4,4])
+        print('r=',r)
+        r=so.singleNonDuplicate([1,2,2,3,3,4,4])
+        print('r=',r)
+        r=so.singleNonDuplicate([1,1,2,2,3,3,4,4,5])
+        print('r=',r)
+
+
+    def xtest_bi(self):
         from BinarySearch import Solution as sbs
         so  =   sbs()
         r=  so.searchInsert(nums = [1,3,5,6], target = 5)
