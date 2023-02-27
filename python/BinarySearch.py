@@ -17,6 +17,86 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    
+    '''
+- https://leetcode.com/problems/find-peak-element/
+- 162. Find Peak Element (Medium)
+- 问题:  
+peak 元素指的是它的值大于 左右相邻的 两个元素. 找出输入数组中任意一个 peak 元素: ie: nums = [1,2,1,3,5,6,4] -> Output: 5 . 因为 5 < 6 and 4 < 6; 返回 1 也可以, 因为 1 < 2.  时间复杂度必须是 logN.
+超出边界的可以认定为比边界的小
+- 思路:
+二分搜索找到 mid 元素, 判断 mid + 1 and mid - 1 是否都小于 mid, 若 mid + 1
+大于 mid, 则往右边找 lo = mid + 1, 若 mid - 1 也同时大于 mid 则同时往下找? ---- 
+mid - 1 大于 mid 时往左边找 hi = mid - 1
+Beats 95.15%
+    '''
+    def findPeakElement(self, nums: List[int]) -> int:
+        if len(nums) ==1:
+            return 0
+        
+        n   =   len(nums)
+        if nums[n-1] > nums[n-2]:
+            return n - 1
+        
+        lo, hi  = 0, n - 1
+        # 搜索空间 [0,n) 
+        while lo <= hi:
+            mid     =   lo + (hi-lo) // 2
+
+            if nums[mid - 1] < nums[mid] and nums[mid + 1 ] < nums[mid]:
+                return mid
+            
+            elif nums[mid - 1] > nums[mid]:
+                # 左边的元素更大 调整 hi
+                hi  =   mid - 1
+            
+            elif nums[mid + 1] > nums[mid]:
+                # 右边的元素更大  调整 lo
+                lo  =   mid + 1
+        
+        return -1
+            
+
+    '''
+- https://leetcode.com/problems/binary-search/
+- 704. Binary Search (Easy)
+- 问题:  
+实现二分搜索
+- 思路:
+上下界搜索 Beats 43.40%  和API Beats 86.30%
+    '''
+    def search(self, nums: List[int], target: int) -> int:
+        left    =   bisect_left(nums, target)
+        return left if left < len(nums) and  nums[left] == target else -1
+        lo, hi = 0, len(nums) - 1
+        while lo <= hi:
+            mid     =   lo + (hi-lo) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                lo  =   mid + 1
+            elif nums[mid] > target:
+                hi  =   mid - 1
+        
+        return -1 
+
+
+    '''
+- https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+- 34. Find First and Last Position of Element in Sorted Array (Medium)
+- 问题:  
+输入一组升序排序的数组, 找到 target 的上界和下届索引. 不存在都返回-1
+- 思路:
+直接使用api即可
+Beats 48.19%
+    '''
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        left    =   self.left_bound(nums,target)
+        if left == -1:
+            return [-1, -1]
+        
+        return [left, self.right_bound(nums, target)]
+
     def left_bound(self, nums:list, target):
         '''
         在 nums 中搜索target, 返回最左边那个; 找不到返回 -1
@@ -125,6 +205,15 @@ leetcode 要上市, 有初始 w的资金 和 最多k项独立完成的项目， 
 Beats 96.78%
     '''
     def searchInsert(self, nums: List[int], target: int) -> int:
+        lo,hi   =   0,len(nums) - 1
+        while lo <= hi:
+            mid     =   lo + (hi-lo) // 2
+            if nums[mid] >= target:
+                hi  =   mid - 1
+            elif nums[mid] < target:
+                lo  =   mid + 1
+        return lo
+
         return bisect_left(nums, target)
         
         left,right = 0, len(nums) - 1

@@ -772,7 +772,11 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_minCapability(self):
+    def test_maxProfit(self):
+        r=self.so.maxProfit(prices = [7,1,5,3,6,4])
+        print("最大利益 ", r)
+    
+    def xtest_minCapability(self):
         r=self.so.minCapability(nums = [2,3,5,9], k = 2)
         print("r={} == 5".format(r))
         r=self.so.minCapability(nums = [2,7,9,3,1], k = 2)
@@ -849,7 +853,17 @@ class TestDynamicProgram(unittest.TestCase):
 python -m unittest  tests  -k TestBinarySearch
 '''
 class TestBinarySearch(unittest.TestCase):
-    def test_singleNonDuplicate(self):
+    def test_findPeakElement(self):
+        from BinarySearch import Solution as sbs
+        so  =   sbs()
+        r=so.findPeakElement([2,1])
+        print(r)
+        self.assertEqual(r,0)
+        r=so.findPeakElement([1,2,1,2,1])
+        print(r)
+        # self.assertEqual(r,0)
+    
+    def xtest_singleNonDuplicate(self):
         from BinarySearch import Solution as sbs
         so  =   sbs()
         r=so.singleNonDuplicate([1,1,2,3,3,4,4])
