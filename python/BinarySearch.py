@@ -17,6 +17,65 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/search-a-2d-matrix-ii/
+- 240. Search a 2D Matrix II (Medium)
+- 问题:  
+在一个2D的行列都是递增的矩阵中, 找到特定的数字, 找不到返回 False
+- 思路:
+二分搜索从行开始，找不到则从列开始。
+Beats 64.28%
+- 思路2: O(m+n)
+按行搜索, 在按列搜索
+    '''
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        # j = -1
+        # for row in matrix:
+        #     while j + len(row) and row[j] > target:
+        #         j -= 1
+        #     if row[j] == target:
+        #         return True
+        # return False
+
+        def search_row():
+            lo, hi  =   0, len(matrix[0]) 
+            while lo < hi:
+                mid     =   (hi+lo) // 2
+                if matrix[0][mid] >= target: 
+                    hi  =   mid # mid 在下一次循环不会被搜索
+                elif matrix[0][mid] < target:
+                    lo  =   mid     +   1
+            return lo
+        
+        left  =   search_row()
+        # left  = bisect_left(matrix[0], target)
+        # 若找到了直接返回
+        if left < len(matrix[0]) and matrix[0][left] == target:
+            return True
+        # 没找到， 则left那一列, 是最后一个大于 target 的索引, 因此需要 - 1
+        if left == len(matrix[0]) or left > 0 :
+            left    -=  1
+        # search by column
+        # print("left=",left)
+        def search_column():
+            nonlocal left
+            lo, hi  =   0, len(matrix) 
+            while lo < hi:
+                mid     =   (hi + lo) // 2
+                if matrix[mid][left] >= target: 
+                    hi  =   mid
+                elif matrix[mid][left] < target:
+                    lo  =   mid     +   1
+            # print("column=", lo)
+            return lo
+        while left >= 0:
+            column  =   search_column()
+            if column < 0 or column == len(matrix):
+                return False
+            if matrix[column][left]    ==  target:
+                return True
+            left -= 1
+        return False
     
     '''
 - https://leetcode.com/problems/find-peak-element/
