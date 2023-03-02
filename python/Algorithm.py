@@ -21,6 +21,96 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/string-compression/
+- 443. String Compression (Medium)
+- 问题:  
+输入一组字母, 把他们压缩, 返回压缩后的个数. 压缩算法:
+If the group's length is 1, append the character to s.
+Otherwise, append the character followed by the group's length.
+如果字母超过10个, 则数字需要分开来. IE: 
+Input: chars = ["a","a","b","b","c","c","c"]
+Output: Return 6, and the first 6 characters of the input array should be: ["a","2","b","2","c","3"]
+Explanation: The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".
+- 思路:
+用一个prev表示前一个字母, count=0 表示前一个字母出现个数, index=0 表示当前索引.
+out_index=0 表示输出的位置索引.
+
+遍历输入序列, 若 prev = 当前字符, 则count+1, prev=cur, 
+若prev != cur, count=1, out_index + 1, 并输出前一个字符的个数到 out_index
+Beats 94.99%
+- tag 双指针
+    '''
+    def compress(self, chars: List[str]) -> int:
+        if len(chars) < 2:
+            return len(chars)
+        
+        slow, fast =    0,0
+        n   =   len(chars)
+        
+        while fast < n:
+            count       =   1
+            chars[slow] =   chars[fast]
+
+            while fast+1 < n and chars[fast+1] == chars[fast]:
+                fast    +=  1
+                count   +=  1
+            
+            if count > 1:
+                c = str(count)
+                for ic in c:
+                    slow    +=  1
+                    chars[slow] =   ic
+            
+            fast    +=  1
+            slow    +=  1
+        # print(chars)
+        return slow
+
+        prev, count, out_index = chars[0], 0 , 0
+        for index,cur in enumerate(chars):
+            if prev == cur:
+                count   +=  1
+                # 处理最后全部相同
+                continue
+            else:
+                # 根据不同 count 输出
+                # print("count ", count)
+                if count == 1:
+                    chars[out_index]    =   prev
+                    out_index   +=  1
+                    # print("1 prev= ", prev ," out_index ", out_index ,chars)
+                elif count < 10:
+                    chars[out_index]    =   prev
+                    chars[out_index+1]    =   str(count)
+                    out_index   +=  2
+                    # print("2 prev= ", prev ," out_index ", out_index ,chars)
+                else:
+                    chars[out_index]    =   prev
+                    count   =   str(count)
+                    for i,c in enumerate(count):
+                        chars[out_index+i+1]    =   c
+                    # chars[out_index+1]  =   count
+                    out_index+= len(count) +   1
+                    # print("3 prev= ", prev ," out_index ", out_index ,chars)
+                count   =   1
+                prev    =   cur
+        if count == 1:
+            chars[out_index]    =   prev
+            out_index   +=  1
+        elif count < 10:
+            chars[out_index]    =   prev
+            chars[out_index+1]    =   str(count)
+            out_index   +=  2
+        else:
+            chars[out_index]    =   prev
+            count   =   str(count)
+            for i,c in enumerate(count):
+                chars[out_index+i+1]    =   c
+            # chars[out_index+1]  =   count
+            out_index+= len(count) +   1
+        print(chars)
+        return out_index
+    '''
 - https://leetcode.com/contest/weekly-contest-333/problems/minimum-operations-to-reduce-an-integer-to-0/
 - 6365. Minimum Operations to Reduce an Integer to 0
 - 问题:  

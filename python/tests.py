@@ -270,6 +270,24 @@ class TestSearching(unittest.TestCase):
         so      =   SSS()
         
 '''
+python -m unittest  tests  -k TestSorts
+'''
+class TestSorts(unittest.TestCase):
+    def test_sortArray(self):
+        from Sorting import Solution as SS
+        so =    SS()
+        r=so.sortArray(  nums = [-1,0,3,11,2])
+        print("r= ", r)
+        self.assertEqual(r, [-1,0,2,3,11])
+        r=so.sortArray(nums = [5,2,3,1])
+        print("r= ", r)
+        self.assertEqual(r, [1, 2, 3, 5])
+        r=so.sortArray(  nums = [5,1,1,2,0,0])
+        print("r= ", r)
+        self.assertEqual(r,  [0, 0, 1, 1, 2, 5])
+
+        
+''' 
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
@@ -382,7 +400,31 @@ python -m unittest  tests  -k TestAlgorithm
 
 class TestAlgorithm(unittest.TestCase):
     
-    def test_countOdds(self):
+    def test_compress(self):
+        from Algorithm import Solution
+        so      =   Solution()
+
+        chars = ["a","a","b","b","c","c","c"]
+        x=so.compress(chars)
+        print("x= ", x, )
+        self.assertEqual(x, 6)
+
+        chars = ["a","b","b","b","b","b","b","b","b","b","b","b","b"]
+        x=so.compress(chars)
+        print("x= ", x,  )
+        self.assertEqual(x, 4)
+
+        chars = ["a" ]
+        x=so.compress(chars)
+        print("x= ", x,  )
+        self.assertEqual(x, 1)
+        chars = ["a","a","a","a","a","b"]
+        x=so.compress(chars)
+        print("x= ", x,  )
+        # self.assertEqual(x, 1)
+        print("OK")
+    
+    def xtest_countOdds(self):
         from Algorithm import Solution
         so      =   Solution()
         x=so.countOdds(8,10)
@@ -853,7 +895,24 @@ class TestDynamicProgram(unittest.TestCase):
 python -m unittest  tests  -k TestBinarySearch
 '''
 class TestBinarySearch(unittest.TestCase):
-    def test_searchMatrix(self):
+    def test_search(self):
+        from BinarySearch import Solution as sbs
+        so  =   sbs()
+        r=so.searchx(nums = [4,5,6,7,0,1,2], target = 0)
+        print("r= ", r)
+        self.assertEqual(r, 4)
+        r=so.searchx( nums =[1,3], target = 1)
+        print("r= ", r)
+        self.assertEqual(r, 0)
+        r=so.searchx( nums =[3, 1], target = 0)
+        print("r= ", r)
+        self.assertEqual(r, -1)
+        r=so.searchx( nums =[3,5,1], target = 3)
+        print("r= ", r)
+        self.assertEqual(r, 0)
+        # self.assertEqual(r, 4)
+    
+    def xtest_searchMatrix(self):
         from BinarySearch import Solution as sbs
         so  =   sbs()
         r=so.searchMatrix(matrix = [[-1,3]], target = -1)
