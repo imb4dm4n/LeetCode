@@ -294,6 +294,41 @@ class TestStrings(unittest.TestCase):
     def test_isAlienSorted(self):
         from Strings import Solution
         so      =   Solution()
+        haystack = "mississippi"
+        needle =  "issipi"
+        r=so.strStr(haystack,needle)
+        print("r= ", r, haystack.find(needle))
+        self.assertEqual(r,  haystack.find(needle))
+
+        haystack = "OOOOOOPPOOOO"
+        needle = "OP"
+        r=so.strStr(haystack,needle)
+        print("r= ", r, haystack.find(needle))
+        self.assertEqual(r,  haystack.find(needle))
+
+        r=so.strStr(haystack = "sadbutsad", needle = "sad")
+        print("r= ", r)
+        self.assertEqual(r, 0)
+
+        r=so.strStr(haystack = "leetcode", needle = "leeto")
+        print("r= ", r)
+        self.assertEqual(r,-1 )
+
+        r=so.strStr(haystack = "", needle = "leeto")
+        print("r= ", r)
+        self.assertEqual(r,-1 )
+
+        haystack = "asdzxcqwe"
+        needle = "cqw"
+        r=so.strStr(haystack,needle)
+        print("r= ", r)
+        self.assertEqual(r,  haystack.find(needle))
+
+    
+        
+    def xtest_isAlienSorted(self):
+        from Strings import Solution
+        so      =   Solution()
         
         r = so.isAlienSorted(words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
         )

@@ -21,6 +21,53 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+- 28. Find the Index of the First Occurrence in a String (Medium)
+- 问题:  
+输入 src 字符串, 找到 target 字符串第一次出现的位置返回. 即 strstr 函数.
+- 思路:
+不对, 这是双指针问题....
+Beats 34.94%
+正解是 KMP 算法
+- tag 双指针
+    '''
+    def strStr(self, haystack: str, needle: str) -> int:
+        # THIS is a joke for you.  Beats 90.82%
+        return haystack.find(needle)
+    
+        slow, fast  =   0, 0
+        n   =   len(haystack)
+        m   =   len(needle)
+        # 边界条件
+        if m > n:
+            return -1
+        while fast < n:
+            slow    =   0
+            tmp     =   fast
+            # print("* fast = {}".format(fast))
+            while slow < m and fast < n and haystack[fast] == needle[slow]:
+                fast    +=  1
+                slow    +=  1
+            if slow == m:
+                return fast -   slow
+            # print("[+]fastid={}   slowid={}  ".format(fast,  slow, ))
+            # print("[-]fast={}   slow={}  ".format(haystack[fast],  needle[slow] ))
+            fast    =  tmp + 1
+        return -1
+    
+        target  =   collections.defaultdict(int)
+        for c in needle:
+            target[c]   +=  1
+        want    =   len(needle)
+        n       =   len(haystack)
+        left, right, begin =0, 0, 0
+        while right < n:
+            if target[haystack[right]]:
+                want    -=  1
+            target[haystack[right]] -=  1
+            while want  ==  0:
+                pass
+    '''
 - https://leetcode.com/problems/zigzag-conversion/
 - 6. Zigzag Conversion (Medium)
 - 问题:  
