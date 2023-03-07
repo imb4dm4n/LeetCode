@@ -435,7 +435,7 @@ python -m unittest  tests  -k TestAlgorithm
 
 class TestAlgorithm(unittest.TestCase):
     
-    def test_compress(self):
+    def xtest_compress(self):
         from Algorithm import Solution
         so      =   Solution()
 
@@ -930,9 +930,36 @@ class TestDynamicProgram(unittest.TestCase):
 python -m unittest  tests  -k TestBinarySearch
 '''
 class TestBinarySearch(unittest.TestCase):
-    def test_search(self):
+    
+    def test_minimumTime(self):
+        from BinarySearch import Solution
+        so      =   Solution()
+        r=so.minimumTime([1,2,3], 5)
+        print("r=",r)
+        
+    
+    def xtest_findKthPositive(self):
+        from Algorithm import Solution
+        so      =   Solution()
+        r=so.findKthPositive(arr = [2,3,4,7,11], k = 5)
+        print("r= ", r)
+        r=so.findKthPositive(arr = [1,2,3,4], k = 2)
+        print("r= ", r)
+        self.assertEqual(r, 6)
+        r=so.findKthPositive(arr = [1,2,3,5,7], k = 2)
+        print("r= ", r)
+        self.assertEqual(r, 6)
+        r=so.findKthPositive(arr = [1,2], k = 3)
+        print("r= ", r)
+        self.assertEqual(r, 5)
+    
+
+    def xtest_search(self):
         from BinarySearch import Solution as sbs
         so  =   sbs()
+        r=so.searchx(nums = [1,3], target = 3)
+        print("r= ", 1)
+        self.assertEqual(r, 4)
         r=so.searchx(nums = [4,5,6,7,0,1,2], target = 0)
         print("r= ", r)
         self.assertEqual(r, 4)

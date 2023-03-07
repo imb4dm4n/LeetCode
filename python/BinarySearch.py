@@ -18,6 +18,190 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/minimum-time-to-complete-trips/
+- 2187. Minimum Time to Complete Trips (Medium)
+- 问题:  
+输入一组数字表示第i个公交车完成一轮行程的耗时,每个公交车可以连续来回行程并互不影响.
+输入totalTrips表示所有公交车可以完成的行程数, 问最少时间完成totalTrips是多少? 
+Input: time = [1,2,3], totalTrips = 5
+Output: 3
+Explanation:
+- At time t = 1, the number of trips completed by each bus are [1,0,0]. 
+  The total number of trips completed is 1 + 0 + 0 = 1. // 时间 1 只有一辆车完成
+- At time t = 2, the number of trips completed by each bus are [2,1,0]. 
+  The total number of trips completed is 2 + 1 + 0 = 3. // 时间 2 有两辆车完成 且第一列跑了两次
+- At time t = 3, the number of trips completed by each bus are [3,1,1]. 
+  The total number of trips completed is 3 + 1 + 1 = 5.
+So the minimum time needed for all buses to complete at least 5 trips is 3.
+- 思路:
+找出最快的那辆车, 计算它完成所有行程的耗时, 得到时间遍历的次数.
+遍历时间h, 每个h对应可以计算出完成的车辆个数, 加入到 时间-完成车辆次数组, 
+然后二分查找这个数组 第一个大于等于 totalTrips 的索引+1即可.
+超时了....
+提示是如何计算给定时间所有车辆完成的次数
+- 大神思路: Beats 86.75%
+先计算最快的车完成耗时, 作为搜索上界.
+二分查找这个耗时, 计算对应耗时完成的
+- 找到不变的是什么, 变化的是什么? 时间在每一刻是确定的, 每一刻对应完成的数量是不同的, 不同时间有不同的完成数量. 找到一个时间它的完成数量大于目标即可. 随着时间在增大, 完成数量也是增大, 因此都是递增的序列. 推导出基于时间的二分搜索. 
+    '''
+    def minimumTime(self, time: List[int], totalTrips: int) -> int:
+        least_time  =   min(time) * totalTrips
+        lo, hi = 0, least_time + 1
+        def is_complete_total_trip(when):
+            '''
+            判断给定时刻, 所有车辆完成的次数是否大于等于 totalTrips
+            '''
+            return sum(when//t for t in time) >= totalTrips
+
+        while lo < hi:
+            mid = (lo+hi) // 2
+            if is_complete_total_trip(mid):
+                hi  = mid
+            else:
+                lo  = mid + 1
+            
+        return lo 
+    
+        time_complete_bus   =   []  # 每一个存储第 i 小时完成 trip 的车辆个数
+        for h in range(1, least_time+1):
+            now_complete    =   0
+            for i in time:
+                now_complete    +=  h // i
+            time_complete_bus.append(now_complete)
+        
+        return bisect_left(time_complete_bus, totalTrips) + 1
+    
+    '''
+- https://leetcode.com/problems/kth-missing-positive-number/
+- 1539. Kth Missing Positive Number (Easy)
+- 问题:  
+输入一组升序排序的数字, 返回丢失的第k个整数. 
+Input: arr = [2,3,4,7,11], k = 5
+Output: 9
+Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th missing positive integer is 9.
+- 思路1:
+简单的线性扫描? Beats 23.21%
+- 思路2:
+二分搜索, mid 必须大于左边1 小于右边1, 否则说明其中一边存在元素丢失.
+如果两边都有丢失, 则递归两边的搜索, 否则只搜索一边.
+    '''
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        # lo, hi = 0, len(arr)
+        # while lo < hi:
+        #     mid     =   (lo+hi) //  2
+        #     if mid - 1 > -1 and mid + 1 < len(arr):
+        #         if arr[mid-1]
+
+        for i in range(1, arr[-1]):
+            if i in arr:
+                continue
+            else:
+                k   -=  1
+                if k == 0 :
+                    return i
+        return k + arr[-1]
+    
+    '''
+- https://leetcode.com/problems/search-in-rotated-sorted-array/
+- 33. Search in Rotated Sorted Array (Medium)
+- 问题:  
+输入一个数组, 它可能被旋转了n次也可能没被旋转, 找到 target
+- 大神思路:
+核心思想: 二分查找的数组一定是一个升序的数组, 把部分非升序的屏蔽掉, 得到升序数组.
+根据 mid 和 t 是否在同一边, 做不同处理: 
+    1.若 mid 和 t 在同一边, 那么其实就是普通的二分搜索即可.
+    2.若 mid 和 t 不再同一边, 那么根据 mid 和 t 的关系, "调整" mid 的值,使得数组是有序的. 
+        比如 mid < t(5) : 那么让 mid = +INFINITY 这样能使得数组变成[4,5,6,7,+INF(mid),+INF] 数组还是有序的; 
+        或者 t(3) < mid : 那么让 mid = -INF 使得数组变成 [-INF,-INF(mid),1,2,3,4]
+
+ie: 4,5,6,7, 1,2,3,4. 若 mid 和 t 在同一边, 那么他们一定在 [ 4,5,6,7], 或者 [1,2,3,4] 区间内.
+
+
+二分搜索, 并根据 mid 判断往那个方向移动.
+根据 nums[0] 和 nums[mid] 的关系, 判断 mid 落在的区间是哪一部分.
+nums[0] > nums[mid] 说明落在了旋转的右侧;
+nums[0] < nums[mid] 说明落在了旋转的左侧;
+判断 target 和 nums[mid] 的关系, 跳转 lo 或 hi
+    '''
+    def searchx(self, nums: List[int], target: int) -> int:
+        if len(nums) == 1:
+            print("one element")
+            if nums[0] == target:
+                return 0
+            return -1
+        
+        INF     =   1000000
+        lo, hi = 0, len(nums)
+        while lo < hi:
+            mid     =   (lo+hi) // 2
+            # 由于target 小于 nums[0] 说明旋转了, target 在右边
+            if target < nums[0] < nums[mid]:
+                lo  =   mid  +   1
+            # target 在左边
+            elif target >= nums[0] > nums[mid]:
+                hi  =   mid
+        #     mid_num =   nums[mid]
+        #     if nums[0] < nums[mid] and nums[0] <= target or \
+        #         nums[mid] < nums[0] and target < nums[0]:
+        #         pass
+        #     else:
+        #         if nums[mid] > target:      # mid 落在了 左边, 而 target 在右边(更小)
+        #             mid_num =   -INF
+        #         elif target > nums[mid]:    # mid 落在了 右边, 而 target 在左边(更大)
+        #             mid_num =   INF
+            
+        #     if mid_num  ==  target:
+        #         return lo
+        #     elif mid_num > target:
+        #         hi  =   mid
+        #     elif target > mid_num:
+        #         lo  =   mid + 1
+        
+        # return -1
+            
+
+        
+        # lo, hi  =   0, len(nums)
+        # # print("search ", target)
+        # has_rotated =   nums[-1] < nums[0]
+        # # print("has rotate ", has_rotated)
+        
+        # while lo < hi:
+        #     mid     =   (lo+hi) //  2
+        #     # print("mid ", mid, nums[mid])
+        #     print(lo, hi)
+        #     if nums[mid] == target:
+        #         return mid
+            
+        #     if has_rotated:
+        #         if   nums[0] < nums[mid] and nums[mid] > target:
+        #             hi  =   mid
+        #         elif nums[0] < nums[mid] and nums[mid] < target:
+        #             lo  =   mid + 1
+                
+        #         elif nums[0] > nums[mid] and nums[mid] > target:
+        #             hi  =   mid
+        #         elif nums[0] > nums[mid] and nums[mid] < target:
+        #             lo  =   mid + 1
+        #         else:
+        #             break
+            
+        #     elif nums[mid] < target:
+        #         lo  =   mid     +   1
+        #     elif nums[mid] > target:
+        #         hi  =   mid
+
+        
+        # if lo == len(nums):
+        #     # print("upper")
+        #     return -1
+        
+        # if nums[lo] == target:
+        #     return lo
+        
+        # return -1
+    
+    '''
 - https://leetcode.com/problems/search-a-2d-matrix-ii/
 - 240. Search a 2D Matrix II (Medium)
 - 问题:  
