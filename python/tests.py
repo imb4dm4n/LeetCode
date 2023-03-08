@@ -931,7 +931,20 @@ python -m unittest  tests  -k TestBinarySearch
 '''
 class TestBinarySearch(unittest.TestCase):
     
-    def test_minimumTime(self):
+    def test_minEatingSpeed(self):
+        from BinarySearch import Solution
+        so      =   Solution()
+        r=so.minEatingSpeed(piles = [312884470], h = 968709470)
+        print("4= r =",r)
+        # return
+        r=so.minEatingSpeed(piles = [3,6,7,11], h = 8)
+        print("4= r =",r)
+        r=so.minEatingSpeed(piles = [30,11,23,4,20], h = 5)
+        print("30= r =",r)
+        r=so.minEatingSpeed(piles = [30,11,23,4,20], h = 6)
+        print("23= r =",r)
+    
+    def xtest_minimumTime(self):
         from BinarySearch import Solution
         so      =   Solution()
         r=so.minimumTime([1,2,3], 5)

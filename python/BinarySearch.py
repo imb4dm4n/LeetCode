@@ -6,7 +6,7 @@ import heapq
 import queue
 from collections import *
 from bisect import *
-
+import math
 
 class Solution:
     '''
@@ -17,6 +17,48 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/koko-eating-bananas/
+- 875. Koko Eating Bananas (Medium)
+- 问题:  
+有 piles 组香蕉, 每一组有i个香蕉, 守卫h小时会回来. KOKO 每小时可以吃k个,每小时吃完k不吃别的组, 问最少的k可以在守卫回来前吃完香蕉.
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+- 思路:
+和昨天公交车有点像? 每小时吃k个, 那么第 j 个小时可以吃的总数量就是 j * k.
+当 j = 8 的时候必须吃完所有香蕉 sum(piles). 
+应该是一样的: 假设最慢的时候每次吃11个,那么8小时吃 8 * 11 = 88 > sum(piles),
+这时候找到 mid 值计算. 其实就是找第一个大于等于 sum(piles)的  h * k
+Beats 71.88%
+    '''
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        lo, hi = 0, max(piles)       # 可以吃的香蕉 总数区间
+
+        def calc_total_eat(k):
+            '''
+            给定每小时吃的香蕉数k, 返回 h 小时能不能吃完 total_banana
+            '''
+            if k == 0:
+                return False
+            c = 0
+            for banana in piles:
+                c += math.ceil(banana/k) 
+            return c <= h
+
+        while lo < hi:
+            # 每小时吃x个香蕉, 吃h小时的总数
+            mid     =   (lo+hi)//2
+            # 不能直接乘法, 因为提到了吃完一堆不吃另一堆, 导致吃的时候不均匀. 即给定每小时 mid 个香蕉, 需要优化其能够吃的个数
+            if calc_total_eat(mid):
+                hi  =   mid # 注意使用的是 lo < hi搜索区间是 [lo,hi) 因此不用 -1
+            else:
+                lo  =   mid + 1
+                
+        if not calc_total_eat(lo):
+            return lo + 1
+        
+        return lo 
+    
     '''
 - https://leetcode.com/problems/minimum-time-to-complete-trips/
 - 2187. Minimum Time to Complete Trips (Medium)
