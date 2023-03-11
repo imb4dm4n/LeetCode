@@ -690,7 +690,15 @@ Output: ["the","is","sunny","day"]
 python -m unittest  tests  -k TestBinaryTree
 '''
 class TestBinaryTree(unittest.TestCase):
-    def test_pathSum(self):
+    def test_sortedListToBST(self):
+        so  =   SBT()
+        inp     =   [-10,-3,0,5,9]
+        root    =   ListNode.list_to_ListNode(inp)
+        r = so.sortedListToBST(root)
+        r=so.inorderTraversal(r)
+        print("r ", r )
+
+    def xtest_pathSum(self):
         so  =   SBT()
         inp     =   [10,5,-3,3,2,null,11,3,-2,null,1]
         root    =   list_2_tree(inp)
@@ -1050,7 +1058,7 @@ class TestLinkList(unittest.TestCase):
     def setUp(self) -> None:
         print("[+]Running test....")
         from LinkedList import Solution as SLL
-        self.so         =   SLL()
+        self.so         =   SLL(None)
         self.t          =   timer("LinkList")
         return super().setUp()
     
@@ -1059,6 +1067,15 @@ class TestLinkList(unittest.TestCase):
         return super().tearDown()
 
     def test_isPalindrome(self):
+        listA = ListNode.list_to_ListNode([10,1,3,5,6,77,100])
+        # ListNode.print(listA)
+        self.so.head = listA
+        print(self.so.getRandom())
+        print(self.so.getRandom())
+        print(self.so.getRandom())
+        print(self.so.getRandom())
+
+    def xtest_isPalindrome(self):
         listA = ListNode.list_to_ListNode([1,2,3,2,1])
         # ListNode.print(listA)
         print(self.so.isPalindrome(listA))

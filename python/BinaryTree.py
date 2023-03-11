@@ -43,7 +43,7 @@ def list_2_tree(values:list):
     
     return root
 
-
+from LinkedList import ListNode
 
 class Solution:
     '''
@@ -53,6 +53,65 @@ class Solution:
 replace with problem description
 - 思路:
 replace with your idea.
+    '''
+    '''
+- https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+- 109. Convert Sorted List to Binary Search Tree (Medium)
+- 问题:  
+输入一个链表头, 转为平衡二叉搜索树
+- 思路1:
+转list 然后找到中间节点转换. 注意区间是 [left, mid-1]; [mid+1,right] Beats 37.72%
+- 思路2:
+快慢指针 Beats 29.36%
+    '''
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        if not head:
+            return None
+        if not head.next:
+            return TreeNode(head.val)
+        slow,fast = head, head.next
+        while fast.next and fast.next.next:
+            fast    =   fast.next.next
+            slow    =   slow.next
+        
+        mid     =   slow.next
+        slow.next   =   None
+        node    =   TreeNode(mid.val)
+        node.left   =   self.sortedListToBST(head)
+        node.right  =   self.sortedListToBST(mid.next)
+        return node
+
+        # 方法1
+        if not head:
+            return None
+        nodes = []
+        while head:
+            nodes.append(head.val)
+            head    =   head.next
+        
+        def to_bst(list_nodes, left, right):
+            if right < 0 or left > right:
+                return None
+            mid =   (left+right) // 2
+            if mid < 0 or mid > len(nodes):
+                return None
+            cur_node    =   TreeNode(list_nodes[mid])  
+            cur_node.left   =   to_bst(list_nodes, left, mid-1)
+            cur_node.right   =   to_bst(list_nodes, mid+1, right)
+            return cur_node
+        
+        return to_bst(nodes,0,len(nodes)-1)
+
+
+
+    '''
+- https://leetcode.com/problems/find-duplicate-subtrees/
+- 652. Find Duplicate Subtrees (Medium)
+- 问题:  
+输入一颗二叉树, 返回所有拥有相同结构的子树.只需要返回他们的头节点列表即可
+- 思路:
+所有子树, 因此每个节点构成的子树都要对比.
+前序遍历深度优先, 到底部的时候开始构造子树, 写入子树列表,
     '''
     '''
 - https://leetcode.com/problems/minimum-distance-between-bst-nodes/
