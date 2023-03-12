@@ -126,7 +126,25 @@ Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th
 - 思路2:
 二分搜索, mid 必须大于左边1 小于右边1, 否则说明其中一边存在元素丢失.
 如果两边都有丢失, 则递归两边的搜索, 否则只搜索一边.
+从1-n升序排序, 每个数字减去对应的索引, 可以得到这个数之前丢失的个数.
+Beats 79.2%
     '''
+    def findKthPositive2(self, arr: List[int], k: int) -> int:
+        lo, hi = 0, len(arr)
+        while lo < hi:
+            mid     =   (lo+hi) //  2
+            num     =   arr[mid] - mid -1 # 丢失的数字个数
+            # print("mid={} n={} num={}".format(mid, arr[mid],num))
+            if num < k:
+                lo  =   mid + 1
+            else:
+                hi  =   mid
+        
+        if lo> -1 and lo < len(arr):
+            print("lo={} lo_n={} ".format(lo, arr[lo]))
+        return k + lo
+
+
     def findKthPositive(self, arr: List[int], k: int) -> int:
         # lo, hi = 0, len(arr)
         # while lo < hi:
@@ -147,7 +165,7 @@ Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th
 - https://leetcode.com/problems/search-in-rotated-sorted-array/
 - 33. Search in Rotated Sorted Array (Medium)
 - 问题:  
-输入一个数组, 它可能被旋转了n次也可能没被旋转, 找到 target
+输入一个有序数组, 它可能被旋转了，也可能没被旋转, 找到 target
 - 大神思路:
 核心思想: 二分查找的数组一定是一个升序的数组, 把部分非升序的屏蔽掉, 得到升序数组.
 根据 mid 和 t 是否在同一边, 做不同处理: 
@@ -164,85 +182,27 @@ ie: 4,5,6,7, 1,2,3,4. 若 mid 和 t 在同一边, 那么他们一定在 [ 4,5,6,
 nums[0] > nums[mid] 说明落在了旋转的右侧;
 nums[0] < nums[mid] 说明落在了旋转的左侧;
 判断 target 和 nums[mid] 的关系, 跳转 lo 或 hi
+Beats 85.98%
     '''
     def searchx(self, nums: List[int], target: int) -> int:
-        if len(nums) == 1:
-            print("one element")
-            if nums[0] == target:
-                return 0
-            return -1
-        
-        INF     =   1000000
         lo, hi = 0, len(nums)
         while lo < hi:
-            mid     =   (lo+hi) // 2
-            # 由于target 小于 nums[0] 说明旋转了, target 在右边
+            mid = (lo+hi) // 2
             if target < nums[0] < nums[mid]:
-                lo  =   mid  +   1
-            # target 在左边
-            elif target >= nums[0] > nums[mid]:
-                hi  =   mid
-        #     mid_num =   nums[mid]
-        #     if nums[0] < nums[mid] and nums[0] <= target or \
-        #         nums[mid] < nums[0] and target < nums[0]:
-        #         pass
-        #     else:
-        #         if nums[mid] > target:      # mid 落在了 左边, 而 target 在右边(更小)
-        #             mid_num =   -INF
-        #         elif target > nums[mid]:    # mid 落在了 右边, 而 target 在左边(更大)
-        #             mid_num =   INF
-            
-        #     if mid_num  ==  target:
-        #         return lo
-        #     elif mid_num > target:
-        #         hi  =   mid
-        #     elif target > mid_num:
-        #         lo  =   mid + 1
+                # 能够保证 target 在右侧 , 并且搜索区间往右边靠拢
+                lo = mid + 1
+            elif nums[mid] < nums[0] <= target:
+                # 能够保证 target 在左侧, 并且搜索区间朝左边缩小
+                hi = mid
+            elif nums[mid] < target:
+                lo = mid + 1
+            elif target < nums[mid]:
+                hi = mid
+            else:
+                return mid
         
-        # return -1
-            
-
+        return -1
         
-        # lo, hi  =   0, len(nums)
-        # # print("search ", target)
-        # has_rotated =   nums[-1] < nums[0]
-        # # print("has rotate ", has_rotated)
-        
-        # while lo < hi:
-        #     mid     =   (lo+hi) //  2
-        #     # print("mid ", mid, nums[mid])
-        #     print(lo, hi)
-        #     if nums[mid] == target:
-        #         return mid
-            
-        #     if has_rotated:
-        #         if   nums[0] < nums[mid] and nums[mid] > target:
-        #             hi  =   mid
-        #         elif nums[0] < nums[mid] and nums[mid] < target:
-        #             lo  =   mid + 1
-                
-        #         elif nums[0] > nums[mid] and nums[mid] > target:
-        #             hi  =   mid
-        #         elif nums[0] > nums[mid] and nums[mid] < target:
-        #             lo  =   mid + 1
-        #         else:
-        #             break
-            
-        #     elif nums[mid] < target:
-        #         lo  =   mid     +   1
-        #     elif nums[mid] > target:
-        #         hi  =   mid
-
-        
-        # if lo == len(nums):
-        #     # print("upper")
-        #     return -1
-        
-        # if nums[lo] == target:
-        #     return lo
-        
-        # return -1
-    
     '''
 - https://leetcode.com/problems/search-a-2d-matrix-ii/
 - 240. Search a 2D Matrix II (Medium)
