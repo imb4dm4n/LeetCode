@@ -9,6 +9,7 @@ import collections
 from xml.sax.handler import all_properties
 
 set('zxc').intersection(set('cxz'))
+from collections import *
 
 
 class Solution:
@@ -20,6 +21,37 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+- 3. Longest Substring Without Repeating Characters (Medium)
+- 问题:  
+输入一个字符串, 返回最长的那个子串.
+- 思路: 滑动窗口
+数组形式
+窗口保存字符的个数. 遍历字符串, 累加字符计数器.     (Push + 1)
+若当前字符的个数大于1个, 说明存在重复 开始缩小窗口.
+取出窗口第一个字符 window[left], 缩小窗口 left += 1, 对应的窗口字符计数器 - 1 . (Pop - 1)
+Beats 43.15%
+    '''
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        char_index  =   defaultdict(int)
+        # char_index  =   [0] *   128
+        longest     =   0
+        left, right =   0,0
+
+        while right < len(s):
+            c       =   ord(s[right])
+            right   +=  1
+            char_index[c]   +=  1
+            
+            while char_index[c] > 1:
+                d   =   ord(s[left])
+                left    +=  1
+                char_index[d]   -=  1
+                
+            longest =   max(longest,right   -   left)
+
+        return longest
     '''
 - https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
 - 28. Find the Index of the First Occurrence in a String (Medium)

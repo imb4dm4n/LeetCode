@@ -291,7 +291,21 @@ class TestSorts(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_isAlienSorted(self):
+    def test_lengthOfLongestSubstring(self):
+        from Strings import Solution
+        so      =   Solution()
+        r=so.lengthOfLongestSubstring(s = "abcabcbb")
+        print("r= ", r)
+        r=so.lengthOfLongestSubstring(s = "abcabcbb")
+        print("r= ", r)
+        r=so.lengthOfLongestSubstring(s = "bbbbb")
+        print("r= ", r)
+        s = "pwwkew"
+        r=so.lengthOfLongestSubstring(s)
+        print("r= ", r, " s= ", s)
+    
+        
+    def xtest_isAlienSorted(self):
         from Strings import Solution
         so      =   Solution()
         haystack = "mississippi"
@@ -939,7 +953,7 @@ python -m unittest  tests  -k TestBinarySearch
 '''
 class TestBinarySearch(unittest.TestCase):
     
-    def test_minEatingSpeed(self):
+    def xtest_minEatingSpeed(self):
         from BinarySearch import Solution
         so      =   Solution()
         r=so.minEatingSpeed(piles = [312884470], h = 968709470)
@@ -959,20 +973,32 @@ class TestBinarySearch(unittest.TestCase):
         print("r=",r)
         
     
-    def xtest_findKthPositive(self):
-        from Algorithm import Solution
+    def test_findKthPositive(self):
+        from BinarySearch import Solution
         so      =   Solution()
-        r=so.findKthPositive(arr = [2,3,4,7,11], k = 5)
+        # r=so.findKthPositive(arr = [2,3,4,7,11], k = 4)
+        # print("r= ", r)
+
+        r=so.findKthPositive2(arr = [2,3,4,7,11], k = 4)
         print("r= ", r)
-        r=so.findKthPositive(arr = [1,2,3,4], k = 2)
+        self.assertEqual(r, 8)
+        
+        # r=so.findKthPositive(arr = [1,2,3,4], k = 2)
+        # print("r= ", r)
+        # self.assertEqual(r, 6)
+        
+        r=so.findKthPositive2(arr = [1,2,3,4], k = 2)
         print("r= ", r)
         self.assertEqual(r, 6)
-        r=so.findKthPositive(arr = [1,2,3,5,7], k = 2)
+        # r=so.findKthPositive(arr = [1,2,3,5,7], k = 2)
+        # print("r= ", r)
+        # self.assertEqual(r, 6)
+        r=so.findKthPositive2(arr = [1,2,3,5,7], k = 2)
         print("r= ", r)
         self.assertEqual(r, 6)
-        r=so.findKthPositive(arr = [1,2], k = 3)
-        print("r= ", r)
-        self.assertEqual(r, 5)
+        # r=so.findKthPositive(arr = [1,2], k = 3)
+        # print("r= ", r)
+        # self.assertEqual(r, 5)
     
 
     def xtest_search(self):
