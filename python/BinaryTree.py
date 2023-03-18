@@ -45,6 +45,222 @@ def list_2_tree(values:list):
 
 from LinkedList import ListNode
 
+class TryNode:
+    def __init__(self ) -> None:
+        self.is_end =   False
+        self.children   =   {}
+
+'''
+- https://leetcode.com/problems/implement-trie-prefix-tree/
+- 208. Implement Trie (Prefix Tree) Medium
+- 问题
+Tries 树的实现
+- 思路
+
+'''
+# Beats 94.34%
+class Trie(object):
+    
+	def __init__(self):
+		self.trie = {}
+
+
+	def insert(self, word):
+		t = self.trie
+		for c in word:
+			if c not in t: t[c] = {}
+			t = t[c]
+		t["-"] = True
+
+
+	def search(self, word):
+		t = self.trie
+		for c in word:
+			if c not in t: return False
+			t = t[c]
+		return "-" in t
+
+	def startsWith(self, prefix):
+		t = self.trie
+		for c in prefix:
+			if c not in t: return False
+			t = t[c]
+		return True
+
+# Beats 85.87%
+# class Trie:
+#     def __init__(self):
+#         self.children = defaultdict(Trie)
+#         self.isWord = False
+
+#     def insert(self, word: str) -> None:
+#         cur = self
+#         for c in word:
+#             cur = cur.children[c]
+#         cur.isWord = True
+
+#     def search(self, word: str) -> bool:
+#         cur = self
+#         for c in word:
+#             if c not in cur.children:
+#                 return False
+#             cur = cur.children[c]
+#         return cur.isWord
+
+#     def startsWith(self, prefix: str) -> bool:
+#         cur = self
+#         for c in prefix:
+#             if c not in cur.children:
+#                 return False
+#             cur = cur.children[c]
+#         return True
+    
+# class Trie:
+# beat 51 
+#     def __init__(self):
+#         self.root   =   TryNode()
+
+
+
+#     def insert(self, word: str) -> None:
+#         '''
+#         void insert(String word) Inserts the string word into the trie.
+#         '''
+#         node    =   self.root
+#         for c in word:
+#             # 字符不存在则创建 try-node
+#             if not node.children.get(c):
+#                 node.children[c]    =   TryNode()
+#             node    =   node.children[c]
+#         node.is_end =   True
+        
+
+#     def search(self, word: str) -> bool:
+#         '''
+#         Returns true if the string word is in the trie (i.e., was inserted before), and false otherwise.
+#         '''
+#         node    =   self.root
+#         for c in word:
+#             if not node.children.get(c):
+#                 return False
+#             node    =   node.children[c]
+        
+#         return node.is_end 
+        
+
+#     def startsWith(self, prefix: str) -> bool:
+#         ''' 
+#         Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
+#         '''
+#         node    =   self.root
+#         for c in prefix:
+#             if not node.children.get(c):
+#                 return False
+#             node    =   node.children[c]
+        
+#         return True 
+'''
+- https://leetcode.com/problems/design-browser-history/
+- 1472. Design Browser History (Medium)
+- 问题:  
+设计浏览器的前进、后退、浏览功能的历史记录器。 
+- 思路1: 二叉树/ 双向链表
+root 表示根节点
+cur 表示当前浏览的页面
+二叉树的 left 表示后退， right 表示前进， visit 表示在 cur 节点插入新节点并把之前cur后面的节点都清除掉
+Beats 28.32%
+- 思路2: 双栈
+一个保存历史 history , 一个 future 保存 backward 时pop出 history 的数据,
+forward 时从 future pop数据
+Beats 16.87%  ...
+- 思路3: list 计数
+Beats 95.27%
+'''
+class BrowserHistory:
+
+    def __init__(self, homepage: str):
+        self.history    =   [homepage]
+        self.pos        =   0
+
+    def visit(self, url: str) -> None:
+        '''
+        插入新的节点并移动指针
+        '''
+        self.pos    +=  1
+        self.history    =   self.history[:self.pos]
+        self.history.append(url)
+        # print("history ", self.history)
+
+    def back(self, steps: int) -> str:
+        # 要么移动到第一个 要么就是 pos - steps
+        self.pos    =   max(0, self.pos -   steps)
+        
+        return self.history[self.pos]
+        
+
+    def forward(self, steps: int) -> str:
+        # 要么移动当前 + steps 要么移动到最后一个
+        self.pos    =   min(self.history.__len__()-1, 
+                            self.pos+steps)
+        
+        return self.history[self.pos]
+    
+
+    # def __init__(self, homepage: str):
+    #     self.history    =   [homepage]
+    #     self.future     =   []
+
+    # def visit(self, url: str) -> None:
+    #     '''
+    #     插入新的节点并移动指针
+    #     '''
+    #     self.history.append(url)
+    #     self.future =   []
+
+    # def back(self, steps: int) -> str:
+    #     while self.history.__len__() > 1 and steps > 0:
+    #         steps   -=  1
+    #         self.future.append(self.history.pop())
+        
+    #     return self.history[-1]
+        
+
+    # def forward(self, steps: int) -> str:
+    #     while steps > 0 and self.future.__len__() > 0:
+    #         self.history.append(self.future.pop())
+    #         steps   -=  1
+        
+    #     return self.history[-1]
+    
+
+    def __init__(self, homepage: str):
+        self.root   =   TreeNode(homepage)
+        self.cur    =   self.root
+
+    def visit(self, url: str) -> None:
+        '''
+        插入新的节点并移动指针
+        '''
+        node    =   TreeNode(url)
+        self.cur.right  =   node
+        node.left       =   self.cur
+        self.cur        =   node
+        
+
+    def back(self, steps: int) -> str:
+        while self.cur and self.cur.left and steps > 0:
+            self.cur    =   self.cur.left
+            steps       -=  1
+        return self.cur.val
+        
+
+    def forward(self, steps: int) -> str:
+        while self.cur and self.cur.right and steps > 0:
+            self.cur    =   self.cur.right
+            steps       -=  1
+        return self.cur.val
+
+
 class Solution:
     '''
 - replace with url
@@ -54,6 +270,113 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+
+    '''
+- https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/
+- 106. Construct Binary Tree from Inorder and Postorder Traversal (Medium)
+- 问题:  
+输入一棵二叉树的中序和后续遍历, 构造出这个二叉树
+- 思路:
+用后序遍历得到root节点, 去中序遍历拆分出左子树和右子树, 递归的生成节点
+    '''
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        inorder_map =   {}
+        for i, n in enumerate(inorder):
+            inorder_map[n]  =   i
+
+        n, post_index   =   len(inorder)    ,   len(inorder)    -1
+        def build_from_pivot(start, end, post_idx):
+            if start > end:
+                return None
+            node    =   TreeNode(postorder[post_idx-1])
+            inorder_idx     =   inorder_map[node.val]
+            node.right  =   build_from_pivot(inorder_idx+1, end, post_idx -1)
+            node.left  =   build_from_pivot(start , inorder_idx-1, post_idx -1)
+
+        
+        return build_from_pivot(0, post_index, post_index)
+
+    '''
+- https://leetcode.com/problems/check-completeness-of-a-binary-tree/
+- 958. Check Completeness of a Binary Tree (Medium)
+- 问题:  
+输入一棵二叉树, 判断它是否完全, 即除了最后一层的叶节点可以没有完整的节点, 其他都是满的
+- 大神思路:
+如果是完全二叉树, 用 bfs 遍历, 得到的最后一层最后一个节点之后, 应该是空的, 若还有其他节点
+则说明不是完全二叉树 Beats 86.18%
+    '''
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        bfs     =   [root]
+        i       =   0
+        
+        # 遇到第一个 None 节点会 break
+        while bfs[i]:
+            bfs.append(bfs[i].left)
+            bfs.append(bfs[i].right)
+            i   +=  1
+        
+        # 最后一层的 最后一个节点之后应该没有节点了, 否则不是完全二叉树
+        return not any(bfs[i:])
+    
+    
+    '''
+- https://leetcode.com/problems/sum-root-to-leaf-numbers/
+- 129. Sum Root to Leaf Numbers (Medium)
+- 问题:  
+每个节点表示一个数字, 求 每个根到叶节点组成的路径表示的数字的和.
+- 思路:
+dfs遍历, 若当前节点非空, 则把前一层结果*10并加上当前结果, 传递给下一层;
+节点为空则添加到 总和.
+    '''
+    def sumNumbers(self, root: Optional[TreeNode], base=0) -> int:
+        # 思路2 Beats 97.50%
+        if not root:
+            return 0
+        if not root.left and not root.right:
+            return base + root.val
+        
+        next_base   =   (base+root.val) * 10
+        left_sums   =   self.sumNumbers(root.left, next_base)
+        right_sums   =   self.sumNumbers(root.right, next_base)
+        return left_sums + right_sums
+        
+        # 思路1 Beats 20.45%
+        res     =   0
+        def dfs_sum(node, cur_sum):
+            nonlocal res
+            if node:
+                cur_sum *= 10
+                cur_sum +=  node.val
+                
+                # 叶节点则添加结果, 不能继续递归 否则会计算两次结果
+                if not node.left and not node.right:
+                    res     +=  cur_sum
+                # 非叶节点则继续遍历
+                else:
+                    dfs_sum(node.left, cur_sum)
+                    dfs_sum(node.right, cur_sum)
+
+
+        dfs_sum(root, 0)
+        return res
+    '''
+- https://leetcode.com/problems/symmetric-tree/description/
+- 101. Symmetric Tree (Easy)
+- 问题:  
+输入一棵二叉树 判断是否对称
+- 思路:
+对称的二叉树在根节点相同的情况下, 左子树等于右子树
+    '''
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        def symmetric(node_a, node_b):
+            if not node_a and not node_b:
+                return True
+            if not node_a or not node_b:
+                return False
+            if node_b.val != node_a.val:
+                return False
+            return symmetric(node_a.left, node_b.right) and symmetric(node_a.right, node_b.left)
+        return symmetric(root, root)
     '''
 - https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
 - 109. Convert Sorted List to Binary Search Tree (Medium)

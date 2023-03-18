@@ -291,7 +291,22 @@ class TestSorts(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_lengthOfLongestSubstring(self):
+    def test_findAnagrams(self):
+        from Strings import Solution
+        so      =   Solution()
+        r=so.findAnagrams(s = "cbaebabacd", p = "abc")
+        print("r=",r)
+        r=so.findAnagrams(s = "abab", p = "ab")
+        print("r=",r)
+        r=so.findAnagrams(s = "qwejosazxc", p = "as")
+        print("r=",r)
+        r=so.findAnagrams(s = "", p = "as")
+        print("r=",r)
+        r=so.findAnagrams(s = "asd", p = "z")
+        print("r=",r)
+
+
+    def xtest_lengthOfLongestSubstring(self):
         from Strings import Solution
         so      =   Solution()
         r=so.lengthOfLongestSubstring(s = "abcabcbb")
@@ -704,7 +719,54 @@ Output: ["the","is","sunny","day"]
 python -m unittest  tests  -k TestBinaryTree
 '''
 class TestBinaryTree(unittest.TestCase):
-    def test_sortedListToBST(self):
+
+
+    def test_BrowserHistory(self):
+        from BinaryTree import BrowserHistory as bh
+        browserHistory  =   bh('www.leetcode.com')
+        browserHistory.visit("google.com")
+        browserHistory.visit("facebook.com")
+        browserHistory.visit("youtube.com");      # You are in "facebook.com". Visit "youtube.com"
+
+        # print(browserHistory.data)
+        r=browserHistory.back(1);                   # You are in "youtube.com", move back to "facebook.com" return "facebook.com"
+        print("back ", r)
+        self.assertEqual(r, "facebook.com")
+        r=browserHistory.back(1);                   # You are in "facebook.com", move back to "google.com" return "google.com"
+        print("back ", r)
+        self.assertEqual(r, "google.com")
+        r=browserHistory.forward(1);                # You are in "google.com", move forward to "facebook.com" return "facebook.com"
+        print("forward ", r)
+        self.assertEqual(r, "facebook.com")
+        browserHistory.visit("linkedin.com");     # You are in "facebook.com". Visit "linkedin.com"
+        r=browserHistory.forward(2);                # You are in "linkedin.com", you cannot move forward any steps.
+        print("forward ", r)
+        self.assertEqual(r, "linkedin.com")
+        r=browserHistory.back(2);                   # You are in "linkedin.com", move back two steps to "facebook.com" then to "google.com". return "google.com"
+        r=browserHistory.back(7);   
+        print("back ", r)     
+        self.assertEqual(r, "www.leetcode.com")
+
+
+    def xtest_buildTree(self):
+        so  =   SBT()
+        r=so.buildTree(inorder = [9,3,15,20,7], postorder = [9,15,7,20,3])
+        print("r ", r )
+
+
+    def xtest_isCompleteTree(self):
+        so  =   SBT()
+        inp     =   [1,2,3,4,5,6]
+        root    =   list_2_tree(inp)
+        r=so.isCompleteTree(root)
+        print("r ", r )
+        inp     =   [1,2,3,4,5,null,7]
+        root    =   list_2_tree(inp)
+        r=so.isCompleteTree(root)
+        print("r ", r )
+
+
+    def xtest_sortedListToBST(self):
         so  =   SBT()
         inp     =   [-10,-3,0,5,9]
         root    =   ListNode.list_to_ListNode(inp)
