@@ -291,7 +291,16 @@ class TestSorts(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_findAnagrams(self):
+    def test_checkInclusion(self):
+        from Strings import Solution
+        so      =   Solution()
+        r=so.checkInclusion(s1 = "ab", s2 = "eidboaoo")
+        print("r=",r)
+        r=so.checkInclusion(s1 = "ab", s2 = "eidbaooo")
+        print("r=",r)
+
+
+    def xtest_findAnagrams(self):
         from Strings import Solution
         so      =   Solution()
         r=so.findAnagrams(s = "cbaebabacd", p = "abc")
@@ -726,23 +735,21 @@ class TestBinaryTree(unittest.TestCase):
         browserHistory  =   bh('www.leetcode.com')
         browserHistory.visit("google.com")
         browserHistory.visit("facebook.com")
-        browserHistory.visit("youtube.com");      # You are in "facebook.com". Visit "youtube.com"
-
-        # print(browserHistory.data)
-        r=browserHistory.back(1);                   # You are in "youtube.com", move back to "facebook.com" return "facebook.com"
+        browserHistory.visit("youtube.com");  
+        r=browserHistory.back(1);             
         print("back ", r)
         self.assertEqual(r, "facebook.com")
-        r=browserHistory.back(1);                   # You are in "facebook.com", move back to "google.com" return "google.com"
+        r=browserHistory.back(1);                  
         print("back ", r)
         self.assertEqual(r, "google.com")
-        r=browserHistory.forward(1);                # You are in "google.com", move forward to "facebook.com" return "facebook.com"
+        r=browserHistory.forward(1);              
         print("forward ", r)
         self.assertEqual(r, "facebook.com")
-        browserHistory.visit("linkedin.com");     # You are in "facebook.com". Visit "linkedin.com"
-        r=browserHistory.forward(2);                # You are in "linkedin.com", you cannot move forward any steps.
+        browserHistory.visit("linkedin.com");     
+        r=browserHistory.forward(2);              
         print("forward ", r)
         self.assertEqual(r, "linkedin.com")
-        r=browserHistory.back(2);                   # You are in "linkedin.com", move back two steps to "facebook.com" then to "google.com". return "google.com"
+        r=browserHistory.back(2);                   
         r=browserHistory.back(7);   
         print("back ", r)     
         self.assertEqual(r, "www.leetcode.com")
@@ -933,7 +940,28 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_maxProfit(self):
+    def test_canPlaceFlowers(self):
+        r=self.so.canPlaceFlowers(flowerbed = [0,1,0], n = 1)
+        print("种花  ", r)
+        self.assertEqual(r, False   )
+        r=self.so.canPlaceFlowers(flowerbed = [1,0,1,0,0], n = 1)
+        print("种花  ", r)
+        self.assertEqual(r, True   )
+
+        r=self.so.canPlaceFlowers(flowerbed = [1,0,0,0,0,1], n = 2)
+        print("种花  ", r)
+        self.assertEqual(r, False   )
+        r=self.so.canPlaceFlowers(flowerbed = [1,0,0,0,1], n = 1)
+        print("种花  ", r)
+        self.assertEqual(r, True   )
+        r=self.so.canPlaceFlowers(flowerbed = [1,0,0,0,1], n = 2)
+        print("种花  ", r)
+        self.assertEqual(r, False   )
+        r=self.so.canPlaceFlowers(flowerbed = [0,1,1,0,0], n = 1)
+        print("种花  ", r)
+        self.assertEqual(r, True   )
+    
+    def xtest_maxProfit(self):
         r=self.so.maxProfit(prices = [7,1,5,3,6,4])
         print("最大利益 ", r)
     

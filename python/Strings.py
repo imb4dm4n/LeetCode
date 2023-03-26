@@ -22,6 +22,126 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/permutation-in-string/
+- 567. Permutation in String (Medium)
+- 问题:  
+输入 s1 问 s2 是否包含 s1 的一个变种序列.
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba").
+- 思路: 滑动窗口
+need 窗口是 s1 的字符计数器, missing 当丢失的个数为0时, 判断窗口大小 right - left 是否为目标的长度.
+Beats 75.1%
+    '''
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        '''
+        判断 s2 是否包含 s1 的变种序列
+        '''
+        missing     =   len(s1)
+        l_s1        =   missing
+        need        =   defaultdict(int)    # 保存查找的目标
+        left,right  = 0,0
+        
+        for c in s1 :
+            need[c]     +=  1
+        
+        while right < len(s2):
+            c   =   s2[right]
+            right   +=  1
+
+            if need[c] > 0:     # 找到一个目标 则减小丢失数
+                missing -=  1
+            need[c] -=  1
+
+            while missing == 0: # 丢失数为0时 可以缩小窗口
+                if right - left == l_s1:    # 窗口大小正好是目标字符的长度
+                    return True
+                d   =   s2[left]
+                need[d]  +=  1
+                if need[d] > 0: # 若是目标字符被删除了, 则增加丢失数
+                    missing +=  1
+                left    +=  1
+
+        return False
+            
+    '''
+- https://leetcode.com/problems/find-all-anagrams-in-a-string/
+- 438. Find All Anagrams in a String (Medium)
+- 问题:  
+输入两个字符串s,p; 输出 所有 s 中 p的 anagram 的起始索引列表;
+Input: s = "cbaebabacd", p = "abc"
+Output: [0,6]
+Explanation:
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+- 思路: 滑动窗口
+窗口大小是字符串的长度, 当窗口中的字符不满足目标时 missing > 0, 增大窗口;
+当窗口字符串满足目标时, 检查窗口字符串的个数是否和目标一致, 
+    一致则把left索引加到结果
+    不一致则增大 窗口, 直至missing 个数 > 0 break 出去
+- 思路 滑动窗口
+窗口是需要查找的目标字符对应的计数器, missing 是总共需要的字符个数.
+当 missing 大于0时增大窗口
+Beats 63.42%
+    '''
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if not s or not p:
+            return []
+        
+        left, right = 0, 0
+        size    =   len(s)
+        valid   =   0
+        missing =   len(p)  # 丢失的字符个数
+        need  =   defaultdict(int)
+        window  =   defaultdict(int)
+        res     =   []
+
+        for c in p:
+            need[c]   +=  1   # 初始化查找目标
+        
+        while right < size:
+            c   =   s[right]
+            right   +=  1
+            if need[c] > 0:
+                window
+            
+            
+        return res
+    
+        left, right = 0, 0
+        size    =   len(s)
+        missing =   len(p)  # 丢失的字符个数
+        window  =   defaultdict(int)
+        res     =   []
+
+        for c in p:
+            window[c]   +=  1   # 初始化查找目标
+        
+        while right < size:
+            # 当前字符在查找的目标中, 减少丢失数
+            if window[s[right]] > 0:
+                missing -=  1
+            # 字符计数器减1
+            window[s[right]]    -=  1
+
+            # 没有丢失字符的时候, 开始寻找合适的窗口偏移
+            while missing == 0:
+                sum_c   =   sum(window.values())
+                # 必须和为0 否则说明窗口内存在其他的字符
+                if sum_c    ==  0:
+                    res.append(left)
+                c   =   s[left]
+                left    +=  1       # 增大窗口
+                window[c]   +=  1
+                if window[c] > 0:
+                    missing +=  1
+            
+            right   +=  1
+        
+        return res
+
+            
+    '''
 - https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
 - 3. Longest Substring Without Repeating Characters (Medium)
 - 问题:  
