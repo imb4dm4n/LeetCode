@@ -7,6 +7,8 @@ from typing import List
 from functools import lru_cache
 import heapq
 import math
+import bisect
+import itertools
 
 class Solution:
     '''
@@ -17,6 +19,333 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/reducing-dishes/
+- 1402. Reducing Dishes (Hard)
+- 问题:  
+厨师准备食材和炒菜, 输入 n 道菜的满意度, 每道菜需要一个单元的时间去完成.
+一道菜的时间满意度为 (炒菜+准备)耗时 * 菜的满意度time[i] * satisfaction[i].
+返回最大的 时间满意度总和, 厨师可以丢弃一些菜单并任意修改顺序.
+Input: satisfaction = [-1,-8,0,5,-9]
+Output: 14
+Explanation: After Removing the second and last dish, the maximum total like-time coefficient will be equal to (-1*1 + 0*2 + 5*3 = 14).
+- 思路:
+base case: 不需要炒菜 0 道菜
+状态: 当前的时间满意度, 当前是第几道被炒的菜; 起始状态: 第一道菜, 时间满意度0; 终止状态: 最后一道菜, 
+选择: 是否炒这道菜.
+为了让一道菜尽量获得最大的时间满意度, 需要先排序他们.
+一个状态表示当前累积的 满意度总和, 达到最终状态时, 更新最终结果
+- 优化:
+因为会存在重复的计算, 比如到某个菜时, 可能前置条件
+    '''
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort()
+        n   =  len(satisfaction) +1
+        dp  =  [[0]*n for i in range(n)]
+
+        def dp_max_satisfaction(offset, cook_seq):
+            if offset >= len(satisfaction) or cook_seq >= len(satisfaction):
+                return 0
+            # print("off {} seq {} n {}".format(offset, cook_seq, n))
+            if dp[offset][cook_seq-1]:
+                print("found dp result")
+                return dp[offset][cook_seq-1]
+            dp[offset][cook_seq-1] = max(
+                dp_max_satisfaction(offset+1, cook_seq+1) + satisfaction[offset] * cook_seq,
+                dp_max_satisfaction(offset+1, cook_seq),
+            )
+            return dp[offset][cook_seq-1]
+        
+        dp_max_satisfaction(0, 1)
+        print(dp)
+        return dp[0][0]
+
+
+        # dp  =   [0] * n
+        final_max_satisfaction  =   0   # 最终的最大值
+        # print(satisfaction)
+
+        def dp_max_satif(cook_id, cook_time, cur_satisfaction):
+            '''
+            动态的炒当前的菜:
+            :param      cook_id     第几道菜 相对于 satisfaction 数组cook_time
+            '''
+            nonlocal final_max_satisfaction
+            if cook_id >= n:
+                final_max_satisfaction  =   max(
+                    final_max_satisfaction,
+                    cur_satisfaction
+                )
+                return 0
+            
+            # print("[+]cook_id is {} dp cook = {}".format(cook_id, dp[cook_id]))
+            # if dp[cook_id]:
+            #     return dp[cook_id]
+            
+            def max_satif(dish_id, is_cook, cook_time1, cur_satif):
+                '''
+                动态的炒当前的菜:
+                :param      dish_id     第几道菜 相对于 satisfaction 数组
+                :param      is_cook     是否炒这道菜
+                :param      cook_time   真正炒菜的顺序, 某一道菜不被炒则传递相同cook_time
+                '''
+                # print("dish id {} is_cook {} ct {}".format(dish_id, is_cook, cook_time1))
+                if is_cook:
+                    t=  dp_max_satif(dish_id+1, cook_time1 + 1, satisfaction[dish_id] * cook_time1 + cur_satif)
+                    # print("t=", t)
+                    # return t
+                else:
+                    a= dp_max_satif(dish_id+1, cook_time1, cur_satif)
+                    # print("a=",a)
+                    # return a
+            # time_satif= [
+            max_satif(cook_id, True, cook_time  ,cur_satisfaction),
+            max_satif(cook_id, False, cook_time ,cur_satisfaction)
+            # ]
+            # print("id {} max satif {}".format(cook_id, time_satif))
+            # dp[cook_id] =   max(time_satif)
+            # return dp[cook_id]
+            # time_satif  =   [
+            #         max_satif(cook_id, True, cook_time, ca) ,
+            #         max_satif(cook_id, False, cook_time, ca)  ,
+            #         # max_satif(cook_id+1, True, cook_time+1) + satisfaction[cook_id],
+            #         # max_satif(cook_id+1, False, cook_time+1)  + satisfaction[cook_id]
+            #     ]
+            # print("cook id {} satis {}".format(cook_id, time_satif))
+            # dp[cook_id] =   max(time_satif)
+            # return dp[cook_id]
+        
+        dp_max_satif(0, 1, 0)
+        # print(dp)
+        return final_max_satisfaction
+        return dp_max_satif(0, 1, 0)
+
+    '''
+- https://leetcode.com/problems/minimum-cost-for-tickets/
+- 983. Minimum Cost For Tickets (Medium) dp
+- 问题:  
+提前准备一年的旅行, days[] 数组表示要旅游的是[1,365] 的哪一天, costs[a,b,c] 分别表示旅游1天、7天、30天需要的钱。 问最少完成一年旅行的钱是多少？
+Input: days = [1,4,6,7,8,20], costs = [2,7,15]
+Output: 11
+Explanation: For example, here is one way to buy passes that lets you travel your travel plan:
+On day 1, you bought a 1-day pass for costs[0] = $2, which covered day 1.
+On day 3, you bought a 7-day pass for costs[1] = $7, which covered days 3, 4, ..., 9.
+On day 20, you bought a 1-day pass for costs[0] = $2, which covered day 20.
+In total, you spent $11 and covered all the days of your travel.
+
+- dp思路: 核心是遍历所有可能的方案, 找出最省钱的方案; 计算方案时存在重复计算, 因此可以用 dp 数组保存结果.
+Beats 83.55%
+状态是当前处于哪一天旅游或者说是目前消费总额; 选择是选择哪种旅游方式(1,7,30),不同选择进入新的状态;
+dp 函数： 第i天可以选择3种旅游方式, 对应下一次做选择时, 天数会有3种情况i+1,i+6,i+29;
+进一步递归计算. 但是每一天的选择计算到最终时，需要保存结果，然后求最小值。
+每一天的cost状态是动态计算的,对于某一天的选择，会有一个cost值，同时会影响后面n天的cost为0或者xx；
+计算到最后一天时，加入结果，或者直接对比取最小值；
+
+- 大神 Beats 87.21%
+存储从0到每一天的累积开销, 若今天不旅游, 则用前一天作为今天的开销;
+若今天要旅游, 则寻找3种方案中最省钱的方案
+    1.今天旅游1天, 则总开销为 今天的 + 昨天累积的
+    2.今天旅游7天票, 则总开销为 今天的 + 7天前累积的开销
+    3.今天旅游30天票, 则总开销为 今天的 + 30天前累积的开销
+    '''
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        # Beats 83.55%
+        if not days:
+            return 0
+        
+        n   =   len(days)
+        dp  =   [0] * n     # 保存旅游日最优的花钱
+        
+        def dp_min_cost(begin):
+            if begin >= n:
+                return 0
+            
+            if dp[begin]:   # 直接返回计算过的最优值
+                return dp[begin]
+            
+            def mincost(day_index, travel_type):
+                '''
+                特定一天选择的旅游类型, 并对其余的 旅游日期, 做出不同操作. 因为有的票可以 cover 一些旅游日，因此需要跳过计算
+                '''
+                if day_index >= n:
+                    return 0
+                if travel_type == 0:
+                    return costs[travel_type] + dp_min_cost(day_index+1)
+                elif travel_type == 1:
+                    cover_days =   days[day_index] + 7      # 问题: 不能+6 必须 + 7
+                    x=bisect.bisect_left(days[day_index:], cover_days)
+                    return costs[travel_type] + dp_min_cost(begin+x)    # 问题: 要begin+x 而不是 x
+                else:
+                    cover_days =   days[day_index] + 30      # 问题: 不能+29 必须 + 30
+                    x=bisect.bisect_left(days[day_index:], cover_days)
+                    print("[2]cur_day= {} coverTo= {} insert at ={}".format(days[day_index], cover_days, x))
+                    return costs[travel_type] + dp_min_cost(begin+x)
+            
+            # 对于特定一天有3种选择, 全部都计算, 取最小值写入 dp 
+            possible_costs  =   [
+                mincost(begin, 0),
+                mincost(begin, 1),
+                mincost(begin, 2),
+            ]
+            dp[begin]   =   min(possible_costs)
+            return dp[begin]
+        return  dp_min_cost(0)
+
+        # 大神思路 初始化第0天为0累积开销
+        daily_cost  =   {0:0}
+        for d in days:
+            daily_cost[d]   =   0
+        for i in range(1, 366):
+            if daily_cost.get(i) is None:
+                daily_cost[i] = daily_cost[i-1]
+            else:
+                daily_cost[i]      =   min(
+                    daily_cost[i-1] + costs[0],
+                    daily_cost[max(0,i-7)] + costs[1],
+                    daily_cost[max(0,i-30)] + costs[2],
+                )
+        return daily_cost[365]
+    
+    '''
+- https://leetcode.com/problems/minimum-path-sum/
+- 64. Minimum Path Sum (Medium) dp 
+- 问题:  
+输入 mxn 矩阵，每一个包含数字，从左上角到右下角最小的路径和是多少？
+- tag:  
+- 思路:
+动态规划？ 和机器人寻路一样？ 从右下角往左上角搜索，选择小的节点。
+状态是什么? 选择是什么?
+状态是到当前坐标 (i,j) 的 pathSum; 选择是向右还是向下移动; (反过来想, 当前左边是从哪个节点过来的)
+用一个二维数组保存到每一个坐标(i,j)的最优 pathSum, 那么到 (i,j)的最优路径就是
+dp[i][j]= min(dp[i-1,j] + grid[i,j], 
+              dp[i][j-1]) + grid[i,j] );
+
+优化dp空间, 实际只需要一维数组即可? 因为第一行的值是固定的, 用前缀和转list即可;
+第二行每一个坐标对应的 dp[j] 是否更新呢? 若 grid[i][j] < dp[j] 则更新 
+dp[j] = min( dp[j]+grid[i][j] , grid[i-1][j]+grid[i][j]), j > 0;
+计算完毕后, 返回 dp 数组最后一个数字即可。
+Beats 30.96%
+- 他人思路
+对原始数组修改, 先做行的累加, 再做列的累加, 最后再更新 grid [i][j] Beats 94.31%
+    '''
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        # 修改原始数组
+        m = len(grid)
+        n = len(grid[0])
+        for i in range(1, n):
+            grid[0][i] += grid[0][i-1]  # 先做行的累加
+        for i in range(1, m):
+            grid[i][0] += grid[i-1][0]  # 再做列的累加
+        for i in range(1, m):
+            for j in range(1, n):
+                grid[i][j] += min(grid[i-1][j], grid[i][j-1]) # 再更新 grid [i][j]
+        return grid[-1][-1]
+
+        # 自己的 dp 计算比较慢 ...
+        dp  =   list(itertools.accumulate(grid[0]))
+        rows    =   len(grid)
+        columns  =   len(grid[0])
+
+        if rows == 1:       # 只有一行则直接返回最后一个结果
+            return dp[-1]
+        
+        for i in range(1, rows):
+            for j in range(0, columns):
+                if j == 0:
+                    dp[j]   =   dp[j]   +   grid[i][j]  # 第0个需要累加原始的
+                else:
+                    dp[j]   =   min(
+                        dp[j-1] +    grid[i][j] ,# 左边一个
+                        dp[j]   +   grid[i][j]   # 上边一个
+                    )
+        
+        return dp[-1]
+        
+    '''
+- https://leetcode.com/problems/number-of-zero-filled-subarrays/
+- 2348. Number of Zero-Filled Subarrays (Medium)
+- 问题:  
+输入数组 返回都是0的子数组个数.
+Input: nums = [1,3,0,0,2,0,0,4]
+Output: 6
+- 思路:
+状态: 当前子数组的0个数; 选择: 若当前数字是0, 可以选择加入当前数字或不加入. 若不加入, 则更新当前状态数组 []
+
+用一个数组 count_0_from_pos 存储每个索引开始的包含0的子数组个数. 然后统计所有索引开始0的个数
+当前索引i开始0的个数为 
+    1.若当前索引的数字不是0, 则 count_0_from_pos[i] = 0
+    2.若当前索引数字是0, 则 count_0_from_pos[i] = count_0_from_pos[i+1] + 1
+    Beats 5.9% ..... 不过算法竟然是对的 ... 
+- 他人思路1 Beats 78.26% .. 嗯 确实是累加的思路, 统计有多少个0, 和那个 numPathSum 类似, 前缀和
+    '''
+    def zeroFilledSubarray(self, nums: List[int]) -> int: 
+        # 他人思路1
+        total_zero_subarrays = current_zero_subarrays = 0
+                
+        for num in nums:
+            if num == 0:
+                current_zero_subarrays += 1
+                total_zero_subarrays += current_zero_subarrays
+            else:
+                current_zero_subarrays = 0
+                
+        return total_zero_subarrays
+    
+        n   =   len(nums)
+        count_0_from_pos    =   [0] * (n+1)
+        i   =   n
+        
+        while i > 0:
+            if nums[i-1] == 0:
+                count_0_from_pos[i-1]   =   count_0_from_pos[i] + 1
+            else:
+                count_0_from_pos[i-1]   =   0
+            i -= 1
+        
+        return sum(count_0_from_pos)
+
+    '''
+- https://leetcode.com/problems/can-place-flowers/
+- 605. Can Place Flowers (Easy)
+- 问题:  
+输入一个坑位数组, 0表示空着，1表示种了花，输入一个数字n表示还要种的个数，种花必须保持一个坑位间隔，判断能否种n个花。
+Input: flowerbed = [1,0,0,0,1], n = 1
+Output: true
+- 思路:
+一个flag表示当前坑位能否种花，如果能种花则 计数器 n - 1，
+从0遍历坑位长度，直到结尾或者n=0退出循环。
+返回 n 是否等于0
+    '''
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        # can_plant   =   False
+        count_bed   =   len(flowerbed)
+        i           =   0
+        prev_plant  =   -1
+        while i < count_bed:
+            if n == 0:
+                break
+            print("pre plant ={} i = {}".format(prev_plant, i))
+            if prev_plant > -1 and i - prev_plant== 1:
+                
+                i   +=  1
+                continue
+            # 当前坑位可以种花
+            if i + 1 < count_bed and \
+                flowerbed[i]==0 and \
+                flowerbed[i+1]==0 :
+                prev_plant  =   i
+                
+                print("11pre plant ", prev_plant)
+                n   -=  1 
+                i +=    2
+                continue
+            elif i == count_bed-1 and flowerbed[i]==0:
+                n   -=  1
+
+            prev_plant=i
+            i +=    1
+
+        return n == 0
     '''
 - https://leetcode.com/problems/best-team-with-no-conflicts/
 - 1626. Best Team With No Conflicts (Medium)

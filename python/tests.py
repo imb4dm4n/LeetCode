@@ -288,6 +288,21 @@ class TestSorts(unittest.TestCase):
 
         
 ''' 
+python -m unittest  tests  -k TestMatrix
+'''
+class TestMatrix(unittest.TestCase):
+    def test_minPathSum(self):
+        from Matirx import Solution  as SM
+        so = SM()
+        r=so.minPathSum([[1,3,1],[1,5,1],[4,2,1]])
+        print("r= ",r)
+        self.assertEqual(r, 7)
+
+        r=so.minPathSum([[1,4,8,6,2,2,1,7],[4,7,3,1,4,5,5,1],[8,8,2,1,1,8,0,1],[8,9,2,9,8,0,8,9],[5,7,5,7,1,8,5,5],[7,0,9,4,5,6,5,6],[4,9,9,7,9,1,9,0]])
+        print("r= ",r)
+        self.assertEqual(r, 47)
+
+''' 
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
@@ -940,7 +955,45 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_canPlaceFlowers(self):
+    def test_maxSatisfaction(self):
+        # r=self.so.maxSatisfaction(satisfaction = [34,-27,-49,-6,65,70,72,-37,-57,92,-72,36,6,-91,18,61,77,-91,5,64,-16,5,20,-60,-94,-15,-23,-10,-61,27,89,38,46,57,33,94,-79,43,-67,-73,-39,72,-52,13,65,-82,26,69,67])
+        # print("r= ",r)
+        # self.assertEqual(r, 14)
+        r=self.so.maxSatisfaction(satisfaction = [-1,-8,0,5,-9])
+        print("r= ",r)
+        self.assertEqual(r, 14)
+        r=self.so.maxSatisfaction(satisfaction = [-1,-8,0,5,-9,33,100,-50,-120,500,-300,-200,-122,666,888,444])
+        print("r= ",r)
+        self.assertEqual(r, 36669)
+        r=self.so.maxSatisfaction(satisfaction = [4,3,2])
+        print("r= ",r)
+        self.assertEqual(r, 20)
+        r=self.so.maxSatisfaction(satisfaction = [-1,-4,-5])
+        print("r= ",r)
+        self.assertEqual(r, 0)
+    
+    def xtest_mincostTickets(self):
+        r=self.so.mincostTickets(days = [1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,24,25,27,28,29,30,31,34,37,38,39,41,43,44,45,47,48,49,54,57,60,62,63,66,69,70,72,74,76,78,80,81,82,83,84,85,88,89,91,93,94,97,99], costs = [9,38,134])
+        print("r= ",r)
+        self.assertEqual(r, 423)
+
+        r=self.so.mincostTickets(days = [1,3,4,5 ], costs = [2,7,15])
+        print("r= ",r)
+        # return
+        r=self.so.mincostTickets(days = [1,4,6,7,8,20], costs = [2,7,15])
+        print("r= ",r)
+        self.assertEqual(r, 11)
+    
+    def xtest_minPathSum(self):
+        r=self.so.minPathSum([[1,3,1],[1,5,1],[4,2,1]])
+        print("r= ",r)
+        self.assertEqual(r, 7)
+
+        r=self.so.minPathSum([[1,4,8,6,2,2,1,7],[4,7,3,1,4,5,5,1],[8,8,2,1,1,8,0,1],[8,9,2,9,8,0,8,9],[5,7,5,7,1,8,5,5],[7,0,9,4,5,6,5,6],[4,9,9,7,9,1,9,0]])
+        print("r= ",r)
+        self.assertEqual(r, 47)
+    
+    def xtest_canPlaceFlowers(self):
         r=self.so.canPlaceFlowers(flowerbed = [0,1,0], n = 1)
         print("种花  ", r)
         self.assertEqual(r, False   )
