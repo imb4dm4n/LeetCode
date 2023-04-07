@@ -21,11 +21,68 @@ class timer():
         return (stop - self.create)*1000
 
 '''
+python -m unittest  tests  -k TestGreedy
+'''
+class TestGreedy(unittest.TestCase):
+
+    def test_countFairPairs(self):
+        import Greedy as gd
+        so  =   gd.Solution()
+        r=so.numRescueBoats([1,2], 3)
+        print("r= ", r)
+        self.assertEqual(r, 1)
+
+        r=so.numRescueBoats([3,2,2,1], 3)
+        print("r= ", r)
+        self.assertEqual(r, 4)
+
+        r=so.numRescueBoats([3,5,3,4], limit = 5)
+        print("r= ", r)
+        self.assertEqual(r, 4)
+
+'''
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
 
-    def test_countFairPairs(self):
+    def xtest_closedIsland(self):
+        from Array import Solution as SA
+        so      =   SA()
+        print("closedIsland ")
+        # so.findTheArrayConcVal
+        inp = [
+        [0,1,1,1],
+        [0,0,0,1],
+        [0,1,1,1]]
+        r=so.closedIsland(inp)
+        print("有 {} 个岛屿".format(r))
+
+        inp = [
+        [0,1,1,1,1,1,1],
+        [0,1,0,1,0,1,0],
+        [0,1,0,1,0,1,0],
+        [0,1,1,1,1,1,0],
+        ]
+        r=so.closedIsland(inp)
+        print("有 {} 个岛屿".format(r))
+
+        inp = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]
+        r=so.closedIsland(inp)
+        print("有2= {} 个岛屿".format(r))
+
+        inp = [[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]
+        r=so.closedIsland(inp)
+        print("有1= {} 个岛屿".format(r))
+
+        inp = [[0,1,1,1,0],[1,0,1,0,1],[1,0,1,0,1],[1,0,0,0,1],[0,1,1,1,0]]
+        r=so.closedIsland(inp)
+        print("有1= {} 个岛屿".format(r))
+
+        inp = [[0,0,1,1,0,1,0,0,1,0],[1,1,0,1,1,0,1,1,1,0],[1,0,1,1,1,0,0,1,1,0],[0,1,1,0,0,0,0,1,0,1],[0,0,0,0,0,0,1,1,1,0],[0,1,0,1,0,1,0,1,1,1],[1,0,1,0,1,1,0,0,0,1],[1,1,1,1,1,1,0,0,0,0],[1,1,1,0,0,1,0,1,0,1],[1,1,1,0,1,1,0,1,1,0]]
+        r=so.closedIsland(inp)
+        print("有5= {} 个岛屿".format(r))
+
+    def xtest_countFairPairs(self):
         from Array import Solution as SA
         so      =   SA()
         print("countFairPairs ")
@@ -306,7 +363,15 @@ class TestMatrix(unittest.TestCase):
 python -m unittest  tests  -k TestStrings
 '''
 class TestStrings(unittest.TestCase):
-    def test_checkInclusion(self):
+    def test_partitionString(self):
+        from Strings import Solution
+        so      =   Solution()
+        r=so.partitionString("abacaba")
+        print("r=",r)
+        r=so.partitionString("ssssss")
+        print("r=",r)
+
+    def xtest_checkInclusion(self):
         from Strings import Solution
         so      =   Solution()
         r=so.checkInclusion(s1 = "ab", s2 = "eidboaoo")
@@ -955,7 +1020,32 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_maxSatisfaction(self):
+    def test_minFallingPathSum(self):
+        r=self.so.minFallingPathSum(matrix = [[2,1,3],[6,5,4],[7,8,9]])
+        print("r= ",r)
+        self.assertEqual(r, 13)
+        r=self.so.minFallingPathSum([[-19,57],[-40,-5]])
+        print("r= ",r)
+        self.assertEqual(r, -59)
+        r=self.so.minFallingPathSum([[13]])
+        print("r= ",r)
+        self.assertEqual(r, 13)
+        
+        
+    
+    def xtest_coinChange(self):
+        r=self.so.coinChange(coins = [1,2,5], amount = 11)
+        print("r= ",r)
+        self.assertEqual(r, 3)
+        r=self.so.coinChange(coins = [2], amount = 3)
+        print("r= ",r)
+        self.assertEqual(r, -1)
+        r=self.so.coinChange(coins = [1], amount = 0)
+        print("r= ",r)
+        self.assertEqual(r, 0)
+        
+
+    def xtest_maxSatisfaction(self):
         # r=self.so.maxSatisfaction(satisfaction = [34,-27,-49,-6,65,70,72,-37,-57,92,-72,36,6,-91,18,61,77,-91,5,64,-16,5,20,-60,-94,-15,-23,-10,-61,27,89,38,46,57,33,94,-79,43,-67,-73,-39,72,-52,13,65,-82,26,69,67])
         # print("r= ",r)
         # self.assertEqual(r, 14)
@@ -994,6 +1084,10 @@ class TestDynamicProgram(unittest.TestCase):
         self.assertEqual(r, 47)
     
     def xtest_canPlaceFlowers(self):
+        r=self.so.canPlaceFlowers(flowerbed = [1,0,0,0,1,0,0], n = 2)
+        print("种花  ", r)
+        self.assertEqual(r, True   )
+
         r=self.so.canPlaceFlowers(flowerbed = [0,1,0], n = 1)
         print("种花  ", r)
         self.assertEqual(r, False   )

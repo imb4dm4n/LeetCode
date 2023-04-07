@@ -20,6 +20,134 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/minimum-falling-path-sum/
+- 931. Minimum Falling Path Sum (Medium)
+输入 nxn 矩阵, 返回最小的坠落和.
+Input: matrix = [
+[2,1,3],
+[6,5,4],
+[7,8,9]]
+Output: 13 = 8 + 4 + 1
+- 思路: dp 类似机器人寻路到右下角, 找出最小的路径, 这里不同的是可以从顶层任意开始到最后一层任意节点
+base case 就一层, 返回当前层最小的那个
+状态: 处于不同层的特定节点;
+转移: 向下一层移动 (x+1,y), (x+1,y+1), (x+1,y-1).
+核心: 从第一层开始遍历, 尝试所有的可能直到最后一行, 得出一个最小值, 同时记录经过的每个节点最小值
+用一个2d数组交替保存每个可能的起始节点, 到每一层的对应节点的最小值. 
+因为是 nxn 正方形矩阵, 因此左上角一定可以到达右下角, 存在大量的重复计算. 
+每个cell保存它到最后一行的最小距离.
+dp函数定义: 计算并返回 从当前起始坐标 (x,y) 到最后一行的最小距离和
+[14,1,3]  [x,13]   
+[13,12]   [13,12,12]
+[7,8,9]   [7,8,9]
+Beats 19.30% ...
+- 大神思路
+直接每一行往下计算, 每个单元格可能的最小值, 最后求个 min 就可以.. Beats 46.14%
+    '''
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        # 大神
+        n   =   len(matrix)
+        for i in range(1, n):
+            for j in range(0, n):
+                matrix[i][j]    +=   min(
+                    matrix[i-1][max(0, j-1)], # the smart way
+                    matrix[i-1][min(n-1, j+1)],
+                    matrix[i-1][j],
+                )
+        return min(matrix[n-1])
+
+        # DP 方法 Beats 19.30% ...
+        n   =   len(matrix)
+        UNREACHABLE =   10001 # 限制cell的数值是 -100 ~ 100, n <= 100 , 因此路径和 < 10000
+        dp  =   [[UNREACHABLE] * n for i in range(n)]
+        dp[n-1] =   matrix[n-1]
+
+        def dp_calc_min_path_sum(x, y):
+            '''
+            计算并返回 从当前起始坐标 (x,y) 到最后一行的最小距离和
+            '''
+            if x >= n or y >= n or y < 0:
+                return UNREACHABLE
+            if x == n-1: # 最后一行直接返回
+                return matrix[x][y]
+            if dp[x][y] != UNREACHABLE:
+                return dp[x][y]
+            
+            path_sums   =   [
+                dp_calc_min_path_sum(x+1, y) + matrix[x][y],
+                dp_calc_min_path_sum(x+1, y+1) + matrix[x][y],
+                dp_calc_min_path_sum(x+1, y-1) + matrix[x][y],
+                UNREACHABLE
+            ]
+            dp[x][y]    =   min(path_sums)
+            return dp[x][y]
+        
+        res     =   UNREACHABLE
+        for j in range(n):
+            dp_calc_min_path_sum(0, j)
+            res     =   min(res, dp[0][j])
+        return res
+
+
+    '''
+- https://leetcode.com/problems/coin-change/
+- 322. Coin Change (Medium)
+- 问题:  
+输入 coins 数组表示不同面值, 一个整数 amount 表示想要的金额,返回最少需要的 coin 个数, 若凑不到返回 -1
+- 思路1: dp - top down
+amount 根据 coin 的变化而变化, 进一步修改 硬币个数.
+base case: amount = 0, 返回0
+状态: 当前要凑的金额 cur_amount
+转移: 不同的硬币选择 i , 修改状态到 cur_amount- coins[i]
+dp 函数定义: 输入一个金额 x 返回最小能够凑到的 amount 使用的 coin 个数
+Beats 37.51%
+- 思路2: dp - bottom up
+遍历 cur 从0-amount, 对应最优的硬币个数为 1 + min(choice[cur - coins_i])
+    '''
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        if not amount:
+            return 0
+        lease_coins =   [amount+1] * (amount) # 如果有面值1 那么 amount+1 将超过可能的硬币数量最大值
+        lease_coins[0]=0
+        for cur in range(amount):
+            for val in coins:
+                if cur - val < 0:
+                    continue
+                if lease_coins[cur-val] != amount +1:
+                    lease_coins[cur] = min(lease_coins[cur], 
+                                    1+ lease_coins[cur-val])
+        print(lease_coins)
+        return lease_coins[amount-2] if lease_coins[amount-2] != amount+1 else -1
+        
+
+        if not amount:
+            return  0
+        
+        INF     =   -66666
+        INF2    =   10000000
+        amount_coin =   [INF] * (amount + 1)  # 存储一个 amount 最少需要的硬币个数
+        def dp_change(cur_amount):
+            if cur_amount < 0:
+                return -1
+            if cur_amount == 0:
+                return 0
+            # 查询备忘录
+            if amount_coin[cur_amount] != INF:
+                return amount_coin[cur_amount]
+            
+            res     =   INF2
+            for val in coins:
+                sub_res =   dp_change(cur_amount - val)
+                if sub_res == -1: # 子问题无解则跳过
+                    continue
+                res = min(res,  sub_res + 1) # 否则加上当前1个硬币
+            amount_coin[cur_amount] = res if res != INF2 else -1
+            return amount_coin[cur_amount]
+        
+        dp_change(amount)
+        return amount_coin[amount]
+
+    '''
 - https://leetcode.com/problems/reducing-dishes/
 - 1402. Reducing Dishes (Hard)
 - 问题:  
@@ -30,15 +158,21 @@ Input: satisfaction = [-1,-8,0,5,-9]
 Output: 14
 Explanation: After Removing the second and last dish, the maximum total like-time coefficient will be equal to (-1*1 + 0*2 + 5*3 = 14).
 - 思路:
-base case: 不需要炒菜 0 道菜
-状态: 当前的时间满意度, 当前是第几道被炒的菜; 起始状态: 第一道菜, 时间满意度0; 终止状态: 最后一道菜, 
-选择: 是否炒这道菜.
-为了让一道菜尽量获得最大的时间满意度, 需要先排序他们.
-一个状态表示当前累积的 满意度总和, 达到最终状态时, 更新最终结果
-- 优化:
-因为会存在重复的计算, 比如到某个菜时, 可能前置条件
+大神思路: 为了让分值最大,那么只要这道菜累积到目前的贡献值是 > 0 的就做它, 否则不做.
+累加前缀和可以对同一个值 + n 次, 使得第一道菜在最后的时候是正确的索引
     '''
     def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)
+        n = len(satisfaction)
+        presum, res = 0, 0
+        for i in range(n):
+            presum += satisfaction[i]
+            if presum < 0:
+                break
+            res += presum
+        return res
+    
+
         satisfaction.sort()
         n   =  len(satisfaction) +1
         dp  =  [[0]*n for i in range(n)]
@@ -311,12 +445,67 @@ Output: 6
 输入一个坑位数组, 0表示空着，1表示种了花，输入一个数字n表示还要种的个数，种花必须保持一个坑位间隔，判断能否种n个花。
 Input: flowerbed = [1,0,0,0,1], n = 1
 Output: true
+- 大神思路
+count - number of flowers we can plant
+prev - what was on the previous plot
+prev | cur
+...1 | 0 => can't plant => prev = 0
+...0 | 1 => can't plant => prev = 1
+...0 | 0 => can plant!! => count++; prev = 1
+...1 | 1 => violation!!! => count--; prev = 1
+
 - 思路:
+状态：当前索引 offset 坑位是否种花，若遇到已经中了花，则移动到下一个坑位。
+    当前坑位能否种花的前提是: prev=0, next=0,cur=0
+选择： 种花或者不种
 一个flag表示当前坑位能否种花，如果能种花则 计数器 n - 1，
 从0遍历坑位长度，直到结尾或者n=0退出循环。
 返回 n 是否等于0
     '''
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        count, prev = 0, 0
+
+        for cur in flowerbed:
+            if cur == 1:
+                if prev == 1: # violation!
+                    count -= 1
+                prev = 1
+            else:
+                if prev == 1: # can't plant
+                    prev = 0 
+                else:
+                    count += 1
+                    prev = 1 # the cur plot gets taken
+            
+        return count >= n
+        count   =   len(flowerbed)
+        def plant_flower(offset, res_to_plant):
+            '''
+            在当前 offset 种花, 返回最后还有几个花要种
+            '''
+            if offset >= count or res_to_plant == 0:
+                return res_to_plant
+
+            if offset == count-1:
+                return res_to_plant - 1
+
+            if offset == 0 and \
+                offset + 1 < count and \
+                flowerbed[offset] == 0 and\
+                flowerbed[offset+1] == 0:
+                # flowerbed[offset]   =   1
+                return plant_flower(offset+2, res_to_plant-1)
+            
+            if flowerbed[offset] == 0 and \
+                offset + 1 < count and flowerbed[offset+1] == 0:
+                # flowerbed[offset]   =   1
+                return plant_flower(offset+2, res_to_plant-1)
+            # 边界情况
+
+            return plant_flower(offset+2,res_to_plant)
+        
+        return plant_flower(0, n)==0
+
         # can_plant   =   False
         count_bed   =   len(flowerbed)
         i           =   0
