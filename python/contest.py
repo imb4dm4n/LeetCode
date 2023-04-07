@@ -10,7 +10,264 @@ from bisect import *
 
 bs  =   SB()
 
+from collections import *
+'''
+-   
+- 问题:     
+- 思路:  
+'''
 
+'''
+- https://leetcode.com/contest/weekly-contest-339/problems/mice-and-cheese/
+- 问题:    6364. Mice and Cheese
+ 
+- 思路:  
+'''
+
+'''
+-   https://leetcode.com/contest/weekly-contest-339/problems/convert-an-array-into-a-2d-array-with-conditions/ 
+- 问题:    6363. Convert an Array Into a 2D Array With Conditions
+输入一个数组, 构造一个 2d 数组, 每一行都是不同的数字, 并且行数最少. 
+- 思路:  
+用计数器统计所有数字个数, 当任意数字的个数大于0时, 加入到当前数组,
+并把所有的都 - 1
+'''
+class Solution:
+    def findMatrix(self, nums: List[int]) -> List[List[int]]:
+        cn  =   Counter(nums)
+        res     =   []
+        while sum(cn.values()) > 0:
+            tmp     =   []
+            for n,c in cn.items():
+                if c > 0:
+                    tmp.append(n)
+                    cn[n] = c - 1
+            res.append(tmp)
+        return res
+
+
+
+so = Solution()
+r=so.findMatrix(nums = [1,3,4,1,2,3,1])
+print("r=", r)
+r=so.findMatrix(nums = [1,2,3,4])
+print("r=", r)
+
+exit(0)
+
+'''
+-   https://leetcode.com/contest/weekly-contest-339/problems/find-the-longest-balanced-substring-of-a-binary-string/ 
+- 问题:    6362. Find the Longest Balanced Substring of a Binary String
+输入一个二进制数字符串，一个子串是平衡的：0在1前面，且他们的个数是一样。 找出最长的平衡子串的长度。
+Input: s = "01000111"
+Output: 6
+Explanation: The longest balanced substring is "000111", which has length 6.
+- 思路:  
+边界情况： 都是0或者1， 直接返回0
+平衡问题, 感觉是用栈, 用0栈和1栈.
+初始化 need_calc = False
+遍历当前的字符, 遇到0加入0栈, 遇到1加入1栈,
+若0和1数量都大于0,则开始计算是否平衡 ?
+
+'''
+class Solution:
+    def findTheLongestBalancedSubstring(self, s: str) -> int:
+        if '0' not in s or \
+            '1' not in s:
+            return 0
+        
+        # print("\n\ns= ", s)
+        stack_0, stack_1    =[],[]
+        longest     =   0
+        for i,c in enumerate(s):
+            if len(stack_1) > 0 and c == '0':
+                # 存在1 但是遇到0了, 需要清除
+                stack_0, stack_1    =[],[]
+                # print("存在1 但是遇到0了, 需要清除 ",i, stack_0, stack_1)
+
+            if c == '0':
+                stack_0.append(c)
+            else:
+                stack_1.append(c)
+            
+            if len(stack_0) > 0 and \
+                len(stack_1) > 0:
+                longest     =   max(longest, 2 * min(len(stack_0), len(stack_1)))
+                # print("longse = {} s0 {} s1 {}".format(longest, len(stack_0), len(stack_1)))
+                # stack_0, stack_1    =[],[]
+            
+        return longest
+
+so = Solution()
+r=so.findTheLongestBalancedSubstring(s = "01000111")
+print("r=", r)
+
+r=so.findTheLongestBalancedSubstring(s = "01010100011001")
+print("r=", r)
+
+r=so.findTheLongestBalancedSubstring(s = "00111")
+print("r=", r)
+
+r=so.findTheLongestBalancedSubstring(s = "111")
+print("r=", r)
+
+exit(0)
+
+'''
+-  https://leetcode.com/contest/weekly-contest-337/problems/the-number-of-beautiful-subsets/
+-  6352. The Number of Beautiful Subsets
+- 问题:    
+输入一组数字找到所有子数组, 任意两个数字的差的绝对值不等于k, 统计子数组个数
+
+- 思路: 
+动态规划, 添加一个新的数字前提是, 他的 +-k的目标不在已经存在的map中
+'''
+import copy 
+class Solution:
+    def beautifulSubsets(self, nums: List[int], k: int) -> int:
+        total_count =   0
+        def bp_add_num(datas:list, want_cur:bool, prev_map:dict):
+            nonlocal total_count,k
+            if not datas:
+                return
+            
+            # tmp=copy.deepcopy(prev_map)
+            print("datas: {} prev_map {} want_cur {}".format(datas, prev_map, want_cur))
+            has_cur =   False
+            if want_cur:
+                n   =   datas[0]
+                if not prev_map[n+k] and not prev_map[n-k]:
+                    print("n={} datas: {} , prevmap= {} c={}".format(n, datas,prev_map, total_count))
+                    total_count +=  1
+                    prev_map[n] +=  1
+                    has_cur =   True
+            #     bp_add_num(datas[1:], True, prev_map)
+            #     bp_add_num(datas[1:], False, prev_map)
+            # else:
+            bp_add_num(datas[1:], True, prev_map)
+            bp_add_num(datas[1:], False, prev_map)
+            # if has_cur:
+            #     prev_map[n] -=  1
+        
+        pm  =   defaultdict(int)
+        bp_add_num(nums, True, pm)
+        pm  =   defaultdict(int)
+        bp_add_num(nums, False, pm)
+        return total_count
+
+
+so= Solution()
+r=so.beautifulSubsets(nums = [2,4,6], k = 2)
+print("r= {} == 4 ?".format(r))
+r=so.beautifulSubsets([4,2,5,9,10,3] , 1)
+print("r= {} == 23 ?".format(r))
+exit(0)
+r=so.beautifulSubsets(nums = [2,4,6,8], k = 2)
+print("r= {} == 4 ?".format(r))
+r=so.beautifulSubsets( nums = [1], k = 1)
+print("r= ", r)
+exit(0)
+
+'''
+-  https://leetcode.com/contest/weekly-contest-337/problems/check-knight-tour-configuration/
+-  6322. Check Knight Tour Configuration
+- 问题:    
+输入一个数字, 返回二进制上在 奇数索引和偶数索引有多少个1
+Input: n = 17
+Output: [2,0]
+Explanation: The binary representation of 17 is 10001. 
+It contains 1 on the 0th and 4th indices. 
+There are 2 even and 0 odd indices.
+
+- 思路: 
+'''
+
+'''
+-  https://leetcode.com/contest/weekly-contest-337/problems/number-of-even-and-odd-bits
+-  6319. Number of Even and Odd Bits
+- 问题:    
+输入一个数字, 返回二进制上在 奇数索引和偶数索引有多少个1
+Input: n = 17
+Output: [2,0]
+Explanation: The binary representation of 17 is 10001. 
+It contains 1 on the 0th and 4th indices. 
+There are 2 even and 0 odd indices.
+
+- 思路: 
+'''
+class Solution:
+    def evenOddBit(self, n: int) -> List[int]:
+        index   =   0
+        c_odd,c_eve =   0,0
+        while n:
+            if n & 1:
+                if not index&1:
+                    c_eve   +=  1
+                else:
+                    c_odd   +=  1
+            n//=2
+            index   +=  1
+        return [c_eve, c_odd]
+
+so= Solution()
+r=so.evenOddBit(17)
+print("r= ", r)
+r=so.evenOddBit(2)
+print("r= ", r)
+
+'''
+- https://leetcode.com/contest/weekly-contest-336/problems/rearrange-array-to-maximize-prefix-score/
+- 6316. Rearrange Array to Maximize Prefix Score
+- 问题:   
+输入一组数字, 对他们进行重排序, 使得他们的前缀和数组 prefix_sums 能够尽可能多的有正数,
+一个正数算1分, 问最多可以得到多少分? 
+Input: nums = [2,-1,0,1,-3,3,-3]
+Output: 6
+Explanation: We can rearrange the array into nums = [2,3,1,-1,-3,0,-3].
+prefix = [2,5,6,5,2,2,-1], so the score is 6.
+It can be shown that 6 is the maximum score we can obtain.
+- 思路: 
+'''
+
+
+'''
+- https://leetcode.com/contest/weekly-contest-336/problems/rearrange-array-to-maximize-prefix-score/
+- 6316. Rearrange Array to Maximize Prefix Score
+- 问题:   
+输入一组数字, 对他们进行重排序, 使得他们的前缀和数组 prefix_sums 能够尽可能多的有正数,
+一个正数算1分, 问最多可以得到多少分? 
+Input: nums = [2,-1,0,1,-3,3,-3]
+Output: 6
+Explanation: We can rearrange the array into nums = [2,3,1,-1,-3,0,-3].
+prefix = [2,5,6,5,2,2,-1], so the score is 6.
+It can be shown that 6 is the maximum score we can obtain.
+- 思路: 
+'''
+class Solution:
+    def get_score(self, nums):
+        res = 0 
+        for n in nums:
+            if n>0:
+                res += 1
+        return res
+
+    def maxScore(self, nums: List[int]) -> int:
+        nums=sorted(nums, key=lambda x:-x)
+        # print("sorted nums ", nums)
+        prefix_sums =   list(accumulate(nums))
+        # print(prefix_sums)
+
+        sc = self.get_score(prefix_sums)
+        # print("max score = ", sc)
+        return sc
+
+so = Solution()
+so.maxScore([2,3,1,-1,-3,0,-3])
+so.maxScore([-2,-3,0])
+so.maxScore([-2 ])
+so.maxScore([2 ])
+
+exit(0)
 def maxNumOfMarkedIndices(nums: List[int]) -> int:
     c   =   0
     times   =   len(nums) // 1
