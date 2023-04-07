@@ -74,6 +74,178 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/number-of-enclaves/
+- 1020. Number of Enclaves (Medium)
+- 问题:  
+given a mxn matrix grid, where 0 represent a sea cell and 1 represent a land cell. 在一个大陆上可以上下左右移动 或离开边界, 返回移动任意次数都无法到达边界的 land 个数
+- tag: matrix 
+- 思路:
+昨天那道题直接拿来用, 对边界上的1全部感染成0, 最后统计 1 的个数即可
+Beats 84%
+    '''
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        m,n=len(grid), len(grid[0])
+
+        def dp_mark(x, y, mark):
+            '''
+            把 x-y 坐标相连的所有可修改节点标记为 mark
+            '''
+            if x >= m or y >= n or x < 0 or y < 0:
+                return
+            if grid[x][y] != mark:
+                grid[x][y] = mark
+                dp_mark(x-1,y,mark)
+                dp_mark(x+1,y,mark)
+                dp_mark(x,y-1,mark)
+                dp_mark(x,y+1,mark)
+        for i in range(m):
+            dp_mark(i,0, 0)
+            dp_mark(i,n-1, 0)
+        for i in range(n):
+            dp_mark(0,i, 0)
+            dp_mark(m-1,i, 0)
+        c = 0
+        for i in range(1,m):
+            for j in range(1,n):
+                c +=grid[i][j]
+        return c
+    '''
+- https://leetcode.com/problems/number-of-closed-islands/
+- 1254. Number of Closed Islands (Medium)
+- ref 1020. Number of Enclaves 463. Island Perimeter
+- 问题:  
+输入一个2d矩阵, 0 表示大陆 1 表示海洋, 返回有多少个完全被海洋包围的 岛屿
+Input: grid = [[1,1,1,1,1,1,1],
+               [1,0,0,0,0,0,1],
+               [1,0,1,1,1,0,1],
+               [1,0,1,0,1,0,1],
+               [1,0,1,1,1,0,1],
+               [1,0,0,0,0,0,1],
+               [1,1,1,1,1,1,1]]
+Output: 2
+- tag: 广度优先遍历/矩阵
+- 思路:
+根据提示，去掉周边的大陆0；统计剩下 连接的0的个数。
+[0,1,1,1]
+[0,0,0,1]
+[0,1,1,1]
+首先用x标记被去掉的大陆(把四周都遍历一次):
+[x,1,1,1]
+[x,0,0,1]
+[x,1,1,1]
+一开始需要dfs把所有周边的 0 大陆转换为海洋，这样不会影响结果。
+用一个变量表示当前 大陆id i=2, 遍历每个单元, 若当前为0并且四周存在一个非海洋（1）的单元，则设置当前单元为对应的值, 若四周都是1，则增加大陆计数器 i = 3，若遇到x标记则不增加大陆计数器. 
+会遗漏一种奇葩情况. 
+[[0,1,1,1,0],
+[1,0,1,0,1],
+[1,0,1,0,1],
+[1,0,0,0,1],
+[0,1,1,1,0]] ... 看来要找到一个新大陆, 递归的把所有连接的大陆都标记上去
+Beats 62.45%
+    '''
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        m=len(grid)
+        n=len(grid[0])
+        if m<2 or n < 2:
+            return 0
+        
+        def infect_island(p,q, mark):
+            '''
+            对 p-q 坐标标记为 mark 的大陆, 感染周围的大陆
+            '''
+            if p ==m or q == n or p<0 or q<0:
+                return
+            if  grid[p][q] == 0:
+                grid[p][q] = mark
+                # print("infect_island on [{}][{}] = {}".format(p,q, grid[p][q]))
+                infect_island(p+1,q,mark)
+                infect_island(p-1,q,mark)
+                infect_island(p,q+1,mark)
+                infect_island(p,q-+1,mark)
+
+        def print_grid():
+            print("\n")
+            for t in range(m):
+                print(grid[t])
+        # print_grid()
+
+        for i in range(m):
+            if grid[i][0] == 0:
+                infect_island(i,0,1)
+            if grid[i][n-1] == 0:
+                infect_island(i,n-1,1)
+        for i in range(n):
+            if grid[0][i] == 0:
+                infect_island(0,i,1)
+            if grid[m-1][i] == 0:
+                infect_island(m-1,i,1)
+
+        i = 1
+        def get_surrounding(a,b):
+            '''
+            获取周边的大陆id, 若不存在大陆, 则创建一个新的大陆 id
+            '''
+            nonlocal i
+            land_or_sea=[0,1]
+            # print("work on [{}][{}] = {}".format(a,b, grid[a][b]))
+            if grid[a-1][b] not in land_or_sea:
+                return grid[a-1][b]
+            elif grid[a][b-1]  not in land_or_sea:
+                return grid[a][b-1]
+            elif grid[a+1][b]  not in land_or_sea:
+                return grid[a+1][b]
+            elif grid[a][b+1]  not in land_or_sea:
+                return grid[a][b+1]
+            # 上下左右要么是海 要么是没有标记的新大陆, 则增加大陆计数器
+            i += 1
+            return i
+        
+        for x in range(1,m):
+            for y in range(1,n):
+                # 当前是大陆 才进行标记
+                if grid[x][y] == 0:
+                    t  =   get_surrounding(x,y)
+                    # print("t=",t)
+                    infect_island(x,y,t)
+                    
+        # print_grid()
+        return i-1
+    '''
+- https://leetcode.com/problems/advantage-shuffle/
+- 870. Advantage Shuffle (Medium)
+- 问题:  
+输入两个数组 num1, num2, 可以对num1修改, 尽量使得 num1[i] > num2[i]; 优势洗牌
+- tag: 决策 优势洗牌
+- 思路:
+把 num2 加入最大堆 (num, index), 并对 num1 从小到大排序, 若num1最大值都小于 num2 最大值, 那么取出
+num1[left] 作为index上的值, 
+Beats 45.42%
+    '''
+    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        max_queue   =   []
+        left, right =   0,  len(nums1) - 1
+        count       =   len(nums2)
+        res         =   [0]*count
+        nums1.sort()
+
+
+        for i,n in enumerate(nums2):
+            heapq.heappush(max_queue, (-n, i))
+        
+        for i in range(count):
+            n,i     =   heapq.heappop(max_queue)
+            # 相等也要替换掉
+            if -n >= nums1[right]:
+                res[i]  =   nums1[left]
+                left    +=  1
+            else:
+                res[i]  =   nums1[right]
+                right   -=  1
+        
+        return res
+    
+
+    '''
 - https://leetcode.com/contest/weekly-contest-332/problems/count-the-number-of-fair-pairs/
 - replace with problem title
 - 问题:  
