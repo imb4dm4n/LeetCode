@@ -20,6 +20,63 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/unique-paths-ii/
+- 63. Unique Paths II (Medium)
+- 问题:  
+输入一个矩阵, 1 表示障碍物, 求左上角到右下角的唯一路径个数.
+Input: obstacleGrid = [
+    [0,0,0],
+    [0,1,0],
+    [0,0,0]]
+Output: 2
+- 思路:
+base case: (0,0) 坐标是1 返回0
+状态: 当前坐标, 有多少个唯一路径到 右下角
+选择: 向下或者向右移动
+dp数组定义: 从 (0,0) 到当前坐标的唯一路径个数. dp(x,y)= dp(x-1,y) + dp(x,y-1)
+dp函数定义: 计算并返回 从 (0,0) 当前坐标 (x,y)的唯一路径个数,若当前 cell=1 则 dp(x,y) = 0
+Beats 69.53%
+    '''
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        # Beats 96.62%
+        m,n     =   len(obstacleGrid), len(obstacleGrid[0])
+        dp  =   [0] * n
+        if obstacleGrid[0][0] == 1 or obstacleGrid[m-1][n-1] == 1:
+            return 0
+        dp[0] = 1
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j] == 1:
+                    dp[j]   =   0
+                elif j > 0:
+                    dp[j] += dp[j-1]
+        return dp[n-1]
+
+        
+        m,n     =   len(obstacleGrid), len(obstacleGrid[0])
+        dp  =   [[0] *n for i in range(m)] # 初始化 mxn dp矩阵
+        if obstacleGrid[0][0] == 1 or obstacleGrid[m-1][n-1] == 1:
+            return 0
+        
+        for i in range(n):  # 初始化第一行, 遇到障碍直接break
+            if obstacleGrid[0][i] == 0:
+                dp[0][i] = 1
+            else:
+                break
+
+        for i in range(m):  # 初始化第一列, 遇到障碍直接break
+            if obstacleGrid[i][0] == 0:
+                dp[i][0] = 1
+            else:
+                break
+        for i in range(1,m):
+            for j in range(1,n):
+                if obstacleGrid[i][j] == 1: # 遇到障碍单元直接跳过
+                    continue
+                dp[i][j] = dp[i][j-1] + dp[i-1][j] # 非障碍单元则计算结果
+                
+        return dp[m-1][n-1]
+    '''
 - https://leetcode.com/problems/minimum-falling-path-sum/
 - 931. Minimum Falling Path Sum (Medium)
 输入 nxn 矩阵, 返回最小的坠落和.

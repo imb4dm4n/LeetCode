@@ -1020,7 +1020,23 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_minFallingPathSum(self):
+    def test_uniquePathsWithObstacles(self):
+        r=self.so.uniquePathsWithObstacles([[0,0,0],[0,1,0],[0,0,0]])
+        print("r= ",r)
+        self.assertEqual(r, 2)
+        r=self.so.uniquePathsWithObstacles([[0,1],[0,0]])
+        print("r= ",r)
+        self.assertEqual(r, 1)
+        r=self.so.uniquePathsWithObstacles([
+            [0,0,1,0],
+            [1,0,0,0],
+            [0,0,1,0],
+            [0,0,0,0],
+            [0,0,0,0]])
+        print("r= ",r)
+        self.assertEqual(r, 4)
+    
+    def xtest_minFallingPathSum(self):
         r=self.so.minFallingPathSum(matrix = [[2,1,3],[6,5,4],[7,8,9]])
         print("r= ",r)
         self.assertEqual(r, 13)
