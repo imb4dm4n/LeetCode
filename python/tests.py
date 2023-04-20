@@ -810,7 +810,31 @@ python -m unittest  tests  -k TestBinaryTree
 class TestBinaryTree(unittest.TestCase):
 
 
-    def test_BrowserHistory(self):
+    def test_widthOfBinaryTree(self):
+        so  =   SBT()
+        inp     =   [1,3,2,5,null,null,9,6,null,7]
+        root    =   list_2_tree(inp)
+        r=so.widthOfBinaryTree(root)
+        print("r =7?  ", r )
+        inp     =   [1,3,2,5]
+        root    =   list_2_tree(inp)
+        r=so.widthOfBinaryTree(root)
+        print("r =2 ? ", r )
+        inp     =    [1,3,2,5,3,null,9]
+        root    =   list_2_tree(inp)
+        r=so.widthOfBinaryTree(root)
+        print("r =4 ? ", r )
+        inp     =    [1,3,2,null,3,9,null,9]
+        root    =   list_2_tree(inp)
+        r=so.widthOfBinaryTree(root)
+        print("r =2 ? ", r )
+        inp     =    [0,0,0,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null,null,0,0,null]
+        root    =   list_2_tree(inp)
+        r=so.widthOfBinaryTree(root)
+        print("r =2 ? ", r )
+
+
+    def xtest_BrowserHistory(self):
         from BinaryTree import BrowserHistory as bh
         browserHistory  =   bh('www.leetcode.com')
         browserHistory.visit("google.com")
@@ -990,7 +1014,26 @@ class TestStackProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
 
-    def test_dailyTemperatures(self):
+    def test_validateStackSequences(self): 
+        ret = self.so.validateStackSequences(pushed = [1,2,3,4,5], popped = [4,5,3,2,1])
+        print("r = ",ret)
+        ret = self.so.validateStackSequences(pushed = [1,2,3,4,5], popped = [4,3,5,1,2])
+        print("r = ",ret)
+        ret = self.so.validateStackSequences(pushed = [1], popped = [3])
+        print("r = ",ret)
+
+    def xtest_simplifyPath(self): 
+        ret = self.so.simplifyPath("/home/../../../../hunter/")
+        print("r = ",ret)
+        ret = self.so.simplifyPath("/home/../././../.././/..//hunter/")
+        print("r = ",ret)
+        ret = self.so.simplifyPath("/home/../././../.././/..//hunter/...")
+        print("r = ",ret)
+        ret = self.so.simplifyPath("/..")
+        print("r = ",ret)
+        return
+
+    def xtest_dailyTemperatures(self):
         temps   =   [73,74,75,71,69,72,76,73]
         ret = self.so.dailyTemperatures(temps)
         print(ret)

@@ -22,6 +22,38 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/optimal-partition-of-string/
+- 2405. Optimal Partition of String (Medium)
+- 问题:  双指针
+输入一个字符串, 返回所有子串组合中, 组合个数是最少的. 其中每个子串包含的字符是唯一的
+- 思路:
+子串个数最少, 需要每个唯一的字符串尽可能的长一些. 
+    '''
+    def partitionString(self, s: str) -> int:
+        res     =   []
+        s   =   list(s)
+        s=sorted(s)
+        while len(s) > 0 :
+            tmp = ''
+            slow,fast =0,0
+            l   =   len(s)
+            while fast < l:
+                if slow == 0:
+                    tmp += s[slow]
+                    slow += 1
+                    fast += 1
+                    continue
+                if tmp[slow]!= s[fast]:
+                    tmp += s[fast]
+                    slow += 1
+                fast += 1
+            res.append(tmp)
+        return len(res)
+                # else:
+                #     fast += 1
+
+        pass
+    '''
 - https://leetcode.com/problems/permutation-in-string/
 - 567. Permutation in String (Medium)
 - 问题:  
@@ -628,7 +660,7 @@ Memory Usage: 15.3 MB, less than 33.93% of Python3 online submissions for Revers
 - https://leetcode.com/problems/group-anagrams/
 - 49. Group Anagrams(medium)
 - 问题:  
-输入一组字符串, 把回文字符串组合成子数组. 这里的回文指的是用同样的字符列表, 组成不同的单词即可.
+输入一组字符串, 把回文字符串组合成子数组. 这里的指的是用同样的字符列表, 组成不同的单词即可.
 - 思路:
 ~~非常简单, 遍历一遍字符串数组, 每个都计算set, 写入到字典即可.~~
 排序字符串后, 转为字符串 再写入字典

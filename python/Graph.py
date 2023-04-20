@@ -22,6 +22,23 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/    
+- 2316. Count Unreachable Pairs of Nodes in an Undirected Graph (Medium)
+- 问题:  
+输入包含n个节点的无向图, 返回两两不连接的接点对个数.
+- tag: Graph
+- 思路:
+对于一个节点而言， 有两个属性:
+    1.可以到达的节点个数 2.不可到达的节点个数
+对于可到达的节点而言，对应的每个节点都是可以互相到达，而他们也共享不可到达的节点个数。
+因此对输入的图按照是否可互相到达 进行聚类，然后统计类的个数。
+[4,1,2] => 4 x (1+2) + 1 x 2 = 14
+    '''
+    def countPairs(self, n: int, edges: List[List[int]]) -> int:
+        group_counter   =   []  # 每一个表示互相可到达的节点个数
+        
+
+    '''
 - https://leetcode.com/problems/find-the-town-judge/
 - 997. Find the Town Judge (easy)
 - 问题:  

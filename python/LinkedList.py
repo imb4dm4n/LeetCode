@@ -115,7 +115,7 @@ class MedianFinder:
         #     return  (self.data[mid-1] + self.data[mid]) / 2
         # else:
         #     return self.data[int(self.data.__len__() / 2)]
-
+import time
 class Solution:
     '''
 - replace with url
@@ -125,6 +125,52 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    
+    '''
+- https://leetcode.com/problems/linked-list-random-node/
+- 382. Linked List Random Node (Medium)
+- 问题:  
+输入一个链表, 随机的返回一个值, 每个节点的概率必须一样.
+- 思路:
+计算链表长度, 根据毫秒级的时间, 得出一个时间戳, 对长度取余得到m, 移动m次返回.
+注意: 如果时间戳的变化范围小于链表长度, 会导致后面的节点不会被选取到. time.time 能够得到 7824.7159288 一百万的长度够了. 
+若不对链表长度计数, 则让链表成环移动即可, 当遇到结尾时, 移动到链表头
+    '''
+    def __init__(self, head: Optional[ListNode]):
+        self.head = head
+        # self.list_len   =   0
+
+    def getRandom(self) -> int: 
+        time.sleep(0.001)
+        random  =   int(time.time()*10000) & 0x3fff
+        t_random=   random
+        tmp     =   self.head
+        while random > 0:
+            if tmp:
+                tmp     =   tmp.next
+            else:
+                break
+            random  -=  1
+        
+        # print("random ", random)
+        # 说明random大于链表总长度, 取模
+        if not tmp and random > 0:
+            # print("r={} list_len={} mod = {}".format(t_random, random, t_random % random))
+            random  =   t_random % (t_random-random)
+            tmp     =   self.head
+            while random > 0:
+                if tmp:
+                    tmp     =   tmp.next
+                else:
+                    break
+                random  -=  1
+        
+        if not tmp :
+            # print("overflow return head")
+            return self.head.val
+        
+        return tmp.val
+
     '''
 - https://leetcode.com/problems/palindrome-linked-list/
 - 234. Palindrome Linked List (Easy)

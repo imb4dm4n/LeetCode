@@ -74,6 +74,57 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/merge-strings-alternately/
+- 1768. Merge Strings Alternately (Easy)
+- 问题:  
+输入两个字符串, 按照特定顺序合并成一个字符串, 如果一个字符串太长, 把多余的直接增加到合并的末尾
+Input: word1 = "ab", word2 = "pqrs"
+Output: "apbqrs"
+Explanation: Notice that as word2 is longer, "rs" is appended to the end.
+word1:  a   b 
+word2:    p   q   r   s
+merged: a p b q   r   s
+- 思路:
+求短的字符串长度, 对长的做切片, 然后迭代 1 ~ n 加入返回字符串 Beats / 80.23%
+    '''
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        res     =   ''
+        short   =   0
+        if len(word1) > len(word2):
+            short   =   len(word2)
+            end     =   word1[short:]
+        else:
+            short   =   len(word1)
+            end     =   word2[short:]
+        
+        for i in range(short):
+            res +=  word1[i]
+            res +=  word2[i]
+        res     +=  end
+        return res
+
+    '''
+- https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/
+- 1431. Kids With the Greatest Number of Candies (Easy)
+- 问题:  
+有n个小孩, 输入一个数组 candies 表示每个小孩拥有的蜡烛数量, 你有 m 个蜡烛, 返回一个数组每个表示 对应的小孩加上 m 能够成为最大值.
+- 思路:
+找出最大的蜡烛数, 减去每一个小孩拥有的数量, 对比 m 和 每个小孩缺的蜡烛数量是否小于等于m Beats / 96.42%
+    '''
+    def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
+        # 大神 Beats 90.72%
+        high_enough =   max(candies) - extraCandies
+        return [i >= high_enough for i in candies]
+        # mine
+        res     =   []
+        max_candy   =   max(candies)
+        for candy in candies:
+            if extraCandies >= max_candy - candy:
+                res.append(True)
+            else:
+                res.append(False)
+        return res
+    '''
 - https://leetcode.com/problems/number-of-enclaves/
 - 1020. Number of Enclaves (Medium)
 - 问题:  

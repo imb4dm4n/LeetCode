@@ -272,6 +272,81 @@ replace with your idea.
     '''
 
     '''
+- https://leetcode.com/problems/maximum-width-of-binary-tree/
+- 662. Maximum Width of Binary Tree (Medium)
+- 问题:  
+输入二叉树, 找出最宽的那一层的宽度. 宽度由最左边非空节点到最右非空节点构成的宽度(其中null节点也被计算, 但是最右边后面的 null 不算)
+- 思路:
+BFS遍历每一层, 遇到空节点时, 往下一层加入两个空节点, 如果当前层是 [a,b,nul,nul,nul] 则宽度为2, 若当前层是 [a,nul,nul,nul] 宽度为0, 若当前层是 [a,nul,nul,b,nul]则宽度为4
+    '''
+    def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        res     =   0
+        if not root:
+            return res
+        bfs =   [root]
+        max_width   =   0
+        while bfs:
+            level_len   =   len(bfs)
+            # print(level_len)
+            # need to calculate current level width
+            left,right   =   0, level_len - 1
+            while left < right:
+                if bfs[left] == None:
+                    left    +=  1
+                if bfs[right] == None:
+                    right    -=  1
+                if bfs[left] and bfs[right]:
+                    break
+            if left > right:
+                break
+            max_width   =   max(max_width, right - left + 1)
+            # print("max width ", max_width)
+
+            while level_len > 0:
+                node    =   bfs.pop(0)
+                if node:
+                    bfs.append(node.left)
+                    bfs.append(node.right)
+                else:
+                    bfs.append(None)
+                    bfs.append(None)
+                level_len   -=  1
+        return max_width
+
+
+    '''
+- https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
+- 1372. Longest ZigZag Path in a Binary Tree (Medium)
+- 问题:  
+输入一个二叉树, 可以做以下操作
+1.随意选择一个节点和方向
+2.根据方向移动到下一个节点
+3.与前一个方向相反选择另一个方向移动
+4.一直移动直到无法再移动
+返回经过节点数最多的路径. 起始节点不算经过的节点
+- 思路:
+对于一个节点来说, 选择左或者右, 其返回值是确定的. 每一个节点计算根据前一个选择得到的结果返回, 
+以及与前一个选择相反 得到的, 与 max_len 对比.
+前序 DFS 遍历, 返回当前节点构成最长的 节点数量
+    '''
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        max_len     =   0
+        left,right,unknown    =   0,1,2
+        def dfs_zig_zag(node:TreeNode, direction:int):
+            '''
+            direction = True 表示当前层需要选择右节点
+            '''
+            if not node:
+                return 0
+            if direction == left:
+                desire  =   1 + dfs_zig_zag(node.left, right)
+            elif direction == right:
+                desire  =   1 + dfs_zig_zag(node.right, left)
+            else:
+                the_other_way   =   0 + dfs_zig_zag(node.right, left)
+            
+
+    '''
 - https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/description/
 - 106. Construct Binary Tree from Inorder and Postorder Traversal (Medium)
 - 问题:  
