@@ -20,6 +20,37 @@ replace with problem description
 replace with your idea.
     '''
     '''
+- https://leetcode.com/problems/count-ways-to-build-good-strings/
+- 2466. Count Ways To Build Good Strings (Medium)
+- 问题:  
+输入数字  zero, one, low, and high, 构造一个字符串长度在 [low,high]: 添加 zero 次 0 或者 添加任意 one 次 1, 返回有多少个不同的符合条件的字符串, 返回 modulo 10^9 + 7
+- 思路: 类似凑硬币
+状态: 当前字符串的长度
+转移: 增加 zero 次0 或者 one 次1,
+计算长度小于 lo 的符合条件的字符串个数, 计算长度小于 high 的个数,
+然后相减就可以得到? 
+计算从 1 到 lo 每个长度的符合的个数, 
+Beats 10.24%
+    '''
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        # 大神
+        dp = Counter({0: 1})
+        mod = 10 ** 9 + 7
+        for i in range(1, high + 1):
+            dp[i] = (dp[i - zero] + dp[i - one]) % mod
+        return sum(dp[i] for i in range(low, high + 1)) % mod # 累加 low~high
+    
+        res =   [0] * (high + 1)
+        for i in range(high+1):
+            if i - zero>=0:
+                res[i]  +=  res[i-zero] + 1
+            if i - one>=0:
+                res[i]  +=  res[i-one] + 1
+            # res[i]  =   res[]
+        # print(res)
+        # print("{} - {} ret = {}".format(res[high],res[low-1],(res[high] - res[low-1])))
+        return (res[high] - res[low-1]) %( 1000000007)
+    '''
 - https://leetcode.com/problems/unique-paths-ii/
 - 63. Unique Paths II (Medium)
 - 问题:  

@@ -41,9 +41,39 @@ class TestGreedy(unittest.TestCase):
         self.assertEqual(r, 4)
 
 '''
+python -m unittest  tests  -k TestSlideWindow
+'''
+class TestSlideWindow(unittest.TestCase):
+
+    def test_maxVowels(self):
+        from SlideWindow import Solution as SSW
+        so      =   SSW()
+        r=so.maxVowels("abciiidef", 3)
+        print(r)
+        self.assertEqual(r, 3)
+
+'''
 python -m unittest  tests  -k TestArray
 '''
 class TestArray(unittest.TestCase):
+
+    def test_spiralOrder(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.spiralOrder([[1,2,3],[4,5,6],[7,8,9]])
+        print(r)
+
+    def xtest_numSubseq(self):
+        from Array import Solution as SA
+        so      =   SA()
+        r=so.numSubseq([3,5,6,7], 9)
+        self.assertEqual(r, 4)
+
+        r=so.numSubseq([3,5,6,7], 10)
+        self.assertEqual(r, 6)
+
+        r=so.numSubseq([2,3,3,4,6,7], 12)
+        self.assertEqual(r, 61)
 
     def xtest_closedIsland(self):
         from Array import Solution as SA
@@ -1063,7 +1093,13 @@ class TestDynamicProgram(unittest.TestCase):
         self.t.stop()
         return super().tearDown()
     
-    def test_uniquePathsWithObstacles(self):
+    def test_countGoodStrings(self):
+        r=self.so.countGoodStrings(low = 3, high = 3, zero = 1, one = 1)
+        print("r= ",r)
+        r=self.so.countGoodStrings(low = 2, high = 3, zero = 1, one = 2)
+        print("r= ",r)
+    
+    def xtest_uniquePathsWithObstacles(self):
         r=self.so.uniquePathsWithObstacles([[0,0,0],[0,1,0],[0,0,0]])
         print("r= ",r)
         self.assertEqual(r, 2)
@@ -1522,9 +1558,9 @@ class TestLinkList(unittest.TestCase):
         # ret     =   so.deleteDuplicates1(ListNode.list_to_ListNode([1,1,2]))
         ListNode.print(ret)
 
-l = ["the","day","is","is","sunny","the","the","the","sunny","is","is"]
-import collections
-c = collections.Counter(l)
-d = c.most_common(4)
-order_items = sorted(d, key=lambda x: (-x[1], x[0]))
-out = [k for k,v in order_items]
+# l = ["the","day","is","is","sunny","the","the","the","sunny","is","is"]
+# import collections
+# c = collections.Counter(l)
+# d = c.most_common(4)
+# order_items = sorted(d, key=lambda x: (-x[1], x[0]))
+# out = [k for k,v in order_items]
