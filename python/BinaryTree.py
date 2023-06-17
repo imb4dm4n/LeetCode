@@ -270,6 +270,60 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/
+- 1161. Maximum Level Sum of a Binary Tree (Medium)
+- 问题:  
+输入二叉树, 寻找最小的层数x使得对应层所有节点的和最大
+- 思路:
+层序遍历, 必须遍历所有的才知道最大的 sum.
+记录对应的层级 和 max_sum 
+    '''
+    def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        each_level  =   [0]
+        def dfs(node, level):
+            nonlocal each_level
+
+            if node:
+                each_level[level-1] += node.val
+                if len(each_level) <= level and (node.left or node.right) :
+                    # print("{} add level {} nodeval {}" .format(level,len(each_level), node.val))
+                    each_level.append(0)
+                dfs(node.left, level+1)
+                dfs(node.right, level+1)
+        dfs(root, 1)
+        s=list(enumerate(each_level,1))
+        
+        print(sorted(s, key=lambda x:(-x[1],x[0])))
+        return sorted(s, key=lambda x:(-x[1],x[0]))[0][0]
+
+
+        max_level   =   1
+        cur_level   =   1
+        max_sum = -1000000
+        tmp_queue   =   [root]
+        while len(tmp_queue) > 0:
+            n   =   len(tmp_queue)
+            cur_sum =   0
+            
+            for i in range(n):
+                node    =   tmp_queue.pop(0)
+                cur_sum += node.val
+                if node.left:
+                    tmp_queue.append(node.left)
+                if node.right:
+                    tmp_queue.append(node.right)
+            
+            print("cur sum {} cur level {} max sum {}".format(
+                cur_sum,cur_level, max_sum
+            ))
+            if cur_sum > max_sum:
+                max_sum =   cur_sum
+                max_level = cur_level
+            cur_level += 1
+        
+        return max_level
+
 
     '''
 - https://leetcode.com/problems/maximum-width-of-binary-tree/

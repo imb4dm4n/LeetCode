@@ -11,6 +11,7 @@ from collections import *
 from itertools import *
 from math import *
 import cmath
+from enum import *
 
 class Difference():
     '''
@@ -73,6 +74,177 @@ replace with problem description
 - 思路:
 replace with your idea.
     '''
+    '''
+- https://leetcode.com/problems/spiral-matrix/
+- 54. Spiral Matrix (Medium)
+- 问题:  
+输入mxn矩阵, 按照环形输出他们
+Input: matrix = [
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]]
+Output: [1,2,3,6,9,8,7,4,5] 
+- 思路:
+深度遍历, 有4个移动方向, 4个边界 (left, right, up, down), 遇到右边时改变方向向下同时更新右边界-1, 其他方向同样处理. 最终无法移动时返回
+    '''
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        left, right, up, down = 0, len(matrix[0]), 0, len(matrix)
+        x,y = 0,0
+        res     =   []
+        class direction(IntEnum):
+            move_right=0
+            move_down=1
+            move_left=2
+            move_up=3
+
+        def dp_order(toward:direction):
+            nonlocal left, right, up, down,x,y
+            print("x={} y={}".format(x,y))
+            if toward == direction.move_right:
+                while x < right:
+                    res.append(matrix[x][y])
+                    x   +=  1
+                right   -=  1
+                x-=1
+                dp_order(direction.move_down)
+
+            elif toward == direction.move_down:
+                while y < down:
+                    res.append(matrix[x][y])
+                    y   +=  1
+                down   -=  1
+                y-=1
+                dp_order(direction.move_left)
+
+            elif toward == direction.move_left:
+                while x > left:
+                    res.append(matrix[x][y])
+                    x   -=  1
+                left   -=  1
+                x+=1
+                dp_order(direction.move_up)
+
+            elif toward == direction.move_up:
+                while y > up:
+                    res.append(matrix[x][y])
+                    y   -=  1
+                up   -=  1
+                y+=1
+                dp_order(direction.move_right)
+        
+        dp_order(direction.move_right)
+        return res 
+
+    '''
+- https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/
+- 1498. Number of Subsequences That Satisfy the Given Sum Condition (Medium)
+- 问题:  
+输入一个数组返回所有符合条件的子序列个数: 子数组最大值和最小值的和必须小于等于 target。 数组最小包含一个数字
+- 大神思路
+排序数组, 用双指针判断 nums[l] + nums[r] 是否小于等于 target, 若符合条件则
+说明 [l,r] 区间的数字的所有组合都是符合的, 个数为 (r-l)^2.
+不断的增加 l 直到 == r 
+- 思路:
+对于每个数字而言都有两种状态 选中和不选中, 那么所有状态的可能为 n^2 
+动态规划:
+base case: 没有数字返回0, 数字大于 target 返回0, 
+状态: 当前是哪个数字, 是否修改最大值或最小值
+选择: 是否加入当前数字
+    '''
+    def numSubseq(self, nums: List[int], target: int) -> int:
+        mod     =   10**9 + 7
+        n = len(nums)
+        l,r,res  = 0, n-1,0
+        while l <= r:
+            if nums[l] + nums[r] > target:
+                r -= 1
+            else:
+                res     +=  pow( 2, r-l ) % mod
+                l += 1
+        return res % mod
+        neg = -1
+        total = 0
+        def dp_count(offset, cur_min, cur_max, chose):
+            nonlocal total
+            if offset >= n:
+                return 0
+            print("offset {} n={} chose={} ".format(offset, nums[offset], chose))
+            if chose:
+                if cur_min == neg:
+                    cur_min = nums[offset]
+                else:
+                    cur_min = min(cur_min, nums[offset])
+                if cur_max == neg:
+                    cur_max = nums[offset]
+                else:
+                    cur_max = max(cur_max, nums[offset]) 
+
+                if cur_min + cur_max <= target:
+                    total += 1
+            dp_count(offset+1, cur_min, cur_max, True)
+            dp_count(offset+1, cur_min, cur_max, False)
+            # else:
+            #     dp_count(offset+1, cur_min, cur_max, True)
+            #     dp_count(offset+1, cur_min, cur_max, False)
+        dp_count(0, -1, -1, True)
+        dp_count(0, -1, -1, False)
+        return total
+            
+        
+    '''
+- https://leetcode.com/problems/smallest-number-in-infinite-set/
+- 2336. Smallest Number in Infinite Set (Medium)
+- 问题:  
+有一个无限长的最小集合, pop 从里面取元素, add 增加元素, 若存在则不变. 
+- 思路:
+用一个最小堆 small 保存 add 的元素, 一个 cur_num 表示当前最小的初始化为1. 
+pop-> 若 small 为空, cur_num + 1 , 返回 cur_num
+pop-> 若 small 非空, small[0] < cur_num, pop small
+pop-> 若 small 非空, small[0] > cur_num, cur_num + 1 返回
+
+add-> 若 num >= cur_num , 不修改, 若小于则 push 到 small
+    '''
+
+    class SmallestInfiniteSet:
+
+        def __init__(self):
+            self.small  =   []
+            self.cur_num=   1
+            
+
+        def popSmallest(self) -> int:
+            if not self.small:
+                self.cur_num    +=  1
+                return self.cur_num - 1
+            else:
+                if self.small[0] < self.cur_num:
+                    return heapq.heappop(self.small)
+                else:
+                    self.cur_num    +=  1
+                    return self.cur_num - 1
+        
+
+        def addBack(self, num: int) -> None:
+            if num < self.cur_num:
+                heapq.heappush(self.small, num)
+            pass
+    '''
+- https://leetcode.com/problems/last-stone-weight/
+- 1046. Last Stone Weight (Easy)
+- 问题:  
+输入一个数组表示每个石头的重量, 每次把最重的两个石头碰撞, 若 x==y 则删除两个石头, 否则 y-x 写回到数组中,继续碰撞 直到只有一个石头或着为0
+- 思路:
+不优化直接做...Beats / 89.21%
+    '''
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        stones.sort()
+        while len(stones) > 1:
+            a,b = stones.pop(), stones.pop()
+            if b- a  == 0:
+                continue
+            stones.append(a-b)
+            stones.sort()
+        return sum(stones)
     '''
 - https://leetcode.com/problems/merge-strings-alternately/
 - 1768. Merge Strings Alternately (Easy)

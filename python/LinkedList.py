@@ -127,6 +127,27 @@ replace with your idea.
     '''
     
     '''
+- https://leetcode.com/problems/swapping-nodes-in-a-linked-list/
+- 1721. Swapping Nodes in a Linked List (Medium)
+- 问题:  
+输入k和链表头, 交换正数第k和倒数第k的值
+- 思路:
+双指针 第一个 fast 先移动k, 然后另一个 slow 跟着移动, 直到 fast=null
+    '''
+    def swapNodes(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        tmp =   ListNode()
+        tmp.next = head
+        fast,slow, fast1 = tmp,tmp,tmp
+        for i in range(k):
+            fast = fast.next
+            fast1 = fast1.next
+        while fast:
+            fast =  fast.next
+            slow = slow.next
+        slow.val, fast1.val = fast1.val, slow.val
+        return head
+    
+    '''
 - https://leetcode.com/problems/linked-list-random-node/
 - 382. Linked List Random Node (Medium)
 - 问题:  

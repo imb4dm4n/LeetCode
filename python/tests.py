@@ -840,7 +840,15 @@ python -m unittest  tests  -k TestBinaryTree
 class TestBinaryTree(unittest.TestCase):
 
 
-    def test_widthOfBinaryTree(self):
+    def test_maxLevelSum(self):
+        so  =   SBT()
+        inp     =   [1,7,0,7,-8,null,null]
+        inp     =   [-100,-200,-300,-20,-5,-10,null]
+        root    =   list_2_tree(inp)
+        r=so.maxLevelSum(root)
+        print("r =2?  ", r )
+
+    def xtest_widthOfBinaryTree(self):
         so  =   SBT()
         inp     =   [1,3,2,5,null,null,9,6,null,7]
         root    =   list_2_tree(inp)
